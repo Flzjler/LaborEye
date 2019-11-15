@@ -4,13 +4,7 @@
 #include <QString>
 #include <QMessageBox>
 #include "MainView/mainview.h"
-//#include "LaborEyeDatabase/laboreyedatabase.h"
-//#include "Config/config.h"
 
-void loadQSS()
-{
-
-}
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -27,8 +21,5 @@ int main(int argc, char *argv[])
     MainView mainView;
     mainView.show();
 
-//    Config *cfg = Config::getCfg();
-//    LaborEyeDatabase* lb = LaborEyeDatabase::getLaboreyeDatabase();
-//    lb->sqlTest();
     return a.exec();
 }
