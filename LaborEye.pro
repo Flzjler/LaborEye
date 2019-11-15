@@ -15,7 +15,10 @@ SOURCES += \
     main.cpp
 
 include ($$PWD/MainView/MainView.pri)
+include ($$PWD/PreviewView/PreviewView.pri)
 include ($$PWD/HistoryView/HistoryView.pri)
+include ($$PWD/HouseView/HouseView.pri)
+include ($$PWD/StaffView/StaffView.pri)
 include ($$PWD/SettingView/SettingView.pri)
 
 include ($$PWD/LaborEyeDatabase/LaborEyeDatabase.pri)

@@ -1,19 +1,34 @@
 #include <QApplication>
 
+#include <QFile>
 #include <QString>
+#include <QMessageBox>
 #include "MainView/mainview.h"
-#include "LaborEyeDatabase/laboreyedatabase.h"
-#include "Config/config.h"
+//#include "LaborEyeDatabase/laboreyedatabase.h"
+//#include "Config/config.h"
 
-int main(int argc, char *argv[])
+void loadQSS()
 {
 
+}
+int main(int argc, char *argv[])
+{
     QApplication a(argc, argv);
+
+    //加载QSS样式
+    QFile qssFile(":/Src/light.css");
+    if(qssFile.open(QFile::ReadOnly)) {
+        a.setStyleSheet(QString(QLatin1String(qssFile.readAll())));
+        qssFile.close();
+    } else {
+        QMessageBox::critical(nullptr, QObject::tr("样式加载失败!"), QObject::tr("样式文件加载失败!"));
+    }
+
     MainView mainView;
     mainView.show();
-    Config *cfg = Config::getCfg();
-    //qDebug() << cfg->getDataBaseName();
-    LaborEyeDatabase* lb = LaborEyeDatabase::getLaboreyeDatabase();
-    lb->sqlTest();
+
+//    Config *cfg = Config::getCfg();
+//    LaborEyeDatabase* lb = LaborEyeDatabase::getLaboreyeDatabase();
+//    lb->sqlTest();
     return a.exec();
 }

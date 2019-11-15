@@ -2,6 +2,12 @@
 #define MAINVIEW_H
 
 #include <QWidget>
+#include <QString>
+#include "PreviewView/previewview.h"
+#include "HistoryView/historyview.h"
+#include "HouseView/houseview.h"
+#include "StaffView/staffview.h"
+#include "SettingView/settingview.h"
 
 namespace Ui {
 class MainView;
@@ -17,6 +23,12 @@ public:
 
 private:
     Ui::MainView *ui;
+
+    static PreviewView* previewView;
+    static HistoryView* historyView;
+    static HouseView* houseView;
+    static StaffView* staffView;
+    static SettingView* settingView;
 };
 
 #endif // MAINVIEW_H
