@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Src/devConfig.ini</file>
+        <file>Src/sql.ini</file>
+    </qresource>
+</RCC>
