@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
         a.setStyleSheet(QString(QLatin1String(qssFile.readAll())));
         qssFile.close();
     } else {
-        QMessageBox::critical(nullptr, QObject::tr("样式加载失败!"), QObject::tr("样式文件加载失败!"));
+        QMessageBox::critical(nullptr, QObject::tr("样式加载失败!"),
+                                QObject::tr("样式文件加载失败!"));
     }
 
     MainView mainView;
