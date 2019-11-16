@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>LaborEye</string>
+   <string>人脸识别管理系统</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

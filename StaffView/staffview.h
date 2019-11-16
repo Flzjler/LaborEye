@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::StaffView *ui;
+
+    void initUI();
 };
 
 #endif // STAFFVIEW_H
