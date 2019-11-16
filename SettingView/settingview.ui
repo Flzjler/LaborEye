@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -189,6 +189,9 @@
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
+                   </property>
+                   <property name="echoMode">
+                    <enum>QLineEdit::Password</enum>
                    </property>
                   </widget>
                  </item>
@@ -533,6 +536,9 @@
                    <bold>true</bold>
                   </font>
                  </property>
+                 <property name="echoMode">
+                  <enum>QLineEdit::Password</enum>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -805,7 +811,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="btnConfirm">
         <property name="minimumSize">
          <size>
           <width>100</width>
