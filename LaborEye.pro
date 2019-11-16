@@ -9,6 +9,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+
 TARGET = LaborEye
 TEMPLATE = app
 
@@ -25,6 +26,7 @@ include ($$PWD/SettingView/SettingView.pri)
 include ($$PWD/LaborEyeDatabase/LaborEyeDatabase.pri)
 include ($$PWD/Hikvision/Hikvision.pri)
 include ($$PWD/Config/Config.pri)
+include ($$PWD/Entity/Entity.pri)
 
 RESOURCES += \
     Src.qrc

@@ -1,6 +1,7 @@
-#ifndef LABOREYEDATABASE_H
+﻿#ifndef LABOREYEDATABASE_H
 #define LABOREYEDATABASE_H
 
+#include <QList>
 #include <QSqlQuery>
 #include <QSettings>
 #include <QSqlError>
@@ -8,6 +9,7 @@
 #include <QSqlDatabase>
 
 #include "Config/config.h"
+#include "Entity/recordinfo.h"
 
 class LaborEyeDatabase
 {
@@ -19,7 +21,10 @@ public:
         return laborEyeDatabase;
     }
 
-    void sqlTest();
+    int cntRecords();
+    QList<RecordInfo> selectRecordInfo(QDateTime startDateTime, QDateTime endDateTime,
+                                        QString stranger, QString idCard,
+                                        int nowPage, int pageSize);
 
 private:
     LaborEyeDatabase();

@@ -22,6 +22,12 @@
     <height>650</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>1100</width>
+    <height>650</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>LaborEye</string>
   </property>

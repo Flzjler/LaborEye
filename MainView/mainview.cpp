@@ -1,4 +1,4 @@
-#include "mainview.h"
+﻿#include "mainview.h"
 #include "ui_mainview.h"
 
 PreviewView* MainView::previewView = nullptr;
@@ -18,27 +18,27 @@ MainView::MainView(QWidget *parent) :
 
     if(previewView == nullptr) {
         previewView = new PreviewView();
-        ui->tbwMainView->addTab(previewView, QObject::tr("预览"));
+        ui->tbwMainView->addTab(previewView, QString::fromLocal8Bit("预览"));
     }
 
     if(historyView == nullptr) {
         historyView = new HistoryView();
-        ui->tbwMainView->addTab(historyView, QObject::tr("记录查看"));
+        ui->tbwMainView->addTab(historyView, QString::fromLocal8Bit("记录查看"));
     }
 
     if(houseView == nullptr) {
         houseView = new HouseView();
-        ui->tbwMainView->addTab(houseView, QObject::tr("住房状况"));
+        ui->tbwMainView->addTab(houseView, QString::fromLocal8Bit("住房状况"));
     }
 
     if(staffView == nullptr) {
         staffView = new StaffView();
-        ui->tbwMainView->addTab(staffView, QObject::tr("住户信息"));
+        ui->tbwMainView->addTab(staffView, QString::fromLocal8Bit("住户信息"));
     }
 
     if(settingView == nullptr) {
         settingView = new SettingView();
-        ui->tbwMainView->addTab(settingView, QObject::tr("设置"));
+        ui->tbwMainView->addTab(settingView, QString::fromLocal8Bit("设置"));
     }
 }
 

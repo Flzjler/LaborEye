@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include "MainView/mainview.h"
 
+#include "LaborEyeDatabase/laboreyedatabase.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -22,5 +24,7 @@ int main(int argc, char *argv[])
     MainView mainView;
     mainView.show();
 
+//    LaborEyeDatabase* lb = LaborEyeDatabase::getLaboreyeDatabase();
+//    qDebug() << lb->cntRecords();
     return a.exec();
 }
