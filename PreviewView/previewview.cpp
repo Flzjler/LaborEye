@@ -7,8 +7,8 @@ PreviewView::PreviewView(QWidget *parent) :
 {
     ui->setupUi(this);
     QList<HWND> hwndList;
-    hwndList.append((HWND)ui->lblChannel1->winId());
-    hwndList.append((HWND)ui->lblChannel2->winId());
+    hwndList.append(HWND(ui->lblChannel1->winId()));
+    hwndList.append(HWND(ui->lblChannel2->winId()));
     Hikvision::showPreviewVideo(hwndList);
 }
 

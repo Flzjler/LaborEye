@@ -65,7 +65,8 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
     LONG lUserID;
 
     //登录参数，包括设备地址、登录用户、密码等
-    NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+    //NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+    NET_DVR_USER_LOGIN_INFO struLoginInfo;
     struLoginInfo.bUseAsynLogin = 0; //同步登录方式
 
     strcpy_s(struLoginInfo.sDeviceAddress,

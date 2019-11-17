@@ -86,6 +86,12 @@ void HistoryView::setTblItem()
                 break;
             }
 
+
+        }
+    }
+
+    for(int i = 0; i < pageSize; ++i) {
+        for(int j = 0; j < colNum; ++j) {
             //设置只读
             item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
             //设置对齐方式
