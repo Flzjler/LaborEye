@@ -22,9 +22,9 @@
   <widget class="QGroupBox" name="gpbPreview">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>9</x>
      <y>10</y>
-     <width>630</width>
+     <width>641</width>
      <height>300</height>
     </rect>
    </property>
@@ -93,9 +93,9 @@ border-color: rgb(255, 255, 255);</string>
   <widget class="QGroupBox" name="gpbRecord">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>9</x>
      <y>330</y>
-     <width>630</width>
+     <width>641</width>
      <height>260</height>
     </rect>
    </property>
@@ -200,7 +200,7 @@ border-color: rgb(255, 255, 255);</string>
     <rect>
      <x>670</x>
      <y>10</y>
-     <width>390</width>
+     <width>401</width>
      <height>580</height>
     </rect>
    </property>

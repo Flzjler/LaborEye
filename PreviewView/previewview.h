@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "Hikvision/hikvision.h"
+
 namespace Ui {
 class PreviewView;
 }

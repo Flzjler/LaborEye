@@ -24,7 +24,7 @@
     <rect>
      <x>260</x>
      <y>10</y>
-     <width>792</width>
+     <width>811</width>
      <height>572</height>
     </rect>
    </property>
@@ -38,13 +38,13 @@
        <widget class="QTableWidget" name="tblStaffInfo">
         <property name="minimumSize">
          <size>
-          <width>770</width>
+          <width>790</width>
           <height>500</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>770</width>
+          <width>790</width>
           <height>500</height>
          </size>
         </property>
@@ -259,7 +259,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -270,12 +270,12 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2"/>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>11</x>
      <y>10</y>
-     <width>224</width>
+     <width>241</width>
      <height>581</height>
     </rect>
    </property>

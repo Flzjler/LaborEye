@@ -1,4 +1,4 @@
-#include "staffview.h"
+﻿#include "staffview.h"
 #include "ui_staffview.h"
 
 StaffView::StaffView(QWidget *parent) :

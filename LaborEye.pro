@@ -11,11 +11,23 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
 TARGET = LaborEye
+
 TEMPLATE = app
 
 SOURCES += \
     main.cpp
 
+# Hikvision Camera SDK
+# LIBS += $$PWD/Library/GdiPlus.lib
+# LIBS += $$PWD/Library/HCCore.lib
+# LIBS += $$PWD/Library/HCNetSDK.lib
+# LIBS += $$PWD/Library/PlayCtrl.lib
+
+# Resourecs files
+RESOURCES += \
+    Src.qrc
+
+# Sub-modules path
 include ($$PWD/MainView/MainView.pri)
 include ($$PWD/PreviewView/PreviewView.pri)
 include ($$PWD/HistoryView/HistoryView.pri)
@@ -28,7 +40,6 @@ include ($$PWD/Hikvision/Hikvision.pri)
 include ($$PWD/Config/Config.pri)
 include ($$PWD/Entity/Entity.pri)
 
-RESOURCES += \
-    Src.qrc
+
 
 
