@@ -74,24 +74,18 @@ void HistoryView::setTblItem()
         for(int j = 0; j < colNum; ++j) {
             switch(j) {
             case 0: item[j] =new QTableWidgetItem(recordInfoList[i].getTimeValue()
-                                               .toString("yyyy-MM-dd ddd hh:mm"));
+                                                  .toString("yyyy-MM-dd ddd hh:mm"));
                 break;
             case 1: item[j] = !recordInfoList[i].getStranger()
-                                ? new QTableWidgetItem(recordInfoList[i].getApplicant())
-                                : new QTableWidgetItem(QString::fromLocal8Bit("陌生人"));
+                        ? new QTableWidgetItem(recordInfoList[i].getApplicant())
+                        : new QTableWidgetItem(QString::fromLocal8Bit("陌生人"));
                 break;
             case 2: item[j] = recordInfoList[i].getAvatarId().length()
-                                ? new QTableWidgetItem(recordInfoList[i].getAvatarId())
-                                : new QTableWidgetItem(QString::fromLocal8Bit("未知"));
+                        ? new QTableWidgetItem(recordInfoList[i].getAvatarId())
+                        : new QTableWidgetItem(QString::fromLocal8Bit("未知"));
                 break;
             }
 
-
-        }
-    }
-
-    for(int i = 0; i < pageSize; ++i) {
-        for(int j = 0; j < colNum; ++j) {
             //设置只读
             item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
             //设置对齐方式
@@ -100,6 +94,17 @@ void HistoryView::setTblItem()
             ui->tblRecord->setItem(i, j, item[j]);
         }
     }
+
+//    for(int i = 0; i < pageSize; ++i) {
+//        for(int j = 0; j < colNum; ++j) {
+//            //设置只读
+//            item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
+//            //设置对齐方式
+//            item[j]->setTextAlignment(Qt::AlignCenter);
+//            //设置单元格内容
+//            ui->tblRecord->setItem(i, j, item[j]);
+//        }
+//    }
 }
 
 void HistoryView::on_btnConfirm_clicked()

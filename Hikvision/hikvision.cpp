@@ -1,6 +1,8 @@
 ﻿#include "hikvision.h"
 #include <QDebug>
 
+NET_VCA_FACESNAP_MATCH_ALARM Hikvision::faceMatchAlarm;
+
 Hikvision::Hikvision()
 {
 
@@ -12,37 +14,30 @@ void CALLBACK Hikvision::g_ExceptionCallBack(DWORD dwType, LONG lUserID,
     qDebug() << "lUserID: " << lUserID << " lHandle" << lHandle << " pUser" << pUser;
     switch (dwType) {
     case EXCEPTION_RECONNECT:    //预览时重连
-        printf_s("----------reconnect--------%lld\n", time(nullptr));
+        qDebug() << "----------reconnect--------" << time(nullptr);
         break;
     default:
         break;
     }
 }
 
-BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pAlarmInfo, DWORD dwBufLen, void* pUser)
+BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pAlarmInfo, DWORD dwBufLen, void* pUser)
 {
-    //    qDebug() << "PreviewView: Callback start";
-
-    //    //报警列表显示的报警总数上限控制
-    //    if(alarmList.size()>=100) {
-    //        emit previewView->clearAlarmList();
-    //    }
-
-    //    switch(lCommand) {
-    //        case COMM_SNAP_MATCH_ALARM: //人脸比对结果信息
-    //        {
-    //            qDebug() << "PreviewView: Detected face";
-    //            memcpy(&struFaceMatchAlarm, pAlarmInfo, sizeof(NET_VCA_FACESNAP_MATCH_ALARM));
-    //            //设置报警信息，用于记录所需用到的的报警数据
-    //            setAlarmInfo(struFaceMatchAlarm);
-    //            //设置报警文本，用于在下方列表区显示
-    //            setAlarmText();
-    //            //数据库操作
-    //            saveToDatabase();
-    //            break;
-    //        }
-    //        return TRUE;
-    //    }
+    switch(lCommand) {
+    case COMM_SNAP_MATCH_ALARM: //人脸比对结果信息
+    {
+        qDebug() << "PreviewView: Detected face";
+        memcpy(&faceMatchAlarm, pAlarmInfo, sizeof(NET_VCA_FACESNAP_MATCH_ALARM));
+        //设置报警信息，用于记录所需用到的的报警数据
+        //setAlarmInfo(struFaceMatchAlarm);
+        //设置报警文本，用于在下方列表区显示
+        //setAlarmText();
+        //数据库操作
+        //saveToDatabase();
+        break;
+    }
+        return TRUE;
+    }
     return true;
 }
 
@@ -149,6 +144,36 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
     //NET_DVR_Logout(lUserID);
     //释放SDK资源
     //NET_DVR_Cleanup();
+}
+
+void Hikvision::downLoadPicture(PICTYPE picType)
+{
+    QString url = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
+
+    switch (picType) {
+    case CAPTUREPICTURE:
+        url = url.mid(0, url.indexOf("SEl"));
+        qDebug() << "Download Capture Pic! The url is: " << url;
+        break;
+    case AVATARPICTURE:
+        url = url.mid(0, url.indexOf("http://",1));
+        qDebug() << "Download Avatar Pic! The url is: " << url;
+        break;
+    case FACEPICTURE:
+        url = url.mid(0, url.indexOf("http://")+6);
+        qDebug() << "Download Face Pic! The url is: " << url;
+        break;
+    }
+
+    QEventLoop eventLoop;
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+    QUrl qUrl(url);
+    qUrl.setUserName(Config::getCfg()->getSuBrainUsername());
+    qUrl.setPassword(Config::getCfg()->getSuBrainPasword());
+    //QNetworkReply* reply = manager->get(QNetworkRequest(url));
+    //connect(manager, SIGNAL(finished(QNetworkReply*)), previewView, SLOT(showAvatarPic(QNetworkReply*)));
+    //connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+    eventLoop.exec();
 }
 
 

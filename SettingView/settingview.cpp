@@ -55,7 +55,6 @@ void SettingView::changeSetting()
     Config::getCfg()->setCapturePath(ui->ledtCapturePath->text());
     Config::getCfg()->setAvatarPath(ui->ledtAvatarPath->text());
     Config::getCfg()->setFacePath(ui->ledtFacePath->text());
-    //qDebug() << ui->ledtFacePath->text();
 }
 
 void SettingView::on_btnCapturePath_clicked()

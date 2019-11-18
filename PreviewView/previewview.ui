@@ -238,7 +238,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
-         <string>抓拍图</string>
+         <string>抓拍图暂无</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -275,7 +275,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>证件照</string>
+           <string>证件照暂无</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -345,7 +345,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>人脸子图</string>
+           <string>人脸子图暂无</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -386,7 +386,7 @@ border-color: rgb(255, 255, 255);</string>
            </font>
           </property>
           <property name="text">
-           <string>身份证号</string>
+           <string>身份证/编号</string>
           </property>
          </widget>
         </item>

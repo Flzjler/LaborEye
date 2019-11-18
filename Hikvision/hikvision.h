@@ -1,26 +1,46 @@
 #ifndef HIKVISION_H
 #define HIKVISION_H
 
-#include <stdio.h>
-#include <iostream>
+#include <time.h>
+
+#include <QUrl>
+#include <QList>
+#include <QEventLoop>
+#include <QNetworkAccessManager>
+
+
 #include "Windows.h"
 #include "HCNetSDK.h"
-#include <time.h>
-#include <QList>
-
 #include "Config/config.h"
 
-using namespace std;
+typedef enum {
+    CAPTUREPICTURE,
+    AVATARPICTURE,
+    FACEPICTURE
+} PICTYPE;
 
 class Hikvision
 {
 public:
-    Hikvision();
-    static void showPreviewVideo(QList<HWND> hwndList); //显示预览录像
+
+    //显示预览录像
+    static void showPreviewVideo(QList<HWND> hwndList);
+
+    //使用url的方式下载图片
+    static void downLoadPicture(PICTYPE picType);
 
 private:
+    Hikvision();
+
+    //人脸比对结果报警上传结构体
+    static NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm;
+
+    //异常回调函数
     static void CALLBACK g_ExceptionCallBack(DWORD dwType, LONG lUserID,
                                              LONG lHandle, void *pUser);
+    //报警回调函数
+    static BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer,
+                                         char *pAlarmInfo, DWORD dwBufLen, void* pUser);
 
 };
 

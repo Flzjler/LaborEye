@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1112</width>
+    <width>1132</width>
     <height>632</height>
    </rect>
   </property>
@@ -592,13 +592,24 @@
             <height>200</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">border-width: 2px;
 border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string/>
+           <string>图片暂无</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -626,13 +637,24 @@ border-color: rgb(255, 255, 255);</string>
             <height>200</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">border-width: 2px;
 border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string/>
+           <string>图片暂无</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>

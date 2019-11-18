@@ -4,7 +4,8 @@ Config* Config::cfg = nullptr;
 
 Config::Config()
 {
-    cfgSetting = new QSettings(":/Src/devConfig.ini", QSettings::IniFormat);
+    cfgSetting = new QSettings("./config/devConfig.ini",
+                               QSettings::IniFormat);//存放于Debug目录中与debug/release同级目录
 }
 
 int Config::getDatabasePort()
@@ -44,12 +45,12 @@ void Config::setDatabaseIP(QString _ip)
 
 void Config::setDatabaseName(QString _databaseName)
 {
-     cfgSetting->setValue("Database/database", _databaseName);
+    cfgSetting->setValue("Database/database", _databaseName);
 }
 
 void Config::setDatabaseUsername(QString _userName)
 {
-     cfgSetting->setValue("Database/username", _userName);
+    cfgSetting->setValue("Database/username", _userName);
 }
 
 void Config::setDatabasePassword(QString _passWord)
@@ -123,7 +124,7 @@ void Config::setSuBrainChannel4(int _channel4)
 
 void Config::setSuBrainIP(QString _ip)
 {
-   // qDebug() << _ip;
+    // qDebug() << _ip;
     cfgSetting->setValue("SuperBrain/ip", _ip);
 }
 
@@ -164,7 +165,6 @@ void Config::setAvatarPath(QString _avatarPath)
 
 void Config::setFacePath(QString _facePath)
 {
-    //qDebug() << _facePath;
-    cfgSetting->setValue("/Path/facePath", _facePath);
+    cfgSetting->setValue("Path/facePath", _facePath);
 }
 
