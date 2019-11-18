@@ -56,10 +56,14 @@ QList<RecordInfo> HistoryView::getRecordInfo()
     QString stranger = ui->cboxStranger->currentText();
     QString idCard = ui->ledtIdCard->text();
 
-    QList<RecordInfo> recordInfoList = LaborEyeDatabase::getLaboreyeDatabase()
-            ->selectRecordInfo(startDateTime, endDateTime,
+    QList<RecordInfo> recordInfoList =LaborEyeDatabase::getLaboreyeDatabase()->selectRecordInfo(startDateTime, endDateTime,
                                stranger, idCard,
                                nowPage, pageSize);
+
+    int recordsNum = LaborEyeDatabase::getLaboreyeDatabase()->cntRecordsNum(startDateTime, endDateTime,
+                            stranger, idCard);
+    tolPages = recordsNum / pageSize + (recordsNum%pageSize ? 1 : 0);
+
     return recordInfoList;
 }
 
@@ -94,17 +98,19 @@ void HistoryView::setTblItem()
             ui->tblRecord->setItem(i, j, item[j]);
         }
     }
+    for(int i = recordInfoList.size(); i < pageSize; ++i) {
+        for(int j = 0; j < colNum; ++j) {
+            item[j] = new QTableWidgetItem(QString(""));
+            //设置只读
+            item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
+            //设置对齐方式
+            item[j]->setTextAlignment(Qt::AlignCenter);
+            //设置单元格内容
+            ui->tblRecord->setItem(i, j, item[j]);
+        }
 
-//    for(int i = 0; i < pageSize; ++i) {
-//        for(int j = 0; j < colNum; ++j) {
-//            //设置只读
-//            item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
-//            //设置对齐方式
-//            item[j]->setTextAlignment(Qt::AlignCenter);
-//            //设置单元格内容
-//            ui->tblRecord->setItem(i, j, item[j]);
-//        }
-//    }
+    }
+    ui->lblTolpage->setText("/ " + QString::number(tolPages));
 }
 
 void HistoryView::on_btnConfirm_clicked()
@@ -130,6 +136,13 @@ void HistoryView::on_btnNxtpage_clicked()
         return;
 
     ++nowPage;
+    ui->ledtNowpage->setText(QString::number(nowPage));
+    setTblItem();
+}
+
+void HistoryView::on_btnJmppage_clicked()
+{
+    nowPage = ui->ledtNowpage->text().toInt();
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
 }

@@ -14,6 +14,7 @@
 class LaborEyeDatabase
 {
 public:
+
     static LaborEyeDatabase* getLaboreyeDatabase()
     {
         if(laborEyeDatabase == nullptr)
@@ -21,10 +22,14 @@ public:
         return laborEyeDatabase;
     }
 
-    int cntRecords();
     QList<RecordInfo> selectRecordInfo(QDateTime startDateTime, QDateTime endDateTime,
-                                        QString stranger, QString idCard,
-                                        int nowPage, int pageSize);
+                                              QString stranger, QString idCard,
+                                              int nowPage, int pageSize);
+
+    int cntRecords();
+
+    int cntRecordsNum(QDateTime startDateTime, QDateTime endDateTime,
+                             QString stranger, QString idCard);
 
 private:
     LaborEyeDatabase();

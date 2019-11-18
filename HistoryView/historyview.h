@@ -24,6 +24,8 @@ private slots:
 
     void on_btnConfirm_clicked();
 
+    void on_btnJmppage_clicked();
+
 private:
     Ui::HistoryView *ui;
 
