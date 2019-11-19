@@ -10,6 +10,7 @@
 
 #include "Config/config.h"
 #include "Entity/recordinfo.h"
+#include "Entity/houseinfo.h"
 
 class LaborEyeDatabase
 {
@@ -25,11 +26,22 @@ public:
     QList<RecordInfo> selectRecordInfo(QDateTime startDateTime, QDateTime endDateTime,
                                               QString stranger, QString idCard,
                                               int nowPage, int pageSize);
+    QList<QString> selectBuidingId();
+
+    QList<QString> selectUnitId(QString buildingId);
+
+    QList<QString> selectHouseId(QString buildingId, QString unitId);
+
+    QList<HouseInfo> selectHouseInfo(QString buildingId, QString unitId,
+                                    QDateTime startDateTime, QDateTime endDateTime);
+
+    int cntHouseNum(QString buildingId, QString unitId);
 
     int cntRecords();
 
     int cntRecordsNum(QDateTime startDateTime, QDateTime endDateTime,
                              QString stranger, QString idCard);
+
 
 private:
     LaborEyeDatabase();

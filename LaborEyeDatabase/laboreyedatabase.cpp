@@ -93,6 +93,46 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
     return recordInfoList;
 }
 
+QList<QString> LaborEyeDatabase::selectBuidingId()
+{
+    QList<QString> buildingId;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return buildingId;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectBuidingId").toString();
+    query.prepare(sqlSentence);
+    query.exec();
+    closeDatabase();
+
+    while(query.next())
+        buildingId.append(query.value("building").toString());
+    return buildingId;
+}
+
+QList<QString> LaborEyeDatabase::selectUnitId(QString buildingId)
+{
+    QList<QString> unitId;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return unitId;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectUnitId").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":buildingId", buildingId);
+
+    query.exec();
+    closeDatabase();
+
+    while(query.next())
+        unitId.append(query.value("unit").toString());
+    return unitId;
+}
+
 int LaborEyeDatabase::cntRecordsNum(QDateTime startDateTime, QDateTime endDateTime,
                                     QString stranger, QString idCard)
 {
@@ -159,4 +199,77 @@ int LaborEyeDatabase::cntRecords()
     if(query.next())
         return query.value(0).toInt();
     return -1;
+}
+
+QList<QString> LaborEyeDatabase::selectHouseId(QString buildingId, QString unitId)
+{
+    QList<QString> housesId;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return housesId;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectHouseId").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":buildingId", buildingId);
+    query.bindValue(":unitId", unitId);
+    query.exec();
+    closeDatabase();
+
+    while(query.next())
+        housesId.append(query.value("house").toString());
+    return housesId;
+}
+
+int LaborEyeDatabase::cntHouseNum(QString buildingId, QString unitId)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return -1;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/cntHouseNum").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":buildingId", buildingId);
+    query.bindValue(":unitId", unitId);
+    query.exec();
+    closeDatabase();
+
+    if(query.next())
+        return query.value(0).toInt();
+    return -1;
+}
+
+QList<HouseInfo> LaborEyeDatabase::selectHouseInfo(QString buildingId, QString unitId,
+                                                    QDateTime startDateTime, QDateTime endDateTime)
+{
+    QList<HouseInfo> houseInfoList;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return houseInfoList;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectHouseRecords_by_Time").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":buildingId", buildingId);
+    query.bindValue(":unitId", unitId);
+    query.bindValue(":startDateTime", startDateTime);
+    query.bindValue(":endDateTime", endDateTime);
+    query.exec();
+    closeDatabase();
+
+    HouseInfo houseInfo;
+    while(query.next()) {
+        houseInfo.setId(query.value("id").toInt());
+        houseInfo.setCommunity(query.value("community").toString());
+        houseInfo.setBuilding(query.value("building").toString());
+        houseInfo.setUnit(query.value("unit").toString());
+        houseInfo.setHouse(query.value("house").toString());
+        houseInfo.setArea(query.value("area").toDouble());
+        houseInfoList.append(houseInfo);
+    }
+    return houseInfoList;
 }

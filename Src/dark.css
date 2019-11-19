@@ -226,17 +226,17 @@ QHeaderView::down-arrow:hover, QHeaderView::down-arrow:pressed {
 /**********表格**********/
 QTableView {
         border: 1px solid rgb(45, 45, 45);
-        background: rgb(57, 58, 60);
+        /*background: rgb(57, 58, 60);*/
         gridline-color: rgb(60, 60, 60);
 }
-QTableView::item {
+/*QTableView::item {
         padding-left: 5px;
         padding-right: 5px;
         border: none;
         background: rgb(72, 72, 74);
         border-right: 1px solid rgb(45, 45, 45);
         border-bottom: 1px solid rgb(45, 45, 45);
-}
+}*/
 QTableView::item:selected {
         background: rgba(255, 255, 255, 40);
 }

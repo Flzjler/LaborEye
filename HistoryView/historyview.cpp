@@ -46,6 +46,8 @@ void HistoryView::initUI()
     ui->tblRecord->setRowCount(pageSize);
     //设置表头伸缩格式
     ui->tblRecord->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //取消多选
+    ui->tblRecord->setSelectionMode(QAbstractItemView::SingleSelection);
 
 }
 
