@@ -1,7 +1,7 @@
 #include "houseview.h"
 #include "ui_houseview.h"
 
-int HouseView::houseRowNum = 1;
+int HouseView::houseRowNum = 15;
 int HouseView::houseColNum = 5;
 
 QList<QString> HouseView::buildingsId;
@@ -38,9 +38,9 @@ void HouseView::initUI()
     ui->tblHouse->setColumnCount(houseColNum);
     ui->tblHouse->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tblHouse->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tblHouse->verticalHeader()->setHidden(true);//取消默认行号
-    ui->tblHouse->horizontalHeader()->setHidden(true);//取消默认列号
-    ui->tblHouse->setSelectionMode(QAbstractItemView::SingleSelection);//取消多选
+    ui->tblHouse->verticalHeader()->setHidden(true);                        //取消默认行号
+    ui->tblHouse->horizontalHeader()->setHidden(true);                      //取消默认列号
+    ui->tblHouse->setSelectionMode(QAbstractItemView::SingleSelection);     //取消多选
 }
 
 void HouseView::on_cmbBuilding_currentIndexChanged(const QString &arg1)
@@ -81,11 +81,12 @@ void HouseView::on_lblReflash_clicked()
             item->setFlags(item->flags() ^ Qt::ItemIsEditable);
             ui->tblHouse->setItem(i, j, item);
 
+            item->setForeground(QBrush(QColor(128, 128, 128)));
+
             if(itemText != "") {
                 for(int k = 0 ; k < houseInfoList.size(); ++k) {
-                    if(houseInfoList[k].getHouse() == itemText) {
-                        item->setForeground(QBrush(QColor(255, 0, 0)));
-                    }
+                    if(houseInfoList[k].getHouse() == itemText)
+                        item->setForeground(QBrush(QColor(0, 128, 0)));
                 }
             }
         }
