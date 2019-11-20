@@ -1,12 +1,17 @@
 ﻿#include "staffview.h"
 #include "ui_staffview.h"
 
+int StaffView::pageSize;                //每页显示的记录数
+int StaffView::tolPages;                //总页数
+int StaffView::nowPage;                 //当前页码
+
 StaffView::StaffView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StaffView)
 {
     ui->setupUi(this);
     initUI();
+    setTblItem();
 }
 
 StaffView::~StaffView()
@@ -16,6 +21,17 @@ StaffView::~StaffView()
 
 void StaffView::initUI()
 {
+    nowPage = 1;
+    pageSize = 14;
+
+    ui->ledtNowpage->setText(QString::number(nowPage));
+    ui->lblTolpage->setText("/ " + QString::number(tolPages));
+    int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant();
+    tolPages = applicantNum / pageSize + (applicantNum%pageSize ? 1 : 0);
+
+    //设置页码输入的范围
+    ui->ledtNowpage->setValidator(new QIntValidator(1, tolPages, this));
+
     //设置选择时选择一行
     ui->tblStaffInfo->setSelectionBehavior(QAbstractItemView::SelectRows);
     //设置不留空
@@ -23,7 +39,92 @@ void StaffView::initUI()
     //设置列宽
     ui->tblStaffInfo->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
     //设置表格行数
-    ui->tblStaffInfo->setRowCount(14);
+    ui->tblStaffInfo->setRowCount(pageSize);
     //设置表头伸缩格式
     ui->tblStaffInfo->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //取消多选
+    ui->tblStaffInfo->setSelectionMode(QAbstractItemView::SingleSelection);
+    //取消默认行号
+    ui->tblStaffInfo->verticalHeader()->setHidden(true);
+}
+
+QList<ApplicantInfo> StaffView::getStaffInfo()
+{
+    QList<ApplicantInfo> applicantInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectApplicantInfo(nowPage, pageSize);
+
+    int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant();
+    tolPages = applicantNum / pageSize + (applicantNum%pageSize ? 1 : 0);
+
+    return applicantInfoList;
+}
+
+void StaffView::setTblItem()
+{
+    QList<ApplicantInfo> applicantInfoList = getStaffInfo();
+
+    ui->tblStaffInfo->clear();
+    QTableWidgetItem *item[4];
+
+    for(int i = 0; i < applicantInfoList.size(); ++i) {
+        for(int j = 0; j < colNum; ++j) {
+            switch(j) {
+            case 0: item[j] = new QTableWidgetItem(applicantInfoList[i].getApplicant());
+                break;
+            case 1: item[j] = new QTableWidgetItem(applicantInfoList[i].getSfzNo());
+                break;
+            case 2: item[j] = new QTableWidgetItem(applicantInfoList[i].getContact());
+                break;
+            case 3:
+                QString address = "新兴茗苑" + applicantInfoList[i].getBuilding() + "幢" +
+                                    applicantInfoList[i].getUnit() + "单元" +
+                                    applicantInfoList[i].getHouse() + "室";
+                item[j] = new QTableWidgetItem(address);
+                break;
+            }
+
+            //设置只读
+            item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
+            //设置对齐方式
+            item[j]->setTextAlignment(Qt::AlignCenter);
+            //设置单元格内容
+            ui->tblStaffInfo->setItem(i, j, item[j]);
+        }
+    }
+    for(int i = applicantInfoList.size(); i < pageSize; ++i) {
+        for(int j = 0; j < colNum; ++j) {
+            item[j] = new QTableWidgetItem(QString(""));
+            //设置只读
+            item[j]->setFlags(item[j]->flags() ^ Qt::ItemIsEditable);
+            //设置对齐方式
+            item[j]->setTextAlignment(Qt::AlignCenter);
+            //设置单元格内容
+            ui->tblStaffInfo->setItem(i, j, item[j]);
+        }
+    }
+    ui->lblTolpage->setText("/ " + QString::number(tolPages));
+}
+
+void StaffView::on_btnPrepage_clicked()
+{
+    if(nowPage == 1)
+        return;
+    nowPage--;
+    ui->ledtNowpage->setText(QString::number(nowPage));
+    setTblItem();
+}
+
+void StaffView::on_btnNxtpage_clicked()
+{
+    if(nowPage == tolPages)
+        return;
+    nowPage++;
+    ui->ledtNowpage->setText(QString::number(nowPage));
+    setTblItem();
+}
+
+void StaffView::on_btnJmppage_clicked()
+{
+    nowPage = ui->ledtNowpage->text().toInt();
+    ui->ledtNowpage->setText(QString::number(nowPage));
+    setTblItem();
 }

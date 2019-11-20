@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include "Config/config.h"
 

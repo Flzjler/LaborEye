@@ -49,6 +49,7 @@ void SettingView::changeSetting()
 
     Config::getCfg()->setDatabaseIP(ui->ledtDBIP->text());
     Config::getCfg()->setDatabasePort(ui->ledtDBPort->text().toInt());
+    Config::getCfg()->setDatabaseName(ui->ledtDBName->text());
     Config::getCfg()->setDatabaseUsername(ui->ledtDBUsername->text());
     Config::getCfg()->setDatabasePassword(ui->ledtDBPwd->text());
 
@@ -79,4 +80,5 @@ void SettingView::on_btnConfirm_clicked()
 {
     changeSetting();
     initUI();
+    QMessageBox::information(this, "提示", "配置修改成功");
 }

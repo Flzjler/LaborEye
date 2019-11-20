@@ -48,6 +48,8 @@ void HistoryView::initUI()
     ui->tblRecord->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //取消多选
     ui->tblRecord->setSelectionMode(QAbstractItemView::SingleSelection);
+    //取消默认行号
+    ui->tblRecord->verticalHeader()->setHidden(true);
 
 }
 
@@ -59,11 +61,11 @@ QList<RecordInfo> HistoryView::getRecordInfo()
     QString idCard = ui->ledtIdCard->text();
 
     QList<RecordInfo> recordInfoList =LaborEyeDatabase::getLaboreyeDatabase()->selectRecordInfo(startDateTime, endDateTime,
-                               stranger, idCard,
-                               nowPage, pageSize);
+                                                                                                stranger, idCard,
+                                                                                                nowPage, pageSize);
 
     int recordsNum = LaborEyeDatabase::getLaboreyeDatabase()->cntRecordsNum(startDateTime, endDateTime,
-                            stranger, idCard);
+                                                                            stranger, idCard);
     tolPages = recordsNum / pageSize + (recordsNum%pageSize ? 1 : 0);
 
     return recordInfoList;

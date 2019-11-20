@@ -12,6 +12,7 @@
 #include "Entity/recordinfo.h"
 #include "Entity/houseinfo.h"
 #include "Entity/applicantrecordinfo.h"
+#include "Entity/applicantinfo.h"
 
 class LaborEyeDatabase
 {
@@ -39,6 +40,9 @@ public:
     int cntRecordsNum(QDateTime startDateTime, QDateTime endDateTime,
                              QString stranger, QString idCard);
 
+    //查询住户数量
+    int cntApplicant();
+
     //查询小区所有幢号
     QList<QString> selectBuidingId();
 
@@ -55,6 +59,9 @@ public:
     //查询住户进出记录
     QList<ApplicantRecordInfo> selectApplicantRecords(QString buildingId, QString unitId, QString houseId,
                                                       QDateTime startDateTime, QDateTime endDateTime);
+
+    //查询所有住户信息
+    QList<ApplicantInfo> selectApplicantInfo(int nowPage, int pageSize);
 
 private:
     LaborEyeDatabase();

@@ -285,7 +285,7 @@ QList<ApplicantRecordInfo> LaborEyeDatabase::selectApplicantRecords(QString buil
 
     QSqlQuery query;
     QString sqlSentence = sqlSetting->value("Select/selectApplicantRecord").toString();
-//    qDebug() << sqlSentence;
+
     query.prepare(sqlSentence);
     query.bindValue(":buildingId", buildingId);
     query.bindValue(":unitId", unitId);
@@ -307,4 +307,53 @@ QList<ApplicantRecordInfo> LaborEyeDatabase::selectApplicantRecords(QString buil
     }
 
     return applicantRecordsList;
+}
+
+QList<ApplicantInfo> LaborEyeDatabase::selectApplicantInfo(int nowPage, int pageSize)
+{
+    QList<ApplicantInfo> applicantInfoList;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return applicantInfoList;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectApplicantInfo").toString();
+
+    query.prepare(sqlSentence);
+    query.bindValue(":startId", (nowPage-1)*pageSize);
+    query.bindValue(":pageSize", pageSize);
+    query.exec();
+    closeDatabase();
+
+    ApplicantInfo applicantInfo;
+    while(query.next()) {
+        applicantInfo.setApplicant(query.value("applicant").toString());
+        applicantInfo.setSfzNo(query.value("sfzno").toString());
+        applicantInfo.setContact(query.value("contact").toString());
+        applicantInfo.setBuilding(query.value("building").toString());
+        applicantInfo.setUnit(query.value("unit").toString());
+        applicantInfo.setHouse(query.value("house").toString());
+        applicantInfoList.append(applicantInfo);
+    }
+
+    return applicantInfoList;
+}
+
+int LaborEyeDatabase::cntApplicant()
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return -1;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/cntApplicantInfo").toString();
+    query.prepare(sqlSentence);
+    query.exec();
+    closeDatabase();
+
+    if(query.next())
+        return query.value(0).toInt();
+    return -1;
 }

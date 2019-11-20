@@ -62,6 +62,11 @@ void HouseView::on_cmbBuilding_currentIndexChanged(const QString &arg1)
 void HouseView::on_lblReflash_clicked()
 {
     ui->tblHouse->clear();
+    ui->tblRecord->clear();
+    ui->ledtName->clear();
+    ui->ledtRole->clear();
+    ui->ledtIdCard->clear();
+    ui->ledtSimilar->clear();
 
     QString buildingId = ui->cmbBuilding->currentText();
     QString unitId = ui->cmbUnit->currentText();
@@ -103,6 +108,12 @@ void HouseView::on_lblReflash_clicked()
 
 void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
 {
+
+    ui->ledtName->clear();
+    ui->ledtRole->clear();
+    ui->ledtIdCard->clear();
+    ui->ledtSimilar->clear();
+
     QDateTime startDateTime = ui->dtStartTime->dateTime();
     QDateTime endDateTime = ui->dtEndTime->dateTime();
     QString buildingId = ui->cmbBuilding->currentText();

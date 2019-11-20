@@ -65,7 +65,7 @@
         </column>
         <column>
          <property name="text">
-          <string>房间号</string>
+          <string>家庭住址</string>
          </property>
         </column>
        </widget>
