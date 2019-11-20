@@ -7,6 +7,7 @@ int HouseView::houseColNum = 5;
 QList<QString> HouseView::buildingsId;
 QList<QString> HouseView::unitsId;
 QList<QString> HouseView::housesId;
+QList<ApplicantRecordInfo> HouseView::applicantRecordList;
 
 HouseView::HouseView(QWidget *parent) :
     QWidget(parent),
@@ -41,6 +42,13 @@ void HouseView::initUI()
     ui->tblHouse->verticalHeader()->setHidden(true);                        //取消默认行号
     ui->tblHouse->horizontalHeader()->setHidden(true);                      //取消默认列号
     ui->tblHouse->setSelectionMode(QAbstractItemView::SingleSelection);     //取消多选
+
+    ui->tblRecord->verticalHeader()->setHidden(true);                       //取消默认行号
+    ui->tblRecord->setSelectionBehavior(QAbstractItemView::SelectRows);                         //设置选择时选择一行
+    ui->tblRecord->horizontalHeader()->setStretchLastSection(true);                             //设置不留空
+    ui->tblRecord->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);   //设置列宽
+    ui->tblRecord->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);                //设置表头伸缩格式
+    ui->tblRecord->setSelectionMode(QAbstractItemView::SingleSelection);                        //取消多选
 }
 
 void HouseView::on_cmbBuilding_currentIndexChanged(const QString &arg1)
@@ -91,4 +99,56 @@ void HouseView::on_lblReflash_clicked()
             }
         }
     }
+}
+
+void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
+{
+    QDateTime startDateTime = ui->dtStartTime->dateTime();
+    QDateTime endDateTime = ui->dtEndTime->dateTime();
+    QString buildingId = ui->cmbBuilding->currentText();
+    QString unitId = ui->cmbUnit->currentText();
+    QString houseId = item->text();
+
+    applicantRecordList = LaborEyeDatabase::getLaboreyeDatabase()
+                                                        ->selectApplicantRecords(buildingId, unitId, houseId,
+                                                                                 startDateTime, endDateTime);
+
+    ui->tblRecord->clear();
+    ui->tblRecord->setRowCount(applicantRecordList.size());
+    QTableWidgetItem *itemVal[3];
+    for(int i = 0; i < applicantRecordList.size(); i++) {
+        for(int j = 0; j < 3; ++j) {
+            switch(j) {
+            case 0: itemVal[j] =new QTableWidgetItem(applicantRecordList[i].getDateTime()
+                                                  .toString("yyyy-MM-dd ddd hh:mm"));
+                break;
+            case 1: itemVal[j] = new QTableWidgetItem(applicantRecordList[i].getApplicant());
+                break;
+            case 2: itemVal[j] = new QTableWidgetItem(applicantRecordList[i].getAvatarId());
+                break;
+            }
+
+            //设置只读
+            itemVal[j]->setFlags(itemVal[j]->flags() ^ Qt::ItemIsEditable);
+            //设置对齐方式
+            itemVal[j]->setTextAlignment(Qt::AlignCenter);
+            //设置单元格内容
+            ui->tblRecord->setItem(i, j, itemVal[j]);
+        }
+    }
+}
+
+
+
+void HouseView::on_tblRecord_cellDoubleClicked(int row)
+{
+    QString name = applicantRecordList[row].getApplicant();
+    QString familyRole = applicantRecordList[row].getFamilyRole();
+    QString sfzNo = applicantRecordList[row].getAvatarId();
+    int similar = applicantRecordList[row].getSimilar();
+
+    ui->ledtName->setText(name);
+    ui->ledtRole->setText(familyRole);
+    ui->ledtIdCard->setText(sfzNo);
+    ui->ledtSimilar->setText(QString::number(similar));
 }

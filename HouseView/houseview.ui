@@ -639,6 +639,9 @@ border-color: rgb(255, 255, 255);</string>
           </item>
           <item>
            <widget class="QTableWidget" name="tblRecord">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
