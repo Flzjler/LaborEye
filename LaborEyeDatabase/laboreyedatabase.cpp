@@ -273,3 +273,37 @@ QList<HouseInfo> LaborEyeDatabase::selectHouseInfo(QString buildingId, QString u
     }
     return houseInfoList;
 }
+
+QList<ApplicantRecordInfo> LaborEyeDatabase::selectApplicantRecords(QString buildingId, QString unitId, QString houseId,
+                                                  QDateTime startDateTime, QDateTime endDateTime)
+{
+    QList<ApplicantRecordInfo> applicantRecordsList;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return applicantRecordsList;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectHouseRecords_by_Time").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":buildingId", buildingId);
+    query.bindValue(":unitId", unitId);
+    query.bindValue(":houseId", houseId);
+    query.bindValue(":startDateTime", startDateTime);
+    query.bindValue(":endDateTime", endDateTime);
+    query.exec();
+    closeDatabase();
+
+    ApplicantRecordInfo applicantRecordInfo;
+    while(query.next()) {
+        applicantRecordInfo.setDateTime(query.value("time_value").toDateTime());
+        applicantRecordInfo.setApplicant(query.value("applicant").toString());
+        applicantRecordInfo.setAvatarId(query.value("avatar_id").toString());
+        applicantRecordInfo.setSimilar(query.value("similar").toInt());
+        applicantRecordInfo.setCaptureId(query.value("capture_id").toInt());
+        applicantRecordInfo.setFamilyRole(query.value("familyrole").toString());
+        applicantRecordsList.append(applicantRecordInfo);
+    }
+
+    return applicantRecordsList;
+}

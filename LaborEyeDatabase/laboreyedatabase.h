@@ -11,6 +11,7 @@
 #include "Config/config.h"
 #include "Entity/recordinfo.h"
 #include "Entity/houseinfo.h"
+#include "Entity/applicantrecordinfo.h"
 
 class LaborEyeDatabase
 {
@@ -51,6 +52,9 @@ public:
     QList<HouseInfo> selectHouseInfo(QString buildingId, QString unitId,
                                     QDateTime startDateTime, QDateTime endDateTime);
 
+    //查询住户进出记录
+    QList<ApplicantRecordInfo> selectApplicantRecords(QString buildingId, QString unitId, QString houseId,
+                                                      QDateTime startDateTime, QDateTime endDateTime);
 
 private:
     LaborEyeDatabase();
