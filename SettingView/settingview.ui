@@ -686,6 +686,9 @@
                    <bold>true</bold>
                   </font>
                  </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -703,6 +706,9 @@
                    <bold>true</bold>
                   </font>
                  </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -719,6 +725,9 @@
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
