@@ -24,20 +24,25 @@ private slots:
 
     void on_btnJmppage_clicked();
 
+    void on_btnConfirm_clicked();
+
 private:
     Ui::StaffView *ui;
 
     static int pageSize;                //每页显示的记录数
-
     static int tolPages;                //总页数
-
     static int nowPage;                 //当前页码
+    static QString name;
+    static QString idCard;
 
     const int colNum = 4;               //表格列数
+
 
     void initUI();
 
     QList<ApplicantInfo> getStaffInfo();
+
+//    QList<ApplicantInfo> getStaffByCondition(QString name, QString sfzNo);
 
     void setTblItem();
 };

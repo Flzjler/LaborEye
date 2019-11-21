@@ -4,6 +4,8 @@
 int StaffView::pageSize;                //每页显示的记录数
 int StaffView::tolPages;                //总页数
 int StaffView::nowPage;                 //当前页码
+QString StaffView::name;
+QString StaffView::idCard;
 
 StaffView::StaffView(QWidget *parent) :
     QWidget(parent),
@@ -23,10 +25,12 @@ void StaffView::initUI()
 {
     nowPage = 1;
     pageSize = 14;
+    name = ui->ledtName->text();
+    idCard = ui->ledtIdCard->text();
 
     ui->ledtNowpage->setText(QString::number(nowPage));
     ui->lblTolpage->setText("/ " + QString::number(tolPages));
-    int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant();
+    int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant(name ,idCard);
     tolPages = applicantNum / pageSize + (applicantNum%pageSize ? 1 : 0);
 
     //设置页码输入的范围
@@ -50,9 +54,10 @@ void StaffView::initUI()
 
 QList<ApplicantInfo> StaffView::getStaffInfo()
 {
-    QList<ApplicantInfo> applicantInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectApplicantInfo(nowPage, pageSize);
+    QList<ApplicantInfo> applicantInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectApplicantInfo(name, idCard,
+                                                                                                            nowPage, pageSize);
 
-    int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant();
+    int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant(name, idCard);
     tolPages = applicantNum / pageSize + (applicantNum%pageSize ? 1 : 0);
 
     return applicantInfoList;
@@ -60,11 +65,11 @@ QList<ApplicantInfo> StaffView::getStaffInfo()
 
 void StaffView::setTblItem()
 {
+    ui->tblStaffInfo->clear();
+
     QList<ApplicantInfo> applicantInfoList = getStaffInfo();
 
-    ui->tblStaffInfo->clear();
     QTableWidgetItem *item[4];
-
     for(int i = 0; i < applicantInfoList.size(); ++i) {
         for(int j = 0; j < colNum; ++j) {
             switch(j) {
@@ -126,5 +131,16 @@ void StaffView::on_btnJmppage_clicked()
 {
     nowPage = ui->ledtNowpage->text().toInt();
     ui->ledtNowpage->setText(QString::number(nowPage));
+    setTblItem();
+}
+
+void StaffView::on_btnConfirm_clicked()
+{
+    nowPage = 1;
+    name = ui->ledtName->text();
+    idCard = ui->ledtIdCard->text();
+
+    ui->ledtNowpage->setText(QString::number(nowPage));
+
     setTblItem();
 }

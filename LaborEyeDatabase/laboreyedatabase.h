@@ -41,7 +41,7 @@ public:
                              QString stranger, QString idCard);
 
     //查询住户数量
-    int cntApplicant();
+    int cntApplicant(QString name, QString idCard);
 
     //查询小区所有幢号
     QList<QString> selectBuidingId();
@@ -54,14 +54,15 @@ public:
 
     //根据幢号、单元号、日期查询有住户进出的房屋
     QList<HouseInfo> selectHouseInfo(QString buildingId, QString unitId,
-                                    QDateTime startDateTime, QDateTime endDateTime);
+                                        QDateTime startDateTime, QDateTime endDateTime);
 
     //查询住户进出记录
     QList<ApplicantRecordInfo> selectApplicantRecords(QString buildingId, QString unitId, QString houseId,
-                                                      QDateTime startDateTime, QDateTime endDateTime);
+                                                        QDateTime startDateTime, QDateTime endDateTime);
 
     //查询所有住户信息
-    QList<ApplicantInfo> selectApplicantInfo(int nowPage, int pageSize);
+    QList<ApplicantInfo> selectApplicantInfo(QString name, QString idCard,
+                                                int nowPage, int pageSize);
 
 private:
     LaborEyeDatabase();

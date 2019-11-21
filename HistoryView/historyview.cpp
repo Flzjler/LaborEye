@@ -4,6 +4,10 @@
 int HistoryView::pageSize = 0;
 int HistoryView::tolPages = 0;
 int HistoryView::nowPage = 0;
+QDateTime HistoryView::startDateTime;
+QDateTime HistoryView::endDateTime;
+QString HistoryView::isStranger;
+QString HistoryView::idCard;
 
 HistoryView::HistoryView(QWidget *parent) :
     QWidget(parent),
@@ -55,17 +59,17 @@ void HistoryView::initUI()
 
 QList<RecordInfo> HistoryView::getRecordInfo()
 {
-    QDateTime startDateTime = ui->dtEdtStartDate->dateTime();
-    QDateTime endDateTime = ui->dtEdtEndDate->dateTime();
-    QString stranger = ui->cboxStranger->currentText();
-    QString idCard = ui->ledtIdCard->text();
+//    QDateTime startDateTime = ui->dtEdtStartDate->dateTime();
+//    QDateTime endDateTime = ui->dtEdtEndDate->dateTime();
+//    QString stranger = ui->cboxStranger->currentText();
+//    QString idCard = ui->ledtIdCard->text();
 
     QList<RecordInfo> recordInfoList =LaborEyeDatabase::getLaboreyeDatabase()->selectRecordInfo(startDateTime, endDateTime,
-                                                                                                stranger, idCard,
+                                                                                                isStranger, idCard,
                                                                                                 nowPage, pageSize);
 
     int recordsNum = LaborEyeDatabase::getLaboreyeDatabase()->cntRecordsNum(startDateTime, endDateTime,
-                                                                            stranger, idCard);
+                                                                            isStranger, idCard);
     tolPages = recordsNum / pageSize + (recordsNum%pageSize ? 1 : 0);
 
     return recordInfoList;
@@ -120,7 +124,13 @@ void HistoryView::setTblItem()
 void HistoryView::on_btnConfirm_clicked()
 {
     nowPage = 1;
+    startDateTime = ui->dtEdtStartDate->dateTime();
+    endDateTime = ui->dtEdtEndDate->dateTime();
+    isStranger = ui->cboxStranger->currentText();
+    idCard = ui->ledtIdCard->text();
+
     ui->ledtNowpage->setText(QString::number(nowPage));
+
     setTblItem();
 }
 

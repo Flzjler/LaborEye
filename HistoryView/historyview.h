@@ -33,6 +33,10 @@ private:
     static int pageSize;                //每页显示的记录数
     static int tolPages;                //总页数
     static int nowPage;                 //当前页码
+    static QDateTime startDateTime;
+    static QDateTime endDateTime;
+    static QString isStranger;
+    static QString idCard;
 
     const int colNum = 3;               //表格列数
 

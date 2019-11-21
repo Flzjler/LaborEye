@@ -149,6 +149,7 @@ int LaborEyeDatabase::cntRecordsNum(QDateTime startDateTime, QDateTime endDateTi
             query.prepare(sqlSentence);
         } else if(idCard != "") { //根据陌生人编号查询陌生人
             sqlSentence = sqlSetting->value("Select/cntRecords_by_idCard_Stranger").toString();
+            query.prepare(sqlSentence);
             query.bindValue(":idCard", idCard);
         }
     } else if(stranger == QString::fromLocal8Bit("否")) {
@@ -309,7 +310,8 @@ QList<ApplicantRecordInfo> LaborEyeDatabase::selectApplicantRecords(QString buil
     return applicantRecordsList;
 }
 
-QList<ApplicantInfo> LaborEyeDatabase::selectApplicantInfo(int nowPage, int pageSize)
+QList<ApplicantInfo> LaborEyeDatabase::selectApplicantInfo(QString name, QString idCard,
+                                                           int nowPage, int pageSize)
 {
     QList<ApplicantInfo> applicantInfoList;
     if(!openDatabase()) {
@@ -318,9 +320,25 @@ QList<ApplicantInfo> LaborEyeDatabase::selectApplicantInfo(int nowPage, int page
     }
 
     QSqlQuery query;
-    QString sqlSentence = sqlSetting->value("Select/selectApplicantInfo").toString();
+    QString sqlSentence;
+    if(name == "" && idCard == "") {
+        sqlSentence = sqlSetting->value("Select/selectApplicantInfo").toString();
+        query.prepare(sqlSentence);
+    } else if(name != "" && idCard == "") {
+        sqlSentence = sqlSetting->value("Select/selectApplicantInfo_by_name").toString();
+        query.prepare(sqlSentence);
+        query.bindValue(":applicant", name);
+    } else if(name == "" && idCard != "") {
+        sqlSentence = sqlSetting->value("Select/selectApplicantInfo_by_idCard").toString();
+        query.prepare(sqlSentence);
+        query.bindValue(":sfzNo", idCard);
+    } else if(name != "" && idCard != "") {
+        sqlSentence = sqlSetting->value("Select/selectApplicantInfo_by_name_idCard").toString();
+        query.prepare(sqlSentence);
+        query.bindValue(":applicant", name);
+        query.bindValue(":sfzNo", idCard);
+    }
 
-    query.prepare(sqlSentence);
     query.bindValue(":startId", (nowPage-1)*pageSize);
     query.bindValue(":pageSize", pageSize);
     query.exec();
@@ -340,7 +358,7 @@ QList<ApplicantInfo> LaborEyeDatabase::selectApplicantInfo(int nowPage, int page
     return applicantInfoList;
 }
 
-int LaborEyeDatabase::cntApplicant()
+int LaborEyeDatabase::cntApplicant(QString name, QString idCard)
 {
     if(!openDatabase()) {
         QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
@@ -348,8 +366,26 @@ int LaborEyeDatabase::cntApplicant()
     }
 
     QSqlQuery query;
-    QString sqlSentence = sqlSetting->value("Select/cntApplicantInfo").toString();
-    query.prepare(sqlSentence);
+    QString sqlSentence;
+
+    if(name == "" && idCard == "") {
+        sqlSentence = sqlSetting->value("Select/cntApplicantInfo").toString();
+        query.prepare(sqlSentence);
+    } else if(name != "" && idCard == "") {
+        sqlSentence = sqlSetting->value("Select/cntApplicantInfo_by_name").toString();
+        query.prepare(sqlSentence);
+        query.bindValue(":applicant", name);
+    } else if(name == "" && idCard != "") {
+        sqlSentence = sqlSetting->value("Select/cntApplicantInfo_by_idCard").toString();
+        query.prepare(sqlSentence);
+        query.bindValue(":sfzNo", idCard);
+    } else if(name != "" && idCard != "") {
+        sqlSentence = sqlSetting->value("Select/cntApplicantInfo_by_name_idCard").toString();
+        query.prepare(sqlSentence);
+        query.bindValue(":applicant", name);
+        query.bindValue(":sfzNo", idCard);
+    }
+
     query.exec();
     closeDatabase();
 
