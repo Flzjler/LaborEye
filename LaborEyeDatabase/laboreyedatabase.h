@@ -64,6 +64,9 @@ public:
     QList<ApplicantInfo> selectApplicantInfo(QString name, QString idCard,
                                                 int nowPage, int pageSize);
 
+    //删除指定住户信息
+    bool deleteApplicantInfo(ApplicantInfo applicantInfo);
+
 private:
     LaborEyeDatabase();
     ~LaborEyeDatabase();

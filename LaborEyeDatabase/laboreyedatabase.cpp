@@ -244,7 +244,7 @@ int LaborEyeDatabase::cntHouseNum(QString buildingId, QString unitId)
 }
 
 QList<HouseInfo> LaborEyeDatabase::selectHouseInfo(QString buildingId, QString unitId,
-                                                    QDateTime startDateTime, QDateTime endDateTime)
+                                                   QDateTime startDateTime, QDateTime endDateTime)
 {
     QList<HouseInfo> houseInfoList;
     if(!openDatabase()) {
@@ -276,7 +276,7 @@ QList<HouseInfo> LaborEyeDatabase::selectHouseInfo(QString buildingId, QString u
 }
 
 QList<ApplicantRecordInfo> LaborEyeDatabase::selectApplicantRecords(QString buildingId, QString unitId, QString houseId,
-                                                  QDateTime startDateTime, QDateTime endDateTime)
+                                                                    QDateTime startDateTime, QDateTime endDateTime)
 {
     QList<ApplicantRecordInfo> applicantRecordsList;
     if(!openDatabase()) {
@@ -392,4 +392,20 @@ int LaborEyeDatabase::cntApplicant(QString name, QString idCard)
     if(query.next())
         return query.value(0).toInt();
     return -1;
+}
+
+bool LaborEyeDatabase::deleteApplicantInfo(ApplicantInfo applicantInfo)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Update/deleteApplicantInfo").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":sfzNo", applicantInfo.getSfzNo());
+
+    query.exec();
+    return true;
 }

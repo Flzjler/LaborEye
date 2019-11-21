@@ -26,6 +26,8 @@ private slots:
 
     void on_btnConfirm_clicked();
 
+    void on_btnDel_clicked();
+
 private:
     Ui::StaffView *ui;
 
@@ -37,12 +39,11 @@ private:
 
     const int colNum = 4;               //表格列数
 
+    static QList<ApplicantInfo> applicantInfoList;
 
     void initUI();
 
-    QList<ApplicantInfo> getStaffInfo();
-
-//    QList<ApplicantInfo> getStaffByCondition(QString name, QString sfzNo);
+    void getStaffInfo();
 
     void setTblItem();
 };

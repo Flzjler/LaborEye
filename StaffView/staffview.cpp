@@ -6,6 +6,7 @@ int StaffView::tolPages;                //总页数
 int StaffView::nowPage;                 //当前页码
 QString StaffView::name;
 QString StaffView::idCard;
+QList<ApplicantInfo> StaffView::applicantInfoList;
 
 StaffView::StaffView(QWidget *parent) :
     QWidget(parent),
@@ -52,22 +53,20 @@ void StaffView::initUI()
     ui->tblStaffInfo->verticalHeader()->setHidden(true);
 }
 
-QList<ApplicantInfo> StaffView::getStaffInfo()
+void StaffView::getStaffInfo()
 {
-    QList<ApplicantInfo> applicantInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectApplicantInfo(name, idCard,
+    applicantInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectApplicantInfo(name, idCard,
                                                                                                             nowPage, pageSize);
 
     int applicantNum = LaborEyeDatabase::getLaboreyeDatabase()->cntApplicant(name, idCard);
     tolPages = applicantNum / pageSize + (applicantNum%pageSize ? 1 : 0);
-
-    return applicantInfoList;
 }
 
 void StaffView::setTblItem()
 {
     ui->tblStaffInfo->clear();
 
-    QList<ApplicantInfo> applicantInfoList = getStaffInfo();
+    getStaffInfo();
 
     QTableWidgetItem *item[4];
     for(int i = 0; i < applicantInfoList.size(); ++i) {
@@ -143,4 +142,25 @@ void StaffView::on_btnConfirm_clicked()
     ui->ledtNowpage->setText(QString::number(nowPage));
 
     setTblItem();
+}
+
+void StaffView::on_btnDel_clicked()
+{
+    if(ui->tblStaffInfo->currentRow() == -1) {
+        QMessageBox::information(this, "提示", "请先选择需要删除的住户信息!");
+        return;
+    }
+    int choose= QMessageBox::question(this, tr("警告"),
+                                  QString(tr("是否删除该住户信息?")),
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    ApplicantInfo delApplicantInfo = applicantInfoList[ui->tblStaffInfo->currentRow()];
+    if (choose== QMessageBox::Yes) {
+        if(LaborEyeDatabase::getLaboreyeDatabase()->deleteApplicantInfo(delApplicantInfo)) {
+            QMessageBox::information(this, "提示", "删除成功");
+            setTblItem();
+        } else {
+            QMessageBox::information(this, "提示", "删除失败");
+        }
+    }
 }
