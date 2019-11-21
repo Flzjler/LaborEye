@@ -61,19 +61,22 @@ void SettingView::changeSetting()
 void SettingView::on_btnCapturePath_clicked()
 {
     QString file_path = QFileDialog::getExistingDirectory(this, QString::fromLocal8Bit("抓拍图路径"), "./");
-    ui->ledtCapturePath->setText(file_path + "/");
+    if(file_path[file_path.length()-1] != '/')
+        ui->ledtCapturePath->setText(file_path + "/");
 }
 
 void SettingView::on_btnAvatarPath_clicked()
 {
     QString file_path = QFileDialog::getExistingDirectory(this, QString::fromLocal8Bit("证件图路径"), "./");
-    ui->ledtAvatarPath->setText(file_path + "/");
+    if(file_path[file_path.length()-1] != '/')
+        ui->ledtAvatarPath->setText(file_path + "/");
 }
 
 void SettingView::on_btnFacePath_clicked()
 {
     QString file_path = QFileDialog::getExistingDirectory(this, QString::fromLocal8Bit("人脸子图路径"), "./");
-    ui->ledtFacePath->setText(file_path + "/");
+    if(file_path[file_path.length()-1] != '/')
+        ui->ledtFacePath->setText(file_path + "/");
 }
 
 void SettingView::on_btnConfirm_clicked()
