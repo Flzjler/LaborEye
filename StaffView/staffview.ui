@@ -448,14 +448,14 @@
      <widget class="QGroupBox" name="gpbEdit">
       <property name="minimumSize">
        <size>
-        <width>222</width>
-        <height>330</height>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>222</width>
-        <height>330</height>
+        <width>16777215</width>
+        <height>16777215</height>
        </size>
       </property>
       <property name="title">
