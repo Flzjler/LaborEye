@@ -407,5 +407,40 @@ bool LaborEyeDatabase::deleteApplicantInfo(ApplicantInfo applicantInfo)
     query.bindValue(":sfzNo", applicantInfo.getSfzNo());
 
     query.exec();
+    closeDatabase();
     return true;
+}
+
+QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTime, QDateTime endDateTime)
+{
+    QList<QList<QVariant>> exportRecordList;
+
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return exportRecordList;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectExportRecord").toString();
+
+    query.prepare(sqlSentence);
+    query.bindValue(":startDateTime", startDateTime);
+    query.bindValue(":endDateTime", endDateTime);
+    query.exec();
+    closeDatabase();
+
+    while(query.next()) {
+        QList<QVariant> exportRecord;
+        QString address = query.value("community").toString() + query.value("building").toString() + "幢" +
+                        query.value("unit").toString() + "单元" + query.value("house").toString() + "室";
+        exportRecord.append(QVariant(address));
+        exportRecord.append(QVariant(query.value("applicant").toString()));
+        exportRecord.append(QVariant(query.value("sfzno").toString()));
+        exportRecord.append(QVariant(query.value("familyrole").toString()));
+        exportRecord.append(QVariant(query.value("time_value").toDateTime()));
+        exportRecord.append(QVariant(query.value("similar").toInt()));
+        exportRecordList.append(exportRecord);
+    }
+
+    return exportRecordList;
 }

@@ -67,6 +67,9 @@ public:
     //删除指定住户信息
     bool deleteApplicantInfo(ApplicantInfo applicantInfo);
 
+    //查询需要导出Excel的数据
+    QList<QList<QVariant>> selectExcelRecord(QDateTime startDateTime, QDateTime endDateTime);
+
 private:
     LaborEyeDatabase();
     ~LaborEyeDatabase();

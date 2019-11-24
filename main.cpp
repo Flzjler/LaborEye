@@ -6,7 +6,6 @@
 #include "MainView/mainview.h"
 
 #include "LaborEyeDatabase/laboreyedatabase.h"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -24,6 +23,12 @@ int main(int argc, char *argv[])
     MainView mainView;
     mainView.show();
 
+//    QDateTime start(QDate(2018, 11, 1));
+//    QDateTime end(QDate(2019, 1, 1));
+//    QList<QList<QVariant>> exportRecordList = LaborEyeDatabase::getLaboreyeDatabase()->selectExcelRecord(start, end);
+//    for(int i = 0; i < exportRecordList.size(); ++i) {
+//            qDebug() << exportRecordList[i][1];
+//    }
 //    LaborEyeDatabase* lb = LaborEyeDatabase::getLaboreyeDatabase();
 //    qDebug() << lb->cntRecords();
     return a.exec();

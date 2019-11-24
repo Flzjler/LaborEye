@@ -63,10 +63,15 @@ void HouseView::on_lblReflash_clicked()
 {
     ui->tblHouse->clear();
     ui->tblRecord->clear();
+
     ui->ledtName->clear();
     ui->ledtRole->clear();
     ui->ledtIdCard->clear();
     ui->ledtSimilar->clear();
+
+    ui->lblCapture->setText("抓拍图");
+    ui->lblAvatar->setText("证件照");
+    ui->lblFace->setText("人脸子图");
 
     QString buildingId = ui->cmbBuilding->currentText();
     QString unitId = ui->cmbUnit->currentText();
@@ -81,8 +86,8 @@ void HouseView::on_lblReflash_clicked()
     ui->tblHouse->setRowCount(houseRowNum);
 
     QList<HouseInfo> houseInfoList = LaborEyeDatabase::getLaboreyeDatabase()
-                                        ->selectHouseInfo(buildingId, unitId,
-                                                            startDateTime, endDateTime);
+            ->selectHouseInfo(buildingId, unitId,
+                              startDateTime, endDateTime);
 
     for(int i = houseRowNum-1, houseId = 0; i >= 0; --i) {
         for(int j = 0; j < houseColNum; ++j) {
@@ -114,6 +119,10 @@ void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
     ui->ledtIdCard->clear();
     ui->ledtSimilar->clear();
 
+    ui->lblCapture->setText("抓拍图");
+    ui->lblAvatar->setText("证件照");
+    ui->lblFace->setText("人脸子图");
+
     QDateTime startDateTime = ui->dtStartTime->dateTime();
     QDateTime endDateTime = ui->dtEndTime->dateTime();
     QString buildingId = ui->cmbBuilding->currentText();
@@ -121,8 +130,8 @@ void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
     QString houseId = item->text();
 
     applicantRecordList = LaborEyeDatabase::getLaboreyeDatabase()
-                                                        ->selectApplicantRecords(buildingId, unitId, houseId,
-                                                                                 startDateTime, endDateTime);
+            ->selectApplicantRecords(buildingId, unitId, houseId,
+                                     startDateTime, endDateTime);
 
     ui->tblRecord->clear();
     ui->tblRecord->setRowCount(applicantRecordList.size());
@@ -131,7 +140,7 @@ void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
         for(int j = 0; j < 3; ++j) {
             switch(j) {
             case 0: itemVal[j] =new QTableWidgetItem(applicantRecordList[i].getDateTime()
-                                                  .toString("yyyy-MM-dd ddd hh:mm"));
+                                                     .toString("yyyy-MM-dd ddd hh:mm"));
                 break;
             case 1: itemVal[j] = new QTableWidgetItem(applicantRecordList[i].getApplicant());
                 break;
@@ -162,4 +171,46 @@ void HouseView::on_tblRecord_cellDoubleClicked(int row)
     ui->ledtRole->setText(familyRole);
     ui->ledtIdCard->setText(sfzNo);
     ui->ledtSimilar->setText(QString::number(similar));
+
+    ui->lblCapture->clear();
+    ui->lblAvatar->clear();
+    ui->lblFace->clear();
+    QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(applicantRecordList[row].getCaptureId()));
+    QImage avatarImage(Config::getCfg()->getAvatarPath()+applicantRecordList[row].getAvatarId());
+    QImage faceImage(Config::getCfg()->getFacePath()+QString::number(applicantRecordList[row].getCaptureId()));
+    ui->lblCapture->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapture->size(),
+                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->lblAvatar->setPixmap(QPixmap::fromImage(avatarImage).scaled(ui->lblAvatar->size(),
+                                                                    Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->lblFace->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFace->size(),
+                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
+
+void HouseView::on_lblOutput_clicked()
+{
+    QDateTime startDateTime = ui->dtStartTime->dateTime();
+    QDateTime endDateTime = ui->dtEndTime->dateTime();
+    QString detPath = QFileDialog::getSaveFileName(this, tr("Exceld导出路径"),  "", tr("*.xlsx;;"));
+
+    LaborEyeExcel *laborEyeExcel = LaborEyeExcel::getLaborEyeExcel();
+    laborEyeExcel->setDetPath(detPath);
+    laborEyeExcel->setExportData(LaborEyeDatabase::getLaboreyeDatabase()
+                                                     ->selectExcelRecord(startDateTime,
+                                                                         endDateTime));
+
+    QThread *thread = new QThread();
+    laborEyeExcel->moveToThread(thread);
+    connect(thread, SIGNAL(started()), laborEyeExcel, SLOT(startTrans()), Qt::QueuedConnection);
+//    thread->start();
+
+//    LaborEyeExcel *laborEyeExcel = new LaborEyeExcel();
+
+//    laborEyeExcel->setDetPath(detPath);
+//    QList<QList<QVariant>> exportData = LaborEyeDatabase::getLaboreyeDatabase()->selectExcelRecord(startDateTime, endDateTime);
+//    qDebug() << "111111";
+//    QThread *thread = new QThread;
+//    laborEyeExcel->moveToThread(thread);
+//    // 处理数据
+//    connect(thread, SIGNAL(started()), laborEyeExcel, SLOT(startTrans(exportData)), Qt::QueuedConnection);
+//    thread->start();
 }

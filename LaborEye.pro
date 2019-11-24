@@ -5,7 +5,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network
+QT       += core gui sql network axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,7 +33,7 @@ include ($$PWD/LaborEyeDatabase/LaborEyeDatabase.pri)
 include ($$PWD/Hikvision/Hikvision.pri)
 include ($$PWD/Config/Config.pri)
 include ($$PWD/Entity/Entity.pri)
-
+include ($$PWD/Util/Util.pri)
 
 
 

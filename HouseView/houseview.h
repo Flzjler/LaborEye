@@ -2,7 +2,9 @@
 #define HOUSEVIEW_H
 
 #include <QWidget>
+#include <QFileDialog>
 #include <QTableWidgetItem>
+#include "Util/laboreyeexcel.h"
 #include "LaborEyeDatabase/laboreyedatabase.h"
 
 namespace Ui {
@@ -27,6 +29,8 @@ private slots:
 
 
     void on_tblRecord_cellDoubleClicked(int row);
+
+    void on_lblOutput_clicked();
 
 private:
     Ui::HouseView *ui;
