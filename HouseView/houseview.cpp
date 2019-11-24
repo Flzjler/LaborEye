@@ -200,17 +200,7 @@ void HouseView::on_lblOutput_clicked()
 
     QThread *thread = new QThread();
     laborEyeExcel->moveToThread(thread);
+    qDebug() << "222222222";
     connect(thread, SIGNAL(started()), laborEyeExcel, SLOT(startTrans()), Qt::QueuedConnection);
-//    thread->start();
-
-//    LaborEyeExcel *laborEyeExcel = new LaborEyeExcel();
-
-//    laborEyeExcel->setDetPath(detPath);
-//    QList<QList<QVariant>> exportData = LaborEyeDatabase::getLaboreyeDatabase()->selectExcelRecord(startDateTime, endDateTime);
-//    qDebug() << "111111";
-//    QThread *thread = new QThread;
-//    laborEyeExcel->moveToThread(thread);
-//    // 处理数据
-//    connect(thread, SIGNAL(started()), laborEyeExcel, SLOT(startTrans(exportData)), Qt::QueuedConnection);
-//    thread->start();
+    thread->start();
 }

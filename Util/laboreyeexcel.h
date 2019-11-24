@@ -9,10 +9,14 @@
 #include <QThread>
 #include <QFile>
 #include <Windows.h>
+#include <QObject>
 
 class LaborEyeExcel : public QObject
 {
+    Q_OBJECT
 public:
+
+
     static LaborEyeExcel* getLaborEyeExcel()
     {
         if(laborEyeExcel == nullptr)
@@ -26,8 +30,9 @@ public slots:
     void startTrans();
 
 private:
-    LaborEyeExcel();
-//    void writeSheet();
+    explicit LaborEyeExcel();
+     ~LaborEyeExcel();
+    void writeSheet();
 
     QString detPath;
     QList<QList<QVariant>> exportData;
