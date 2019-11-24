@@ -8,6 +8,8 @@ QDateTime HistoryView::startDateTime;
 QDateTime HistoryView::endDateTime;
 QString HistoryView::isStranger;
 QString HistoryView::idCard;
+QList<RecordInfo> HistoryView::recordInfoList;
+
 
 HistoryView::HistoryView(QWidget *parent) :
     QWidget(parent),
@@ -57,27 +59,20 @@ void HistoryView::initUI()
 
 }
 
-QList<RecordInfo> HistoryView::getRecordInfo()
+void HistoryView::getRecordInfo()
 {
-//    QDateTime startDateTime = ui->dtEdtStartDate->dateTime();
-//    QDateTime endDateTime = ui->dtEdtEndDate->dateTime();
-//    QString stranger = ui->cboxStranger->currentText();
-//    QString idCard = ui->ledtIdCard->text();
-
-    QList<RecordInfo> recordInfoList =LaborEyeDatabase::getLaboreyeDatabase()->selectRecordInfo(startDateTime, endDateTime,
+    recordInfoList =LaborEyeDatabase::getLaboreyeDatabase()->selectRecordInfo(startDateTime, endDateTime,
                                                                                                 isStranger, idCard,
                                                                                                 nowPage, pageSize);
 
     int recordsNum = LaborEyeDatabase::getLaboreyeDatabase()->cntRecordsNum(startDateTime, endDateTime,
                                                                             isStranger, idCard);
     tolPages = recordsNum / pageSize + (recordsNum%pageSize ? 1 : 0);
-
-    return recordInfoList;
 }
 
 void HistoryView::setTblItem()
 {
-    QList<RecordInfo> recordInfoList = getRecordInfo();
+    getRecordInfo();
 
     ui->tblRecord->clear();
     QTableWidgetItem *item[3];
@@ -132,6 +127,9 @@ void HistoryView::on_btnConfirm_clicked()
     ui->ledtNowpage->setText(QString::number(nowPage));
 
     setTblItem();
+
+    ui->lblCapturePic->setText("图片暂无");
+    ui->lblFacePic->setText("图片暂无");
 }
 
 void HistoryView::on_btnPrepage_clicked()
@@ -142,6 +140,9 @@ void HistoryView::on_btnPrepage_clicked()
     --nowPage;
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
+
+    ui->lblCapturePic->setText("图片暂无");
+    ui->lblFacePic->setText("图片暂无");
 }
 
 void HistoryView::on_btnNxtpage_clicked()
@@ -152,6 +153,9 @@ void HistoryView::on_btnNxtpage_clicked()
     ++nowPage;
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
+
+    ui->lblCapturePic->setText("图片暂无");
+    ui->lblFacePic->setText("图片暂无");
 }
 
 void HistoryView::on_btnJmppage_clicked()
@@ -159,4 +163,17 @@ void HistoryView::on_btnJmppage_clicked()
     nowPage = ui->ledtNowpage->text().toInt();
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
+
+    ui->lblCapturePic->setText("图片暂无");
+    ui->lblFacePic->setText("图片暂无");
+}
+
+void HistoryView::on_tblRecord_cellDoubleClicked(int row)
+{
+    QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(recordInfoList[row].getCaptureId()));
+    QImage faceImage(Config::getCfg()->getFacePath()+QString::number(recordInfoList[row].getCaptureId()));
+    ui->lblCapturePic->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapturePic->size(),
+                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->lblFacePic->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFacePic->size(),
+                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

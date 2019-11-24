@@ -65,10 +65,22 @@ int RecordInfo::getSimilar()
     return similar;
 }
 
+void RecordInfo::setCaptureId(int _captureId)
+{
+    captureId = _captureId;
+
+}
+
+int RecordInfo::getCaptureId()
+{
+    return captureId;
+}
+
 void RecordInfo::setDel(bool _del)
 {
     del = _del;
 }
+
 bool RecordInfo::getDel()
 {
     return del;

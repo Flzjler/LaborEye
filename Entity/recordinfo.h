@@ -27,6 +27,9 @@ public:
     void setSimilar(int _similar);
     int getSimilar();
 
+    void setCaptureId(int _captureId);
+    int getCaptureId();
+
     void setDel(bool _del);
     bool getDel();
 
@@ -37,6 +40,7 @@ private:
     QString avatarId;
     bool stranger;
     int similar;
+    int captureId;
     bool del;
 
 };

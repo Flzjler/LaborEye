@@ -27,6 +27,8 @@ private slots:
 
     void on_btnJmppage_clicked();       //点击跳转
 
+    void on_tblRecord_cellDoubleClicked(int row);   //双击记录
+
 private:
     Ui::HistoryView *ui;
 
@@ -37,6 +39,7 @@ private:
     static QDateTime endDateTime;
     static QString isStranger;
     static QString idCard;
+    static QList<RecordInfo> recordInfoList;
 
     const int colNum = 3;               //表格列数
 
@@ -44,7 +47,7 @@ private:
 
     void setTblItem();                  //设置表格内容
 
-    QList<RecordInfo> getRecordInfo();  //获取历史记录
+    void getRecordInfo();  //获取历史记录
 
 };
 

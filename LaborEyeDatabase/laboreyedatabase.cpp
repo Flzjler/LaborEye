@@ -85,6 +85,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
         recordInfo.setAvatarId(query.value("avatar_id").toString());
         recordInfo.setStranger(query.value("stranger").toBool());
         recordInfo.setSimilar(query.value("similar").toInt());
+        recordInfo.setCaptureId(query.value("capture_id").toInt());
         recordInfo.setDel(query.value("del").toInt());
         recordInfo.setTimeValue(query.value("time_value").toDateTime());
         recordInfoList.append(recordInfo);
