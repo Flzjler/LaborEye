@@ -8,6 +8,7 @@
 #include "HouseView/houseview.h"
 #include "StaffView/staffview.h"
 #include "SettingView/settingview.h"
+#include "Hikvision/hikvision.h"
 
 namespace Ui {
 class MainView;

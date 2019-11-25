@@ -16,6 +16,8 @@ MainView::MainView(QWidget *parent) :
     ui->tbwMainView->removeTab(0);
     ui->tbwMainView->removeTab(0);
 
+
+
     if(previewView == nullptr) {
         previewView = new PreviewView();
         ui->tbwMainView->addTab(previewView, QString::fromLocal8Bit("预览"));
@@ -40,6 +42,7 @@ MainView::MainView(QWidget *parent) :
         settingView = new SettingView();
         ui->tbwMainView->addTab(settingView, QString::fromLocal8Bit("设置"));
     }
+
 }
 
 MainView::~MainView()

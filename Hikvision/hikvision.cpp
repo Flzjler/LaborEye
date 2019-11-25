@@ -1,9 +1,16 @@
 ﻿#include "hikvision.h"
 #include <QDebug>
 
+LONG Hikvision::lUserID;
+Hikvision* Hikvision::hikvision = nullptr;
 NET_VCA_FACESNAP_MATCH_ALARM Hikvision::faceMatchAlarm;
 
 Hikvision::Hikvision()
+{
+
+}
+
+Hikvision::~Hikvision()
 {
 
 }
@@ -41,9 +48,9 @@ BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarme
     return true;
 }
 
-
 void Hikvision::showPreviewVideo(QList<HWND> hwndList)
 {
+
     //---------------------------------------
     // 初始化
     NET_DVR_Init();
@@ -57,7 +64,6 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
 
     //---------------------------------------
     // 注册设备
-    LONG lUserID;
 
     //登录参数，包括设备地址、登录用户、密码等
     //NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
@@ -89,7 +95,7 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
     HWND hWnd = hwndList.at(0);          //获取窗口句柄
     NET_DVR_PREVIEWINFO struPlayInfo = {0};
     struPlayInfo.hPlayWnd = hWnd;        //需要SDK解码时句柄设为有效值，仅取流不解码时可设为空
-    struPlayInfo.lChannel     = 33;      //预览通道号
+    struPlayInfo.lChannel     = 35;      //预览通道号
     struPlayInfo.dwStreamType = 0;       //0-主码流，1-子码流，2-码流3，3-码流4，以此类推
     struPlayInfo.dwLinkMode   = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
     struPlayInfo.bBlocked     = 1;       //0- 非阻塞取流，1- 阻塞取流
@@ -175,5 +181,4 @@ void Hikvision::downLoadPicture(PICTYPE picType)
     //connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
     eventLoop.exec();
 }
-
 

@@ -19,10 +19,16 @@ typedef enum {
     FACEPICTURE
 } PICTYPE;
 
-class Hikvision
+class Hikvision : public QObject
 {
+    Q_OBJECT
 public:
-
+    static Hikvision* getHikvision()
+    {
+        if(hikvision == nullptr)
+            hikvision = new Hikvision();
+        return hikvision;
+    }
     //显示预览录像
     static void showPreviewVideo(QList<HWND> hwndList);
 
@@ -30,7 +36,13 @@ public:
     static void downLoadPicture(PICTYPE picType);
 
 private:
-    Hikvision();
+
+    explicit Hikvision();
+    ~Hikvision();
+
+    static Hikvision* hikvision;
+
+    static LONG lUserID;
 
     //人脸比对结果报警上传结构体
     static NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm;

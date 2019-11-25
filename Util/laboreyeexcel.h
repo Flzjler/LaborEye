@@ -15,8 +15,6 @@ class LaborEyeExcel : public QObject
 {
     Q_OBJECT
 public:
-
-
     static LaborEyeExcel* getLaborEyeExcel()
     {
         if(laborEyeExcel == nullptr)
