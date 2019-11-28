@@ -43,6 +43,8 @@ MainView::MainView(QWidget *parent) :
         ui->tbwMainView->addTab(settingView, QString::fromLocal8Bit("设置"));
     }
 
+    connect(Hikvision::getHikvision(), SIGNAL(returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)),
+            previewView, SLOT(setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)));
 }
 
 MainView::~MainView()

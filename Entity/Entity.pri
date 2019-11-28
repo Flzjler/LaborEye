@@ -1,10 +1,12 @@
 HEADERS += \
+    $$PWD/alarminfo.h \
     $$PWD/applicantinfo.h \
     $$PWD/applicantrecordinfo.h \
     $$PWD/houseinfo.h \
     $$PWD/recordinfo.h
 
 SOURCES += \
+    $$PWD/alarminfo.cpp \
     $$PWD/applicantinfo.cpp \
     $$PWD/applicantrecordinfo.cpp \
     $$PWD/houseinfo.cpp \

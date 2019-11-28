@@ -35,6 +35,9 @@ public:
     //使用url的方式下载图片
     static void downLoadPicture(PICTYPE picType);
 
+signals:
+    void returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
+
 private:
 
     explicit Hikvision();

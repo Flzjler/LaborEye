@@ -445,3 +445,35 @@ QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTi
 
     return exportRecordList;
 }
+
+bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectApplicantName_by_idCard").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":sfzNo", alarmInfo.getSfzNo());
+    query.exec();
+    QString applicant;
+    if(query.next())
+        applicant = query.value(0).toString();
+    if(applicant == "")
+        applicant = QString::fromLocal8Bit("陌生人");
+    qDebug() << applicant << " " << alarmInfo.getDateTime() << " " << alarmInfo.getSfzNo();
+    query.clear();
+    sqlSentence = sqlSetting->value("Insert/insertRecord").toString();
+    qDebug() << sqlSentence;
+    query.prepare(sqlSentence);
+    query.bindValue(":time_value", alarmInfo.getDateTime());
+    query.bindValue(":applicant", applicant);
+    query.bindValue(":avatar_id", alarmInfo.getSfzNo());
+    query.bindValue(":stranger", alarmInfo.getStranger());
+    query.bindValue(":similar", alarmInfo.getSimilar());
+    query.exec();
+    closeDatabase();
+    return true;
+}

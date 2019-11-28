@@ -13,6 +13,7 @@
 #include "Entity/houseinfo.h"
 #include "Entity/applicantrecordinfo.h"
 #include "Entity/applicantinfo.h"
+#include "Entity/alarminfo.h"
 
 class LaborEyeDatabase
 {
@@ -69,6 +70,9 @@ public:
 
     //查询需要导出Excel的数据
     QList<QList<QVariant>> selectExcelRecord(QDateTime startDateTime, QDateTime endDateTime);
+
+    //插入一条记录
+    bool insertRecord(AlarmInfo alarmInfo);
 
 private:
     LaborEyeDatabase();

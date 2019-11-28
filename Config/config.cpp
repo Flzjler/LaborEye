@@ -168,3 +168,13 @@ void Config::setFacePath(QString _facePath)
     cfgSetting->setValue("Path/facePath", _facePath);
 }
 
+int Config::getSimilar()
+{
+    return cfgSetting->value("Similar/similar").toInt();
+}
+
+void Config::setSimilar(int _similar)
+{
+    cfgSetting->setValue("Similar/similar", _similar);
+}
+
