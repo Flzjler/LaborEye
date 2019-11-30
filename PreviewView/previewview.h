@@ -2,6 +2,7 @@
 #define PREVIEWVIEW_H
 
 #include <QWidget>
+#include <QNetworkReply>
 
 #include "Hikvision/hikvision.h"
 #include "Entity/alarminfo.h"
@@ -29,12 +30,14 @@ public:
 
 public slots:
     void setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
+    void saveCapturePic(QNetworkReply*);
 
 private slots:
     void on_btnClear_clicked();
 
 private:
     Ui::PreviewView *ui;
+    AlarmInfo alarmInfo;
 };
 
 #endif // PREVIEWVIEW_H

@@ -6,18 +6,13 @@
 #include <QUrl>
 #include <QList>
 #include <QEventLoop>
+#include <QNetworkReply>
 #include <QNetworkAccessManager>
 
 
 #include "Windows.h"
 #include "HCNetSDK.h"
 #include "Config/config.h"
-
-typedef enum {
-    CAPTUREPICTURE,
-    AVATARPICTURE,
-    FACEPICTURE
-} PICTYPE;
 
 class Hikvision : public QObject
 {
@@ -27,13 +22,28 @@ public:
     {
         if(hikvision == nullptr)
             hikvision = new Hikvision();
+        if(eventLoop == nullptr)
+            eventLoop = new QEventLoop();
+        if(manager == nullptr)
+            manager = new QNetworkAccessManager();
         return hikvision;
     }
     //显示预览录像
     static void showPreviewVideo(QList<HWND> hwndList);
 
-    //使用url的方式下载图片
-    static void downLoadPicture(PICTYPE picType);
+    //使用url的方式下载抓拍图
+    static void downLoadCapturePic();
+
+    static QEventLoop* getEventLoop() {
+        if(eventLoop == nullptr)
+            eventLoop = new QEventLoop();
+        return eventLoop;
+    }
+    static QNetworkAccessManager* getManager() {
+        if(manager == nullptr)
+            manager = new QNetworkAccessManager();
+        return manager;
+    }
 
 signals:
     void returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
@@ -42,6 +52,10 @@ private:
 
     explicit Hikvision();
     ~Hikvision();
+
+    static QEventLoop* eventLoop;
+
+    static QNetworkAccessManager* manager;
 
     static Hikvision* hikvision;
 

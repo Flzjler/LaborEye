@@ -22,7 +22,6 @@ PreviewView::~PreviewView()
 void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 {
     qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
-    AlarmInfo alarmInfo;
 
     QDateTime dateTime(QDate(GET_YEAR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MONTH(faceMatchAlarm.struSnapInfo.dwAbsTime),
@@ -55,9 +54,31 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 
     LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
 
+    Hikvision::getHikvision()->downLoadCapturePic();
+
 }
 
 void PreviewView::on_btnClear_clicked()
 {
 
+}
+
+
+void PreviewView::saveCapturePic(QNetworkReply* reply)
+{
+    qDebug() << "PreviewView:: saveCapturePic exec";
+
+    QByteArray bytes = reply->readAll();
+
+    //抓拍图片路径设置
+    QString dirCapture = Config::getCfg()->getCapturePath() +
+                            alarmInfo.getDateTime().toString("yyymmddhhmmss") +
+                            "_" + alarmInfo.getSfzNo() + ".jpg";
+
+    //保存抓拍图片文件
+    QFile file(dirCapture);
+    if(file.open(QIODevice::WriteOnly)) {
+        file.write(bytes);
+        file.close();
+    }
 }

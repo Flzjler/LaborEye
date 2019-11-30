@@ -4,6 +4,8 @@
 LONG Hikvision::lUserID;
 Hikvision* Hikvision::hikvision = nullptr;
 NET_VCA_FACESNAP_MATCH_ALARM Hikvision::faceMatchAlarm;
+QEventLoop* Hikvision::eventLoop = nullptr;
+QNetworkAccessManager* Hikvision::manager = nullptr;
 
 Hikvision::Hikvision()
 {
@@ -35,7 +37,9 @@ BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarme
         case COMM_SNAP_MATCH_ALARM: //人脸比对结果信息
         {
             memcpy(&faceMatchAlarm, pAlarmInfo, sizeof(NET_VCA_FACESNAP_MATCH_ALARM));
-
+            qDebug() << "MessageCallback: " << faceMatchAlarm.byPicTransType;
+            qDebug() << "MessageCallback: " << faceMatchAlarm.dwSnapPicLen;
+            qDebug() << "MessageCallback: " << faceMatchAlarm.pSnapPicBuffer;
             if(hikvision == nullptr)
                 hikvision = new Hikvision();
             emit hikvision->returnAlarmInfo(faceMatchAlarm);
@@ -48,6 +52,7 @@ BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarme
 
 void Hikvision::showPreviewVideo(QList<HWND> hwndList)
 {
+    qDebug() << "aaaaaa";
     if(hikvision == nullptr) {
         hikvision = new Hikvision();
     }
@@ -106,15 +111,15 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
 
     //---------------2-----------------------
     //启动预览并设置回调数据流
-    HWND hWnd2 = hwndList.at(1);
-    NET_DVR_PREVIEWINFO struPlayInfo2 = {0};
-    struPlayInfo2.hPlayWnd     = hWnd2;   //需要SDK解码时句柄设为有效值，仅取流不解码时可设为空
-    struPlayInfo2.lChannel     = 33;      //预览通道号
-    struPlayInfo2.dwStreamType = 0;       //0-主码流，1-子码流，2-码流3，3-码流4，以此类推
-    struPlayInfo2.dwLinkMode   = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
-    struPlayInfo2.bBlocked     = 1;       //0- 非阻塞取流，1- 阻塞取流
+//    HWND hWnd2 = hwndList.at(1);
+//    NET_DVR_PREVIEWINFO struPlayInfo2 = {0};
+//    struPlayInfo2.hPlayWnd     = hWnd2;   //需要SDK解码时句柄设为有效值，仅取流不解码时可设为空
+//    struPlayInfo2.lChannel     = 34;      //预览通道号
+//    struPlayInfo2.dwStreamType = 0;       //0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+//    struPlayInfo2.dwLinkMode   = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
+//    struPlayInfo2.bBlocked     = 1;       //0- 非阻塞取流，1- 阻塞取流
     //开始播放
-    lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &struPlayInfo2, nullptr, nullptr);
+//    lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &struPlayInfo2, nullptr, nullptr);
     //---------------2-----------------------
 
 
@@ -136,33 +141,21 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
     }
 }
 
-void Hikvision::downLoadPicture(PICTYPE picType)
-{
-    QString url = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
-
-    switch (picType) {
-    case CAPTUREPICTURE:
-        url = url.mid(0, url.indexOf("SEl"));
-        qDebug() << "Download Capture Pic! The url is: " << url;
-        break;
-    case AVATARPICTURE:
-        url = url.mid(0, url.indexOf("http://",1));
-        qDebug() << "Download Avatar Pic! The url is: " << url;
-        break;
-    case FACEPICTURE:
-        url = url.mid(0, url.indexOf("http://")+6);
-        qDebug() << "Download Face Pic! The url is: " << url;
-        break;
-    }
-
-    QEventLoop eventLoop;
-    QNetworkAccessManager *manager = new QNetworkAccessManager();
-    QUrl qUrl(url);
+void Hikvision::downLoadCapturePic()
+{ 
+    QUrl qUrl;
     qUrl.setUserName(Config::getCfg()->getSuBrainUsername());
     qUrl.setPassword(Config::getCfg()->getSuBrainPasword());
-//    QNetworkReply* reply = manager->get(QNetworkRequest(url));
-//    connect(manager, SIGNAL(finished(QNetworkReply*)), previewView, SLOT(showAvatarPic(QNetworkReply*)));
-//    connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-    eventLoop.exec();
+
+    QString url = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
+
+    //下载抓拍图
+    url = url.mid(0, url.indexOf("SEl"));
+    qUrl.setUrl(url);
+    QNetworkReply* reply = manager->get(QNetworkRequest(qUrl));
+    eventLoop->exec();
+    qDebug() << "Download Capture Pic! The url is: " << url;
+    connect(manager, SIGNAL(finished(QNetworkReply*)), eventLoop, SLOT(quit()));
+    eventLoop->exec();
 }
 

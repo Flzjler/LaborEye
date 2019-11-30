@@ -45,6 +45,8 @@ MainView::MainView(QWidget *parent) :
 
     connect(Hikvision::getHikvision(), SIGNAL(returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)),
             previewView, SLOT(setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)));
+
+    connect(Hikvision::getManager(), SIGNAL(finished(QNetworkReply*)), previewView, SLOT(saveCapturePic(QNetworkReply*)));
 }
 
 MainView::~MainView()
