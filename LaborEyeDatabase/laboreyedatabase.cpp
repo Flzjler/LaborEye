@@ -477,3 +477,29 @@ bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
     closeDatabase();
     return true;
 }
+
+PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
+{
+    PersonInfo personInfo;
+
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return personInfo;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectPersonInfo_by_sfzno").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":sfzNo", sfzNo);
+    query.exec();
+    closeDatabase();
+
+    if(query.next()) {
+        personInfo.applicant = query.value("applicant").toString();
+        personInfo.address = query.value("community").toString() +
+                            query.value("building").toString() +
+                            query.value("unit").toString() +
+                            query.value("house").toString();
+    }
+    return personInfo;
+}

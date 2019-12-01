@@ -149,7 +149,7 @@ border-color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="ledtSearch">
          <property name="minimumSize">
           <size>
            <width>170</width>
@@ -238,7 +238,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
-         <string>抓拍图暂无</string>
+         <string>抓拍图</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -275,7 +275,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>证件照暂无</string>
+           <string>证件照</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -283,7 +283,7 @@ border-color: rgb(255, 255, 255);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="lblIcon">
           <property name="minimumSize">
            <size>
             <width>30</width>
@@ -310,7 +310,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>图标</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -345,7 +345,7 @@ border-style: solid;
 border-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>人脸子图暂无</string>
+           <string>人脸子图</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>

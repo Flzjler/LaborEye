@@ -35,9 +35,15 @@ public slots:
 private slots:
     void on_btnClear_clicked();
 
+    void on_btnSearch_clicked();
+
 private:
     Ui::PreviewView *ui;
     AlarmInfo alarmInfo;
+    static QList<AlarmInfo> alarmInfoList;
+
+    void setPersonInfo(AlarmInfo alarmInfo);
+    void addPersonInfoList(AlarmInfo alarmInfo);
 };
 
 #endif // PREVIEWVIEW_H

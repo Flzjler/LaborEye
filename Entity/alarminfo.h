@@ -21,6 +21,9 @@ public:
     void setSimilar(int _similar);
     int getSimilar();
 
+    void setAddress(QString _address);
+    QString getAddress();
+    
     void setStranger(bool _stranger);
     bool getStranger();
 
@@ -28,6 +31,7 @@ private:
     QDateTime dateTime;
     QString applicant;
     QString sfzNo;
+    QString address;
     int similar;
     bool stranger;
 };

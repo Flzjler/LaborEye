@@ -1,6 +1,8 @@
 #include "previewview.h"
 #include "ui_previewview.h"
 
+QList<AlarmInfo> PreviewView::alarmInfoList;
+
 PreviewView::PreviewView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PreviewView)
@@ -10,8 +12,8 @@ PreviewView::PreviewView(QWidget *parent) :
     hwndList.append(HWND(ui->lblChannel1->winId()));
     hwndList.append(HWND(ui->lblChannel2->winId()));
     Hikvision::showPreviewVideo(hwndList);
-//    PICTYPE pic = static_cast<PICTYPE>(4);
-//    Hikvision::downLoadPicture(CAPTUREPICTURE);
+    //    PICTYPE pic = static_cast<PICTYPE>(4);
+    //    Hikvision::downLoadPicture(CAPTUREPICTURE);
 }
 
 PreviewView::~PreviewView()
@@ -30,13 +32,16 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
                              GET_MINUTE(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_SECOND(faceMatchAlarm.struSnapInfo.dwAbsTime)));
     QString sfzNo = QString::fromLocal8Bit(reinterpret_cast<char*>
-                                               (faceMatchAlarm.struBlackListInfo.
-                                                struBlackListInfo.struAttribute.byName));
+                                           (faceMatchAlarm.struBlackListInfo.
+                                            struBlackListInfo.struAttribute.byName));
     int similar = static_cast<int>(faceMatchAlarm.fSimilarity*100);
     if(similar >= Config::getCfg()->getSimilar()) {
         if(sfzNo[sfzNo.length()-1] != 'm') {
             qDebug().noquote() << QString::fromLocal8Bit("不是陌生人");
-
+            alarmInfo.setApplicant(LaborEyeDatabase::getLaboreyeDatabase()->
+                                   selectPersonInfo(sfzNo).applicant);
+            alarmInfo.setAddress(LaborEyeDatabase::getLaboreyeDatabase()->
+                                 selectPersonInfo(sfzNo).address);
 
         } else {
 
@@ -52,17 +57,17 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
     alarmInfo.setSimilar(similar);
     alarmInfo.setDateTime(dateTime);
 
-    LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
+    alarmInfoList.append(alarmInfo);
 
-    Hikvision::getHikvision()->downLoadCapturePic();
+    setPersonInfo(alarmInfo);
+
+    addPersonInfoList(alarmInfo);
+
+    //    LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
+
+    //    Hikvision::getHikvision()->downLoadCapturePic();
 
 }
-
-void PreviewView::on_btnClear_clicked()
-{
-
-}
-
 
 void PreviewView::saveCapturePic(QNetworkReply* reply)
 {
@@ -72,13 +77,65 @@ void PreviewView::saveCapturePic(QNetworkReply* reply)
 
     //抓拍图片路径设置
     QString dirCapture = Config::getCfg()->getCapturePath() +
-                            alarmInfo.getDateTime().toString("yyymmddhhmmss") +
-                            "_" + alarmInfo.getSfzNo() + ".jpg";
+            alarmInfo.getDateTime().toString("yyymmddhhmmss") +
+            "_" + alarmInfo.getSfzNo() + ".jpg";
 
     //保存抓拍图片文件
     QFile file(dirCapture);
     if(file.open(QIODevice::WriteOnly)) {
         file.write(bytes);
         file.close();
+    }
+}
+
+void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
+{
+    ui->ledtName->setText(alarmInfo.getApplicant());
+    ui->ledtIdCard->setText(alarmInfo.getSfzNo());
+    ui->ledtSimilar->setText(QString::number(alarmInfo.getSimilar()));
+    ui->ledtAddress->setText(alarmInfo.getAddress());
+}
+
+void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)
+{
+    QIcon icon;
+    if(alarmInfo.getStranger()) {
+        icon.addFile(":/Src/icon/jinggao.png");
+    } else {
+        icon.addFile(":/Src/icon/tishi.png");
+    }
+    QString alarmText = alarmInfo.getDateTime().toString("yyy-mm-dd-hh-mm-ss") + "\t" +
+            alarmInfo.getSfzNo();
+    QListWidgetItem* item = new QListWidgetItem();
+    item->setText(alarmText);
+    item->setIcon(icon);
+    ui->lstRecord->insertItem(0, item);
+}
+
+void PreviewView::on_btnClear_clicked()
+{
+    alarmInfoList.clear();
+    ui->lstRecord->clear();
+    ui->lblCapture->setText("抓拍图");
+    ui->lblAvatar->setText("证件照");
+    ui->lblFace->setText("人脸子图");
+    ui->lblIcon->clear();
+    ui->ledtName->clear();
+    ui->ledtIdCard->clear();
+    ui->ledtAddress->clear();
+    ui->ledtSimilar->clear();
+}
+
+void PreviewView::on_btnSearch_clicked()
+{
+    on_btnClear_clicked();
+    if(ui->ledtSearch->text() == "") {
+        for(int i = 0; i < alarmInfoList.size(); ++i)
+            addPersonInfoList(alarmInfoList[i]);
+    } else {
+        for(int i = 0; i < alarmInfoList.size(); ++i) {
+            if(alarmInfoList[i].getApplicant() == ui->ledtSearch->text())
+                addPersonInfoList(alarmInfoList[i]);
+        }
     }
 }

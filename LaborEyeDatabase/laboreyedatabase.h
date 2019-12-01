@@ -15,6 +15,11 @@
 #include "Entity/applicantinfo.h"
 #include "Entity/alarminfo.h"
 
+struct PersonInfo {
+    QString applicant;
+    QString address;
+};
+
 class LaborEyeDatabase
 {
 public:
@@ -74,6 +79,9 @@ public:
     //插入一条记录
     bool insertRecord(AlarmInfo alarmInfo);
 
+    //根据报警信息所获得的身份证获取住户信息
+    PersonInfo selectPersonInfo(QString sfzNo);
+    
 private:
     LaborEyeDatabase();
     ~LaborEyeDatabase();

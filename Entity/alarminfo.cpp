@@ -54,3 +54,13 @@ bool AlarmInfo::getStranger()
 {
     return stranger;
 }
+
+void AlarmInfo::setAddress(QString _address)
+{
+    address = _address;
+}
+
+QString AlarmInfo::getAddress()
+{
+    return address;
+}
