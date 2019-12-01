@@ -52,7 +52,6 @@ BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarme
 
 void Hikvision::showPreviewVideo(QList<HWND> hwndList)
 {
-    qDebug() << "aaaaaa";
     if(hikvision == nullptr) {
         hikvision = new Hikvision();
     }
