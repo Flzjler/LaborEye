@@ -14,6 +14,7 @@
 #include "Entity/applicantrecordinfo.h"
 #include "Entity/applicantinfo.h"
 #include "Entity/alarminfo.h"
+#include "Entity/addressinfo.h"
 
 struct PersonInfo {
     QString applicant;
@@ -81,7 +82,12 @@ public:
 
     //根据报警信息所获得的身份证获取住户信息
     PersonInfo selectPersonInfo(QString sfzNo);
+
+    //插入一条住户记录
+    bool insertApplicant(ApplicantInfo applicantInfo, AddressInfo addressInfo);
     
+
+
 private:
     LaborEyeDatabase();
     ~LaborEyeDatabase();
@@ -91,6 +97,11 @@ private:
     QSqlDatabase db;
     QSettings *sqlSetting;
     static LaborEyeDatabase* laborEyeDatabase;
+
+    //查找最后一条插入语句执行后产生的id
+    int selectLastInsertId();
+
+    int selectHouseTableId(AddressInfo addressInfo);
 };
 
 #endif // LABOREYEDATABASE_H

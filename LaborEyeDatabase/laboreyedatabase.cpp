@@ -505,3 +505,74 @@ PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
     }
     return personInfo;
 }
+
+int LaborEyeDatabase::selectLastInsertId()
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return -1;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectLastInsertId").toString();
+    query.prepare(sqlSentence);
+    query.exec();
+    closeDatabase();
+
+    if(query.next())
+        return query.value(0).toInt();
+    return -1;
+}
+
+int LaborEyeDatabase::selectHouseTableId(AddressInfo addressInfo)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return -1;
+    }
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectHouseTableId").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":community", addressInfo.getCommunity());
+    query.bindValue(":building", addressInfo.getBuilding());
+    query.bindValue(":unit", addressInfo.getUnit());
+    query.bindValue(":house", addressInfo.getHouse());
+    query.exec();
+    closeDatabase();
+
+    if(query.next())
+        return query.value(0).toInt();
+    return -1;
+}
+
+bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo addressInfo)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Insert/insertApplicant").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":applicant", applicantInfo.getApplicant());
+    query.bindValue(":idCard", applicantInfo.getSfzNo());
+    query.bindValue(":contact", applicantInfo.getContact());
+    query.bindValue(":familyRole", applicantInfo.getRole());
+    query.exec();
+
+    int lastId = selectLastInsertId();
+    int houseTableId = selectHouseTableId(addressInfo);
+
+    if(lastId == -1 || houseTableId == -1)
+        return false;
+
+    sqlSentence = sqlSetting->value("Insert/insertApplicantHouse").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":applicantId", lastId);
+    query.bindValue(":houseId", houseTableId);
+    query.exec();
+    closeDatabase();
+
+    return true;
+}
