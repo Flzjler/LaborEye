@@ -23,7 +23,7 @@ PreviewView::~PreviewView()
 
 void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 {
-    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
+//    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
 
     QDateTime dateTime(QDate(GET_YEAR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MONTH(faceMatchAlarm.struSnapInfo.dwAbsTime),
@@ -37,7 +37,6 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
     int similar = static_cast<int>(faceMatchAlarm.fSimilarity*100);
     if(similar >= Config::getCfg()->getSimilar()) {
         if(sfzNo[sfzNo.length()-1] != 'm') {
-            qDebug().noquote() << QString::fromLocal8Bit("不是陌生人");
             alarmInfo.setApplicant(LaborEyeDatabase::getLaboreyeDatabase()->
                                    selectPersonInfo(sfzNo).applicant);
             alarmInfo.setAddress(LaborEyeDatabase::getLaboreyeDatabase()->
@@ -48,15 +47,16 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
         }
         alarmInfo.setStranger(false);
     } else {
-        sfzNo = dateTime.toString("yyymmddhhmmss");
+        sfzNo = dateTime.toString("yyyy-MM-dd hh:mm:ss");
         alarmInfo.setStranger(true);
         //陌生人人脸图需上传至超脑
     }
-
+    if(alarmInfo.getApplicant() == "")
+        alarmInfo.setApplicant(QString::fromLocal8Bit("陌生人"));
     alarmInfo.setSfzNo(sfzNo);
     alarmInfo.setSimilar(similar);
     alarmInfo.setDateTime(dateTime);
-
+//    qDebug() << alarmInfo.getSfzNo() << " " << alarmInfo.getSimilar();
     alarmInfoList.append(alarmInfo);
 
     setPersonInfo(alarmInfo);
@@ -77,7 +77,7 @@ void PreviewView::saveCapturePic(QNetworkReply* reply)
 
     //抓拍图片路径设置
     QString dirCapture = Config::getCfg()->getCapturePath() +
-            alarmInfo.getDateTime().toString("yyymmddhhmmss") +
+            alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
             "_" + alarmInfo.getSfzNo() + ".jpg";
 
     //保存抓拍图片文件
@@ -104,8 +104,8 @@ void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)
     } else {
         icon.addFile(":/Src/icon/tishi.png");
     }
-    QString alarmText = alarmInfo.getDateTime().toString("yyy-mm-dd-hh-mm-ss") + "\t" +
-            alarmInfo.getSfzNo();
+    QString alarmText = alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") + "\t" +
+            alarmInfo.getApplicant() + "\t" + alarmInfo.getSfzNo();
     QListWidgetItem* item = new QListWidgetItem();
     item->setText(alarmText);
     item->setIcon(icon);
