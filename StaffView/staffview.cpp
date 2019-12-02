@@ -169,6 +169,10 @@ void StaffView::on_btnDel_clicked()
 
 void StaffView::on_btnEdit_clicked()
 {
+    if(ui->tblStaffInfo->currentRow() == -1) {
+        QMessageBox::information(this, "提示", "请先选择需要编辑的住户信息!");
+        return;
+    }
     if(editStaffDialog == nullptr)
         editStaffDialog = new EditStaffDialog();
     QObject::connect(this, SIGNAL(_showEditStaffDialog()), editStaffDialog, SLOT(showEditStaffDialog()));
