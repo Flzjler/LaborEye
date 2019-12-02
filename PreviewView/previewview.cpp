@@ -23,7 +23,7 @@ PreviewView::~PreviewView()
 
 void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 {
-//    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
+    //    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
 
     QDateTime dateTime(QDate(GET_YEAR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MONTH(faceMatchAlarm.struSnapInfo.dwAbsTime),
@@ -57,7 +57,7 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
     alarmInfo.setSfzNo(sfzNo);
     alarmInfo.setSimilar(similar);
     alarmInfo.setDateTime(dateTime);
-//    qDebug() << alarmInfo.getSfzNo() << " " << alarmInfo.getSimilar();
+    //    qDebug() << alarmInfo.getSfzNo() << " " << alarmInfo.getSimilar();
     alarmInfoList.append(alarmInfo);
 
     setPersonInfo(alarmInfo);
@@ -95,6 +95,16 @@ void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
     ui->ledtIdCard->setText(alarmInfo.getSfzNo());
     ui->ledtSimilar->setText(QString::number(alarmInfo.getSimilar()));
     ui->ledtAddress->setText(alarmInfo.getAddress());
+
+    QPixmap pixmap ;
+    if(alarmInfo.getStranger()) {
+        pixmap.load(":/Src/icon/cuowu.png");
+    } else {
+        pixmap.load(":/Src/icon/gou.png");
+    }
+    pixmap.scaled(ui->lblIcon->size(), Qt::KeepAspectRatio);
+    ui->lblIcon->setScaledContents(true);
+    ui->lblIcon->setPixmap(pixmap);
 }
 
 void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)

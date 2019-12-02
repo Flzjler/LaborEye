@@ -8,6 +8,7 @@
 
 #include "Util/laboreyexml.h"
 #include "Entity/applicantinfo.h"
+#include "addressdialog.h"
 #include "Hikvision/hikvision.h"
 
 namespace Ui {
@@ -22,6 +23,9 @@ public:
     explicit AddStaffDialog(QWidget *parent = nullptr);
     ~AddStaffDialog();
 
+signals:
+    void _showAddressDialog();
+
 public slots:
     void showAddStaffDialog();
 
@@ -32,9 +36,13 @@ private slots:
 
     void on_btnAvatar_clicked();
 
+    void on_btnAddress_clicked();
+
 private:
     Ui::AddStaffDialog *ui;
     QString avatarPicPath;
+
+    static AddressDialog* addressDialog;
 
     void initUI();
 

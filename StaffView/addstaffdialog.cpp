@@ -1,6 +1,8 @@
 #include "addstaffdialog.h"
 #include "ui_addstaffdialog.h"
 
+AddressDialog* AddStaffDialog::addressDialog = nullptr;
+
 AddStaffDialog::AddStaffDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddStaffDialog)
@@ -67,5 +69,10 @@ void AddStaffDialog::on_btnConcel_clicked()
 }
 
 
-
-
+void AddStaffDialog::on_btnAddress_clicked()
+{
+    if(addressDialog == nullptr)
+        addressDialog = new AddressDialog();
+    QObject::connect(this, SIGNAL(_showAddressDialog()), addressDialog, SLOT(showAddressDialog()));
+    emit _showAddressDialog();
+}

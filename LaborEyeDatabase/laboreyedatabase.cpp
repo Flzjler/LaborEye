@@ -576,3 +576,29 @@ bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo 
 
     return true;
 }
+
+QList<AddressInfo> LaborEyeDatabase::selectAddressInfo()
+{
+    QList<AddressInfo> addressInfoList;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return addressInfoList;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectAddressInfo").toString();
+    query.prepare(sqlSentence);
+    query.exec();
+    closeDatabase();
+
+    AddressInfo addressInfo;
+    while(query.next()) {
+        addressInfo.setCommunity(query.value("community").toString());
+        addressInfo.setBuilding(query.value("building").toString());
+        addressInfo.setUnit(query.value("unit").toString());
+        addressInfo.setHouse(query.value("house").toString());
+        addressInfoList.append(addressInfo);
+    }
+
+    return addressInfoList;
+}

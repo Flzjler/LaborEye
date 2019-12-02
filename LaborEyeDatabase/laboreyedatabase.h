@@ -86,7 +86,7 @@ public:
     //插入一条住户记录
     bool insertApplicant(ApplicantInfo applicantInfo, AddressInfo addressInfo);
     
-
+    QList<AddressInfo> selectAddressInfo();
 
 private:
     LaborEyeDatabase();

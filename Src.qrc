@@ -4,5 +4,7 @@
         <file>Src/light.css</file>
         <file>Src/icon/jinggao.png</file>
         <file>Src/icon/tishi.png</file>
+        <file>Src/icon/cuowu.png</file>
+        <file>Src/icon/gou.png</file>
     </qresource>
 </RCC>

@@ -20,6 +20,13 @@ public:
     void setHouse(QString _house);
     QString getHouse();
 
+    bool operator < (const AddressInfo & addressInfo) const {
+        if(community != addressInfo.community) return community < addressInfo.community;
+        if(building != addressInfo.building) return building < addressInfo.building;
+        if(unit != addressInfo.unit) return unit < addressInfo.unit;
+        return house > addressInfo.house;
+    }
+
 private:
     QString community;
     QString building;
