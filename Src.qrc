@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Src/sql.ini</file>
-        <file>Src/dark.css</file>
-        <file>Src/dark1.css</file>
         <file>Src/light.css</file>
         <file>Src/icon/jinggao.png</file>
         <file>Src/icon/tishi.png</file>
