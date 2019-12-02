@@ -35,6 +35,7 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
                                            (faceMatchAlarm.struBlackListInfo.
                                             struBlackListInfo.struAttribute.byName));
     int similar = static_cast<int>(faceMatchAlarm.fSimilarity*100);
+
     if(similar >= Config::getCfg()->getSimilar()) {
         if(sfzNo[sfzNo.length()-1] != 'm') {
             alarmInfo.setApplicant(LaborEyeDatabase::getLaboreyeDatabase()->
@@ -63,7 +64,7 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 
     addPersonInfoList(alarmInfo);
 
-    //    LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
+    LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
 
     //    Hikvision::getHikvision()->downLoadCapturePic();
 

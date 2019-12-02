@@ -75,6 +75,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
     query.bindValue(":endDateTime", endDateTime);
     query.bindValue(":startId", (nowPage-1)*pageSize);
     query.bindValue(":pageSize", pageSize);
+    qDebug() << "sqlSentence: " << sqlSentence;
     query.exec();
     closeDatabase();
 
@@ -86,7 +87,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
         recordInfo.setStranger(query.value("stranger").toBool());
         recordInfo.setSimilar(query.value("similar").toInt());
         recordInfo.setCaptureId(query.value("capture_id").toInt());
-        recordInfo.setDel(query.value("del").toInt());
+//        recordInfo.setDel(query.value("isdel").toInt());
         recordInfo.setTimeValue(query.value("time_value").toDateTime());
         recordInfoList.append(recordInfo);
     }
@@ -175,9 +176,9 @@ int LaborEyeDatabase::cntRecordsNum(QDateTime startDateTime, QDateTime endDateTi
 
     query.bindValue(":startDateTime", startDateTime);
     query.bindValue(":endDateTime", endDateTime);
+
     query.exec();
     closeDatabase();
-
     if(query.next())
         return query.value(0).toInt();
     return -1;
@@ -448,6 +449,7 @@ QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTi
 
 bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
 {
+    qDebug() << "similar: " << alarmInfo.getSimilar();
     if(!openDatabase()) {
         QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
         return false;
@@ -468,9 +470,9 @@ bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
     sqlSentence = sqlSetting->value("Insert/insertRecord").toString();
     qDebug() << sqlSentence;
     query.prepare(sqlSentence);
-    query.bindValue(":time_value", alarmInfo.getDateTime());
+    query.bindValue(":dateTime", alarmInfo.getDateTime());
     query.bindValue(":applicant", applicant);
-    query.bindValue(":avatar_id", alarmInfo.getSfzNo());
+    query.bindValue(":idCard", alarmInfo.getSfzNo());
     query.bindValue(":stranger", alarmInfo.getStranger());
     query.bindValue(":similar", alarmInfo.getSimilar());
     query.exec();

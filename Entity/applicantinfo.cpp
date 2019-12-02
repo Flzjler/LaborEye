@@ -64,3 +64,13 @@ QString ApplicantInfo::getHouse()
 {
     return house;
 }
+
+void ApplicantInfo::setRole(QString _role)
+{
+    role = _role;
+}
+
+QString ApplicantInfo::getRole()
+{
+    return role;
+}

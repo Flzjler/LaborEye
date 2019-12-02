@@ -4,6 +4,11 @@
 #include <QDialog>
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
+
+#include "Util/laboreyexml.h"
+#include "Entity/applicantinfo.h"
+#include "Hikvision/hikvision.h"
 
 namespace Ui {
 class AddStaffDialog;

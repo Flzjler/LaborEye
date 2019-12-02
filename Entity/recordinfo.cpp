@@ -76,12 +76,12 @@ int RecordInfo::getCaptureId()
     return captureId;
 }
 
-void RecordInfo::setDel(bool _del)
-{
-    del = _del;
-}
+//void RecordInfo::setDel(bool _del)
+//{
+//    del = _del;
+//}
 
-bool RecordInfo::getDel()
-{
-    return del;
-}
+//bool RecordInfo::getDel()
+//{
+//    return del;
+//}

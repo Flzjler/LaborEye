@@ -1,4 +1,5 @@
 HEADERS += \
+    $$PWD/addressinfo.h \
     $$PWD/alarminfo.h \
     $$PWD/applicantinfo.h \
     $$PWD/applicantrecordinfo.h \
@@ -6,6 +7,7 @@ HEADERS += \
     $$PWD/recordinfo.h
 
 SOURCES += \
+    $$PWD/addressinfo.cpp \
     $$PWD/alarminfo.cpp \
     $$PWD/applicantinfo.cpp \
     $$PWD/applicantrecordinfo.cpp \
