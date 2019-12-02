@@ -494,6 +494,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="minimumSize">
               <size>
                <width>150</width>
