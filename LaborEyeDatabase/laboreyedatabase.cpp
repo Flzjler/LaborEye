@@ -87,7 +87,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
         recordInfo.setStranger(query.value("stranger").toBool());
         recordInfo.setSimilar(query.value("similar").toInt());
         recordInfo.setCaptureId(query.value("capture_id").toInt());
-//        recordInfo.setDel(query.value("isdel").toInt());
+        //        recordInfo.setDel(query.value("isdel").toInt());
         recordInfo.setTimeValue(query.value("time_value").toDateTime());
         recordInfoList.append(recordInfo);
     }
@@ -434,7 +434,7 @@ QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTi
     while(query.next()) {
         QList<QVariant> exportRecord;
         QString address = query.value("community").toString() + query.value("building").toString() + "幢" +
-                        query.value("unit").toString() + "单元" + query.value("house").toString() + "室";
+                query.value("unit").toString() + "单元" + query.value("house").toString() + "室";
         exportRecord.append(QVariant(address));
         exportRecord.append(QVariant(query.value("applicant").toString()));
         exportRecord.append(QVariant(query.value("sfzno").toString()));
@@ -499,9 +499,9 @@ PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
     if(query.next()) {
         personInfo.applicant = query.value("applicant").toString();
         personInfo.address = query.value("community").toString() +
-                            query.value("building").toString() +
-                            query.value("unit").toString() +
-                            query.value("house").toString();
+                query.value("building").toString() +
+                query.value("unit").toString() +
+                query.value("house").toString();
     }
     return personInfo;
 }
@@ -560,6 +560,7 @@ bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo 
     query.bindValue(":contact", applicantInfo.getContact());
     query.bindValue(":familyRole", applicantInfo.getRole());
     query.exec();
+    closeDatabase();
 
     int lastId = selectLastInsertId();
     int houseTableId = selectHouseTableId(addressInfo);
@@ -567,6 +568,10 @@ bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo 
     if(lastId == -1 || houseTableId == -1)
         return false;
 
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
     sqlSentence = sqlSetting->value("Insert/insertApplicantHouse").toString();
     query.prepare(sqlSentence);
     query.bindValue(":applicantId", lastId);

@@ -20,13 +20,14 @@ public:
     explicit AddressDialog(QWidget *parent = nullptr);
     ~AddressDialog();
 
+signals:
+    void _returnAddressInfo(AddressInfo);
+
 public slots:
     void showAddressDialog();
 
 private slots:
-    void on_btnConcel_clicked();
-
-    void on_btnConfirm_clicked();
+    void on_treeAddress_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::AddressDialog *ui;

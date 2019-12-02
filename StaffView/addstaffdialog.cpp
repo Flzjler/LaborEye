@@ -51,7 +51,6 @@ void AddStaffDialog::on_btnConfrim_clicked()
         return;
     }
 
-    ApplicantInfo applicantInfo;
     applicantInfo.setApplicant(ui->ledtName->text());
     applicantInfo.setContact(ui->ledtContact->text());
     applicantInfo.setSfzNo(ui->ledtIdCard->text());
@@ -60,6 +59,8 @@ void AddStaffDialog::on_btnConfrim_clicked()
     QString avatarPicPath = ui->ledtAvatar->text();
 
     Hikvision::getHikvision()->upload2FaceLib(applicantInfo.getApplicant(), avatarPicPath);
+
+    LaborEyeDatabase::getLaboreyeDatabase()->insertApplicant(applicantInfo, addressInfo);
 }
 
 void AddStaffDialog::on_btnConcel_clicked()
@@ -74,5 +75,16 @@ void AddStaffDialog::on_btnAddress_clicked()
     if(addressDialog == nullptr)
         addressDialog = new AddressDialog();
     QObject::connect(this, SIGNAL(_showAddressDialog()), addressDialog, SLOT(showAddressDialog()));
+    QObject::connect(addressDialog, SIGNAL(_returnAddressInfo(AddressInfo)), this, SLOT(getAddressInfo(AddressInfo)));
     emit _showAddressDialog();
+}
+
+void AddStaffDialog::getAddressInfo(AddressInfo _addressInfo)
+{
+    QString address = addressInfo.getCommunity()+
+            addressInfo.getBuilding() + "幢"+
+            addressInfo.getUnit() + "单元"+
+            addressInfo.getHouse()+"室";
+    this->addressInfo = _addressInfo;
+    ui->ledtAddress->setText(address);
 }

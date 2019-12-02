@@ -3,11 +3,13 @@
 
 #include <QDialog>
 #include <QDebug>
+#include <QString>
 #include <QFileDialog>
 #include <QMessageBox>
 
 #include "Util/laboreyexml.h"
 #include "Entity/applicantinfo.h"
+#include "Entity/addressinfo.h"
 #include "addressdialog.h"
 #include "Hikvision/hikvision.h"
 
@@ -28,6 +30,7 @@ signals:
 
 public slots:
     void showAddStaffDialog();
+    void getAddressInfo(AddressInfo _addressInfo);
 
 private slots:
     void on_btnConcel_clicked();
@@ -41,7 +44,8 @@ private slots:
 private:
     Ui::AddStaffDialog *ui;
     QString avatarPicPath;
-
+    ApplicantInfo applicantInfo;
+    AddressInfo addressInfo;
     static AddressDialog* addressDialog;
 
     void initUI();

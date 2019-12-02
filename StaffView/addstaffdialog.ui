@@ -254,6 +254,9 @@
            </item>
            <item>
             <widget class="QLineEdit" name="ledtAddress">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -278,6 +281,12 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnAddress">
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Arial</family>
@@ -345,6 +354,12 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnAvatar">
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Arial</family>

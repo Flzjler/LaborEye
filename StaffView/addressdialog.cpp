@@ -65,22 +65,34 @@ void AddressDialog::showAddressDialog()
     ui->treeAddress->header()->setSectionResizeMode(QHeaderView::Stretch);
     addressInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectAddressInfo();
     std::sort(addressInfoList.begin(), addressInfoList.end());
-//    for(int i = 0; i < addressInfoList.size(); ++i)
-//        qDebug() << addressInfoList[i].getCommunity() << " "
-//                 << addressInfoList[i].getBuilding() << " "
-//                 << addressInfoList[i].getUnit() << " "
-//                 << addressInfoList[i].getHouse();
+    //    for(int i = 0; i < addressInfoList.size(); ++i)
+    //        qDebug() << addressInfoList[i].getCommunity() << " "
+    //                 << addressInfoList[i].getBuilding() << " "
+    //                 << addressInfoList[i].getUnit() << " "
+    //                 << addressInfoList[i].getHouse();
     setTreeAddressUI(nullptr, addressInfoList[0], 0, 0);
 
 
 }
 
-void AddressDialog::on_btnConfirm_clicked()
+void AddressDialog::on_treeAddress_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
+    if(column == 3) {
+        QList<QString> list;
+        int temp = column;
+        while(item != nullptr){
+            list.append(item->text(temp));
+            item = item->parent() ;
+            temp--;
+        }
+        int i = list.size()-1;
+        AddressInfo addressInfo;
+        addressInfo.setCommunity(list.at(i--));
+        addressInfo.setBuilding(list.at(i--));
+        addressInfo.setUnit(list.at(i--));
+        addressInfo.setHouse(list.at(i));
 
-}
-
-void AddressDialog::on_btnConcel_clicked()
-{
-    this->close();
+        this->close();
+        emit _returnAddressInfo(addressInfo);
+    }
 }
