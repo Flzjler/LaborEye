@@ -24,7 +24,7 @@ public:
         if(community != addressInfo.community) return community < addressInfo.community;
         if(building != addressInfo.building) return building < addressInfo.building;
         if(unit != addressInfo.unit) return unit < addressInfo.unit;
-        return house > addressInfo.house;
+        return house.compare(addressInfo.house) == 0;
     }
 
 private:

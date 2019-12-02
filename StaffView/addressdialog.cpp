@@ -65,12 +65,13 @@ void AddressDialog::showAddressDialog()
     ui->treeAddress->header()->setSectionResizeMode(QHeaderView::Stretch);
     addressInfoList = LaborEyeDatabase::getLaboreyeDatabase()->selectAddressInfo();
     std::sort(addressInfoList.begin(), addressInfoList.end());
+//    for(int i = 0; i < addressInfoList.size(); ++i)
+//        qDebug() << addressInfoList[i].getCommunity() << " "
+//                 << addressInfoList[i].getBuilding() << " "
+//                 << addressInfoList[i].getUnit() << " "
+//                 << addressInfoList[i].getHouse();
     setTreeAddressUI(nullptr, addressInfoList[0], 0, 0);
-    for(int i = 0; i < addressInfoList.size(); ++i)
-        qDebug() << addressInfoList[i].getCommunity() << " "
-                 << addressInfoList[i].getBuilding() << " "
-                 << addressInfoList[i].getUnit() << " "
-                 << addressInfoList[i].getHouse();
+
 
 }
 

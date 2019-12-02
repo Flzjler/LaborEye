@@ -26,5 +26,6 @@ int main(int argc, char *argv[])
     MainView mainView;
     mainView.show();
 
+    qDebug() << QString("905").compare(QString("201"));
     return a.exec();
 }
