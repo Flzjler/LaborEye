@@ -21,6 +21,8 @@ SOURCES += \
 RESOURCES += \
     Src.qrc
 
+RC_ICONS = renlianshibie.ico
+
 # Sub-modules path
 include ($$PWD/MainView/MainView.pri)
 include ($$PWD/PreviewView/PreviewView.pri)
