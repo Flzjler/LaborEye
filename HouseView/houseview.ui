@@ -24,6 +24,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_11">
      <item>
       <widget class="QGroupBox" name="gpbInOut">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>出入情况</string>
        </property>
@@ -345,8 +351,8 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>575</width>
-              <height>489</height>
+              <width>16777215</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="font">
@@ -365,6 +371,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="gpbPersonInfo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>个人信息</string>
        </property>
@@ -383,8 +395,8 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>240</width>
-                <height>180</height>
+                <width>16777215</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="font">
@@ -418,8 +430,8 @@ border-color: rgb(255, 255, 255);</string>
               </property>
               <property name="maximumSize">
                <size>
-                <width>180</width>
-                <height>180</height>
+                <width>16777215</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="font">
@@ -457,8 +469,8 @@ border-color: rgb(255, 255, 255);</string>
               </property>
               <property name="maximumSize">
                <size>
-                <width>180</width>
-                <height>180</height>
+                <width>16777215</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="font">
@@ -659,8 +671,8 @@ border-color: rgb(255, 255, 255);</string>
             </property>
             <property name="maximumSize">
              <size>
-              <width>430</width>
-              <height>170</height>
+              <width>16777215</width>
+              <height>16777215</height>
              </size>
             </property>
             <column>

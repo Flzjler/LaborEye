@@ -16,8 +16,6 @@ MainView::MainView(QWidget *parent) :
     ui->tbwMainView->removeTab(0);
     ui->tbwMainView->removeTab(0);
 
-
-
     if(previewView == nullptr) {
         previewView = new PreviewView();
         ui->tbwMainView->addTab(previewView, QString::fromLocal8Bit("预览"));

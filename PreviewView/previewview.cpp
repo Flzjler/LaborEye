@@ -97,7 +97,7 @@ void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
     ui->ledtAddress->setText(alarmInfo.getAddress());
 
     QPixmap pixmap ;
-    if(alarmInfo.getStranger()) {
+    if(alarmInfo.getStranger() || alarmInfo.getApplicant() == "陌生人") {
         pixmap.load(":/Src/icon/cuowu.png");
     } else {
         pixmap.load(":/Src/icon/gou.png");
@@ -110,7 +110,7 @@ void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
 void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)
 {
     QIcon icon;
-    if(alarmInfo.getStranger()) {
+    if(alarmInfo.getStranger() || alarmInfo.getApplicant() == "陌生人") {
         icon.addFile(":/Src/icon/jinggao.png");
     } else {
         icon.addFile(":/Src/icon/tishi.png");
