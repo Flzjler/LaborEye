@@ -1,4 +1,4 @@
-#ifndef HIKVISION_H
+﻿#ifndef HIKVISION_H
 #define HIKVISION_H
 
 #include <time.h>

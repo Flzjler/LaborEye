@@ -1,4 +1,4 @@
-#ifndef ALARMINFO_H
+﻿#ifndef ALARMINFO_H
 #define ALARMINFO_H
 
 #include <QString>

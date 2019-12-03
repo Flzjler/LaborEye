@@ -1,4 +1,4 @@
-#include "recordinfo.h"
+﻿#include "recordinfo.h"
 
 RecordInfo::RecordInfo()
 {

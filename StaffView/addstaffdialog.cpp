@@ -1,4 +1,4 @@
-#include "addstaffdialog.h"
+﻿#include "addstaffdialog.h"
 #include "ui_addstaffdialog.h"
 
 AddressDialog* AddStaffDialog::addressDialog = nullptr;

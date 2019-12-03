@@ -1,4 +1,4 @@
-#include "houseinfo.h"
+﻿#include "houseinfo.h"
 
 HouseInfo::HouseInfo()
 {

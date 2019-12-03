@@ -1,4 +1,4 @@
-#include "houseview.h"
+﻿#include "houseview.h"
 #include "ui_houseview.h"
 
 int HouseView::houseRowNum = 15;

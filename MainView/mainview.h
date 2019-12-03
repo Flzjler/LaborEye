@@ -1,4 +1,4 @@
-#ifndef MAINVIEW_H
+﻿#ifndef MAINVIEW_H
 #define MAINVIEW_H
 
 #include <QWidget>

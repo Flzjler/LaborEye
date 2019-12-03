@@ -1,4 +1,4 @@
-#ifndef LABOREYEXML_H
+﻿#ifndef LABOREYEXML_H
 #define LABOREYEXML_H
 
 #include <QString>

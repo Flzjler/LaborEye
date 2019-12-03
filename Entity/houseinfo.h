@@ -1,4 +1,4 @@
-#ifndef HOUSEINFO_H
+﻿#ifndef HOUSEINFO_H
 #define HOUSEINFO_H
 
 #include <QString>
