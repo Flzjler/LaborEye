@@ -61,6 +61,7 @@ void AddStaffDialog::on_btnConfrim_clicked()
     Hikvision::getHikvision()->upload2FaceLib(applicantInfo.getApplicant(), avatarPicPath);
 
     LaborEyeDatabase::getLaboreyeDatabase()->insertApplicant(applicantInfo, addressInfo);
+    this->close();
 }
 
 void AddStaffDialog::on_btnConcel_clicked()
