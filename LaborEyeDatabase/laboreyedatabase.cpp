@@ -508,17 +508,11 @@ PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
 
 int LaborEyeDatabase::selectLastInsertId()
 {
-    if(!openDatabase()) {
-        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
-        return -1;
-    }
 
     QSqlQuery query;
     QString sqlSentence = sqlSetting->value("Select/selectLastInsertId").toString();
     query.prepare(sqlSentence);
     query.exec();
-    closeDatabase();
-
     if(query.next())
         return query.value(0).toInt();
     return -1;
@@ -560,9 +554,10 @@ bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo 
     query.bindValue(":contact", applicantInfo.getContact());
     query.bindValue(":familyRole", applicantInfo.getRole());
     query.exec();
+    int lastId = selectLastInsertId();
     closeDatabase();
 
-    int lastId = selectLastInsertId();
+
     int houseTableId = selectHouseTableId(addressInfo);
 
     if(lastId == -1 || houseTableId == -1)
@@ -577,6 +572,8 @@ bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo 
     query.bindValue(":applicantId", lastId);
     query.bindValue(":houseId", houseTableId);
     query.exec();
+    qDebug() << sqlSentence;
+    qDebug() << lastId << " " << houseTableId;
     closeDatabase();
 
     return true;
