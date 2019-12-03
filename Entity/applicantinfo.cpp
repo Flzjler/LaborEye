@@ -1,4 +1,4 @@
-#include "applicantinfo.h"
+﻿#include "applicantinfo.h"
 
 ApplicantInfo::ApplicantInfo()
 {

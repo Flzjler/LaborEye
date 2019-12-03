@@ -1,4 +1,4 @@
-#ifndef APPLICANTRECORDINFO_H
+﻿#ifndef APPLICANTRECORDINFO_H
 #define APPLICANTRECORDINFO_H
 
 #include <QString>

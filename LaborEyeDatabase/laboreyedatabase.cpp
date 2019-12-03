@@ -75,7 +75,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
     query.bindValue(":endDateTime", endDateTime);
     query.bindValue(":startId", (nowPage-1)*pageSize);
     query.bindValue(":pageSize", pageSize);
-    qDebug() << "sqlSentence: " << sqlSentence;
+//    qDebug() << "sqlSentence: " << sqlSentence;
     query.exec();
     closeDatabase();
 
@@ -449,7 +449,7 @@ QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTi
 
 bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
 {
-    qDebug() << "similar: " << alarmInfo.getSimilar();
+//    qDebug() << "similar: " << alarmInfo.getSimilar();
     if(!openDatabase()) {
         QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
         return false;
@@ -465,10 +465,10 @@ bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
         applicant = query.value(0).toString();
     if(applicant == "")
         applicant = QString::fromLocal8Bit("陌生人");
-    qDebug() << applicant << " " << alarmInfo.getDateTime() << " " << alarmInfo.getSfzNo();
+//    qDebug() << applicant << " " << alarmInfo.getDateTime() << " " << alarmInfo.getSfzNo();
     query.clear();
     sqlSentence = sqlSetting->value("Insert/insertRecord").toString();
-    qDebug() << sqlSentence;
+//    qDebug() << sqlSentence;
     query.prepare(sqlSentence);
     query.bindValue(":dateTime", alarmInfo.getDateTime());
     query.bindValue(":applicant", applicant);

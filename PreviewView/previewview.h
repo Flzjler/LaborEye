@@ -1,4 +1,4 @@
-#ifndef PREVIEWVIEW_H
+﻿#ifndef PREVIEWVIEW_H
 #define PREVIEWVIEW_H
 
 #include <QWidget>

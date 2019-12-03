@@ -1,4 +1,4 @@
-#ifndef HOUSEVIEW_H
+﻿#ifndef HOUSEVIEW_H
 #define HOUSEVIEW_H
 
 #include <QWidget>

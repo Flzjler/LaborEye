@@ -1,4 +1,4 @@
-#include "applicantrecordinfo.h"
+﻿#include "applicantrecordinfo.h"
 
 ApplicantRecordInfo::ApplicantRecordInfo()
 {

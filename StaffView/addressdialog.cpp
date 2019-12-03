@@ -1,4 +1,4 @@
-#include "addressdialog.h"
+﻿#include "addressdialog.h"
 #include "ui_addressdialog.h"
 
 QList<AddressInfo> AddressDialog::addressInfoList;
