@@ -1,4 +1,4 @@
-#include "previewview.h"
+﻿#include "previewview.h"
 #include "ui_previewview.h"
 
 QList<AlarmInfo> PreviewView::alarmInfoList;

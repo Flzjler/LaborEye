@@ -1,4 +1,4 @@
-#ifndef ADDRESSDIALOG_H
+﻿#ifndef ADDRESSDIALOG_H
 #define ADDRESSDIALOG_H
 
 #include <QDialog>

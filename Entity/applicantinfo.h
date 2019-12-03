@@ -1,4 +1,4 @@
-#ifndef APPLICANTINFO_H
+﻿#ifndef APPLICANTINFO_H
 #define APPLICANTINFO_H
 
 #include <QString>

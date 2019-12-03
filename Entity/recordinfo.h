@@ -1,4 +1,4 @@
-#ifndef RECORDINFO_H
+﻿#ifndef RECORDINFO_H
 #define RECORDINFO_H
 
 #include <QString>

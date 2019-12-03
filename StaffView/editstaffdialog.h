@@ -1,4 +1,4 @@
-#ifndef EDITSTAFFDIALOG_H
+﻿#ifndef EDITSTAFFDIALOG_H
 #define EDITSTAFFDIALOG_H
 
 #include <QDialog>

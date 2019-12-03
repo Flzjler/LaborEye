@@ -1,4 +1,4 @@
-#ifndef STAFFVIEW_H
+﻿#ifndef STAFFVIEW_H
 #define STAFFVIEW_H
 
 #include <QWidget>

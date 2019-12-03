@@ -1,4 +1,4 @@
-#include "alarminfo.h"
+﻿#include "alarminfo.h"
 
 AlarmInfo::AlarmInfo()
 {

@@ -1,4 +1,4 @@
-#ifndef ADDRESSINFO_H
+﻿#ifndef ADDRESSINFO_H
 #define ADDRESSINFO_H
 
 #include <QString>

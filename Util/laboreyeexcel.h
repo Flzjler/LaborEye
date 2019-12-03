@@ -1,4 +1,4 @@
-#ifndef LABOREYEEXCEL_H
+﻿#ifndef LABOREYEEXCEL_H
 #define LABOREYEEXCEL_H
 
 #include <QList>

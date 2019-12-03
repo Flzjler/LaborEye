@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 
 Config* Config::cfg = nullptr;
 

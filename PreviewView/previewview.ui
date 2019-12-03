@@ -382,7 +382,7 @@ border-color: rgb(255, 255, 255);*/</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">border-width: 2px;
+               <string notr="true">border-width: 2px;        
 border-style: solid;
 border-color: rgb(255, 255, 255);</string>
               </property>
