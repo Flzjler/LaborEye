@@ -1,5 +1,7 @@
 HEADERS += \
-    $$PWD/laboreyeexcel.h
+    $$PWD/laboreyeexcel.h \
+    $$PWD/laboreyexml.h
 
 SOURCES += \
-    $$PWD/laboreyeexcel.cpp
+    $$PWD/laboreyeexcel.cpp \
+    $$PWD/laboreyexml.cpp

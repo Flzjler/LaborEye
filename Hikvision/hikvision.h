@@ -4,20 +4,18 @@
 #include <time.h>
 
 #include <QUrl>
+#include <QFile>
 #include <QList>
+#include <QFileInfo>
 #include <QEventLoop>
+#include <QNetworkReply>
 #include <QNetworkAccessManager>
 
 
 #include "Windows.h"
 #include "HCNetSDK.h"
 #include "Config/config.h"
-
-typedef enum {
-    CAPTUREPICTURE,
-    AVATARPICTURE,
-    FACEPICTURE
-} PICTYPE;
+#include "Util/laboreyexml.h"
 
 class Hikvision : public QObject
 {
@@ -27,18 +25,43 @@ public:
     {
         if(hikvision == nullptr)
             hikvision = new Hikvision();
+        if(eventLoop == nullptr)
+            eventLoop = new QEventLoop();
+        if(manager == nullptr)
+            manager = new QNetworkAccessManager();
         return hikvision;
     }
     //显示预览录像
     static void showPreviewVideo(QList<HWND> hwndList);
 
-    //使用url的方式下载图片
-    static void downLoadPicture(PICTYPE picType);
+    //使用url的方式下载抓拍图
+    static void downLoadCapturePic();
+
+    static QEventLoop* getEventLoop() {
+        if(eventLoop == nullptr)
+            eventLoop = new QEventLoop();
+        return eventLoop;
+    }
+    static QNetworkAccessManager* getManager() {
+        if(manager == nullptr)
+            manager = new QNetworkAccessManager();
+        return manager;
+    }
+
+    //向人脸库中添加一条信息
+    static bool upload2FaceLib(QString name, QString picFilePath);
+
+signals:
+    void returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
 
 private:
 
     explicit Hikvision();
     ~Hikvision();
+
+    static QEventLoop* eventLoop;
+
+    static QNetworkAccessManager* manager;
 
     static Hikvision* hikvision;
 
@@ -53,6 +76,10 @@ private:
     //报警回调函数
     static BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer,
                                          char *pAlarmInfo, DWORD dwBufLen, void* pUser);
+
+    //获取超脑能力集信息
+    static void getNET_DVR_STDXMLConfig();
+
 
 };
 

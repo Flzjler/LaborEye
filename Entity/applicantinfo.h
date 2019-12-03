@@ -27,6 +27,9 @@ public:
     void setHouse(QString _house);
     QString getHouse();
 
+    void setRole(QString _role);
+    QString getRole();
+
 private:
     QString applicant;
     QString sfzNo;
@@ -34,6 +37,7 @@ private:
     QString building;
     QString unit;
     QString house;
+    QString role;
 
 };
 

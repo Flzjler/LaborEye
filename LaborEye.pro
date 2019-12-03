@@ -5,7 +5,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network axcontainer
+QT       += core gui sql network axcontainer xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -20,6 +20,8 @@ SOURCES += \
 # Resourecs files
 RESOURCES += \
     Src.qrc
+
+RC_ICONS = renlianshibie.ico
 
 # Sub-modules path
 include ($$PWD/MainView/MainView.pri)

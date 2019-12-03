@@ -75,6 +75,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
     query.bindValue(":endDateTime", endDateTime);
     query.bindValue(":startId", (nowPage-1)*pageSize);
     query.bindValue(":pageSize", pageSize);
+    qDebug() << "sqlSentence: " << sqlSentence;
     query.exec();
     closeDatabase();
 
@@ -86,7 +87,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
         recordInfo.setStranger(query.value("stranger").toBool());
         recordInfo.setSimilar(query.value("similar").toInt());
         recordInfo.setCaptureId(query.value("capture_id").toInt());
-        recordInfo.setDel(query.value("del").toInt());
+        //        recordInfo.setDel(query.value("isdel").toInt());
         recordInfo.setTimeValue(query.value("time_value").toDateTime());
         recordInfoList.append(recordInfo);
     }
@@ -175,9 +176,9 @@ int LaborEyeDatabase::cntRecordsNum(QDateTime startDateTime, QDateTime endDateTi
 
     query.bindValue(":startDateTime", startDateTime);
     query.bindValue(":endDateTime", endDateTime);
+
     query.exec();
     closeDatabase();
-
     if(query.next())
         return query.value(0).toInt();
     return -1;
@@ -433,7 +434,7 @@ QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTi
     while(query.next()) {
         QList<QVariant> exportRecord;
         QString address = query.value("community").toString() + query.value("building").toString() + "幢" +
-                        query.value("unit").toString() + "单元" + query.value("house").toString() + "室";
+                query.value("unit").toString() + "单元" + query.value("house").toString() + "室";
         exportRecord.append(QVariant(address));
         exportRecord.append(QVariant(query.value("applicant").toString()));
         exportRecord.append(QVariant(query.value("sfzno").toString()));
@@ -444,4 +445,162 @@ QList<QList<QVariant>> LaborEyeDatabase::selectExcelRecord(QDateTime startDateTi
     }
 
     return exportRecordList;
+}
+
+bool LaborEyeDatabase::insertRecord(AlarmInfo alarmInfo)
+{
+    qDebug() << "similar: " << alarmInfo.getSimilar();
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectApplicantName_by_idCard").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":sfzNo", alarmInfo.getSfzNo());
+    query.exec();
+    QString applicant;
+    if(query.next())
+        applicant = query.value(0).toString();
+    if(applicant == "")
+        applicant = QString::fromLocal8Bit("陌生人");
+    qDebug() << applicant << " " << alarmInfo.getDateTime() << " " << alarmInfo.getSfzNo();
+    query.clear();
+    sqlSentence = sqlSetting->value("Insert/insertRecord").toString();
+    qDebug() << sqlSentence;
+    query.prepare(sqlSentence);
+    query.bindValue(":dateTime", alarmInfo.getDateTime());
+    query.bindValue(":applicant", applicant);
+    query.bindValue(":idCard", alarmInfo.getSfzNo());
+    query.bindValue(":stranger", alarmInfo.getStranger());
+    query.bindValue(":similar", alarmInfo.getSimilar());
+    query.exec();
+    closeDatabase();
+    return true;
+}
+
+PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
+{
+    PersonInfo personInfo;
+
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return personInfo;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectPersonInfo_by_sfzno").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":sfzNo", sfzNo);
+    query.exec();
+    closeDatabase();
+
+    if(query.next()) {
+        personInfo.applicant = query.value("applicant").toString();
+        personInfo.address = query.value("community").toString() +
+                query.value("building").toString() +
+                query.value("unit").toString() +
+                query.value("house").toString();
+    }
+    return personInfo;
+}
+
+int LaborEyeDatabase::selectLastInsertId()
+{
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectLastInsertId").toString();
+    query.prepare(sqlSentence);
+    query.exec();
+    if(query.next())
+        return query.value(0).toInt();
+    return -1;
+}
+
+int LaborEyeDatabase::selectHouseTableId(AddressInfo addressInfo)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return -1;
+    }
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectHouseTableId").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":community", addressInfo.getCommunity());
+    query.bindValue(":building", addressInfo.getBuilding());
+    query.bindValue(":unit", addressInfo.getUnit());
+    query.bindValue(":house", addressInfo.getHouse());
+    query.exec();
+    closeDatabase();
+
+    if(query.next())
+        return query.value(0).toInt();
+    return -1;
+}
+
+bool LaborEyeDatabase::insertApplicant(ApplicantInfo applicantInfo, AddressInfo addressInfo)
+{
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Insert/insertApplicant").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":applicant", applicantInfo.getApplicant());
+    query.bindValue(":idCard", applicantInfo.getSfzNo());
+    query.bindValue(":contact", applicantInfo.getContact());
+    query.bindValue(":familyRole", applicantInfo.getRole());
+    query.exec();
+    int lastId = selectLastInsertId();
+    closeDatabase();
+
+
+    int houseTableId = selectHouseTableId(addressInfo);
+
+    if(lastId == -1 || houseTableId == -1)
+        return false;
+
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return false;
+    }
+    sqlSentence = sqlSetting->value("Insert/insertApplicantHouse").toString();
+    query.prepare(sqlSentence);
+    query.bindValue(":applicantId", lastId);
+    query.bindValue(":houseId", houseTableId);
+    query.exec();
+    qDebug() << sqlSentence;
+    qDebug() << lastId << " " << houseTableId;
+    closeDatabase();
+
+    return true;
+}
+
+QList<AddressInfo> LaborEyeDatabase::selectAddressInfo()
+{
+    QList<AddressInfo> addressInfoList;
+    if(!openDatabase()) {
+        QMessageBox::critical(nullptr, QString::fromLocal8Bit("数据库连接失败!"), db.lastError().text());
+        return addressInfoList;
+    }
+
+    QSqlQuery query;
+    QString sqlSentence = sqlSetting->value("Select/selectAddressInfo").toString();
+    query.prepare(sqlSentence);
+    query.exec();
+    closeDatabase();
+
+    AddressInfo addressInfo;
+    while(query.next()) {
+        addressInfo.setCommunity(query.value("community").toString());
+        addressInfo.setBuilding(query.value("building").toString());
+        addressInfo.setUnit(query.value("unit").toString());
+        addressInfo.setHouse(query.value("house").toString());
+        addressInfoList.append(addressInfo);
+    }
+
+    return addressInfoList;
 }

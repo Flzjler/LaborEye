@@ -2,7 +2,10 @@
 #define STAFFVIEW_H
 
 #include <QWidget>
+#include <QObject>
 
+#include "addstaffdialog.h"
+#include "editstaffdialog.h"
 #include "LaborEyeDatabase/laboreyedatabase.h"
 
 namespace Ui {
@@ -17,6 +20,10 @@ public:
     explicit StaffView(QWidget *parent = nullptr);
     ~StaffView();
 
+signals:
+    void _showEditStaffDialog();
+    void _showAddStaffDialog();
+
 private slots:
     void on_btnPrepage_clicked();
 
@@ -27,6 +34,10 @@ private slots:
     void on_btnConfirm_clicked();
 
     void on_btnDel_clicked();
+
+    void on_btnEdit_clicked();
+
+    void on_btnAdd_clicked();
 
 private:
     Ui::StaffView *ui;
@@ -40,6 +51,9 @@ private:
     const int colNum = 4;               //表格列数
 
     static QList<ApplicantInfo> applicantInfoList;
+
+    static EditStaffDialog *editStaffDialog;
+    static AddStaffDialog *addStaffDialog;
 
     void initUI();
 

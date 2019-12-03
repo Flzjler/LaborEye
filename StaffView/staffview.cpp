@@ -7,6 +7,8 @@ int StaffView::nowPage;                 //当前页码
 QString StaffView::name;
 QString StaffView::idCard;
 QList<ApplicantInfo> StaffView::applicantInfoList;
+EditStaffDialog* StaffView::editStaffDialog = nullptr;
+AddStaffDialog* StaffView::addStaffDialog = nullptr;
 
 StaffView::StaffView(QWidget *parent) :
     QWidget(parent),
@@ -163,4 +165,24 @@ void StaffView::on_btnDel_clicked()
             QMessageBox::information(this, "提示", "删除失败");
         }
     }
+}
+
+void StaffView::on_btnEdit_clicked()
+{
+    if(ui->tblStaffInfo->currentRow() == -1) {
+        QMessageBox::information(this, "提示", "请先选择需要编辑的住户信息!");
+        return;
+    }
+    if(editStaffDialog == nullptr)
+        editStaffDialog = new EditStaffDialog();
+    QObject::connect(this, SIGNAL(_showEditStaffDialog()), editStaffDialog, SLOT(showEditStaffDialog()));
+    emit _showEditStaffDialog();
+}
+
+void StaffView::on_btnAdd_clicked()
+{
+    if(addStaffDialog == nullptr)
+        addStaffDialog = new AddStaffDialog();
+    QObject::connect(this, SIGNAL(_showAddStaffDialog()), addStaffDialog, SLOT(showAddStaffDialog()));
+    emit _showAddStaffDialog();
 }

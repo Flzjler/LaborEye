@@ -30,8 +30,8 @@ public:
     void setCaptureId(int _captureId);
     int getCaptureId();
 
-    void setDel(bool _del);
-    bool getDel();
+//    void setDel(bool _del);
+//    bool getDel();
 
 private:
     int id;
@@ -41,7 +41,7 @@ private:
     bool stranger;
     int similar;
     int captureId;
-    bool del;
+//    bool del;
 
 };
 

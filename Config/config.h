@@ -53,6 +53,10 @@ public:
     void setAvatarPath(QString _avatarPath);
     void setFacePath(QString _facePath);
 
+    int getSimilar();
+
+    void setSimilar(int _similar);
+
 private:
     Config();
     ~Config();
