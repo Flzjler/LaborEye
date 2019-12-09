@@ -26,32 +26,44 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 {
     //    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
 
+    Hikvision::getHikvision()->downLoadCapturePic();
+    Hikvision::getHikvision()->downLoadFacePic();
+    Sleep(300);
+
     QDateTime dateTime(QDate(GET_YEAR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MONTH(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_DAY(faceMatchAlarm.struSnapInfo.dwAbsTime)),
                        QTime(GET_HOUR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MINUTE(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_SECOND(faceMatchAlarm.struSnapInfo.dwAbsTime)));
-    QString sfzNo = QString::fromLocal8Bit(reinterpret_cast<char*>
-                                           (faceMatchAlarm.struBlackListInfo.
-                                            struBlackListInfo.struAttribute.byName));
+    QString sfzNo = "";
     int similar = static_cast<int>(faceMatchAlarm.fSimilarity*100);
 
     if(similar >= Config::getCfg()->getSimilar()) {
-        if(sfzNo[sfzNo.length()-1] != 'm') {
+        sfzNo = QString::fromLocal8Bit(reinterpret_cast<char*>
+                                       (faceMatchAlarm.struBlackListInfo.
+                                        struBlackListInfo.struAttribute.byName));
+        if(sfzNo[sfzNo.length()-1] != 'm') { //非陌生人
             alarmInfo.setApplicant(LaborEyeDatabase::getLaboreyeDatabase()->
                                    selectPersonInfo(sfzNo).applicant);
             alarmInfo.setAddress(LaborEyeDatabase::getLaboreyeDatabase()->
                                  selectPersonInfo(sfzNo).address);
+            alarmInfo.setStranger(false);
 
-        } else {
-
+        } else { //曾经出现过的陌生人
+            alarmInfo.setApplicant("");
+            alarmInfo.setAddress("");
+            alarmInfo.setStranger(true);
         }
-        alarmInfo.setStranger(false);
-    } else {
-        sfzNo = dateTime.toString("yyyy-MM-dd hh:mm:ss");
+        Hikvision::getHikvision()->downLoadAvatarPic();
+        Sleep(300);
+    } else { //新陌生人
+        sfzNo = dateTime.toString("yyyyMMddhhmmss");
         alarmInfo.setStranger(true);
         //陌生人人脸图需上传至超脑
+        Hikvision::getHikvision()->upload2FaceLib(sfzNo+"m", Config::getCfg()->getFacePath() +
+                                                                 alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+                                                                 "_" + sfzNo + ".jpg");
     }
     if(alarmInfo.getApplicant() == "")
         alarmInfo.setApplicant(QString::fromLocal8Bit("陌生人"));
@@ -67,27 +79,8 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 
     LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
 
-    //    Hikvision::getHikvision()->downLoadCapturePic();
 
-}
 
-void PreviewView::saveCapturePic(QNetworkReply* reply)
-{
-    qDebug() << "PreviewView:: saveCapturePic exec";
-
-    QByteArray bytes = reply->readAll();
-
-    //抓拍图片路径设置
-    QString dirCapture = Config::getCfg()->getCapturePath() +
-            alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
-            "_" + alarmInfo.getSfzNo() + ".jpg";
-
-    //保存抓拍图片文件
-    QFile file(dirCapture);
-    if(file.open(QIODevice::WriteOnly)) {
-        file.write(bytes);
-        file.close();
-    }
 }
 
 void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
@@ -149,5 +142,64 @@ void PreviewView::on_btnSearch_clicked()
             if(alarmInfoList[i].getApplicant() == ui->ledtSearch->text())
                 addPersonInfoList(alarmInfoList[i]);
         }
+    }
+}
+
+void PreviewView::saveCapturePic(QNetworkReply* reply)
+{
+    qDebug() << "PreviewView:: saveCapturePic exec";
+
+    QByteArray bytes = reply->readAll();
+
+    //抓拍图片路径设置
+    QString dirCapture = Config::getCfg()->getCapturePath() +
+            alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+            "_" + alarmInfo.getSfzNo() + ".jpg";
+
+    //保存抓拍图片文件
+    QFile file(dirCapture);
+    if(file.open(QIODevice::WriteOnly)) {
+        file.write(bytes);
+        file.close();
+    }
+}
+
+void PreviewView::saveAvatarPic(QNetworkReply* reply)
+{
+    qDebug() << "PreviewView:: saveAvatarPic exec";
+
+    QByteArray bytes = reply->readAll();
+
+    //抓拍图片路径设置
+//    QString dirCapture = Config::getCfg()->getCapturePath() +
+//            alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+//            "_" + alarmInfo.getSfzNo() + ".jpg";
+    QString dirCapture = Config::getCfg()->getAvatarPath() +
+                        alarmInfo.getSfzNo() + ".jpg";
+
+    //保存抓拍图片文件
+    QFile file(dirCapture);
+    if(file.open(QIODevice::WriteOnly)) {
+        file.write(bytes);
+        file.close();
+    }
+}
+
+void PreviewView::saveFacePic(QNetworkReply* reply)
+{
+    qDebug() << "PreviewView:: saveFacePic exec";
+
+    QByteArray bytes = reply->readAll();
+
+    //抓拍图片路径设置
+    QString dirCapture = Config::getCfg()->getFacePath() +
+                        alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+                        "_" + alarmInfo.getSfzNo() + ".jpg";
+
+    //保存抓拍图片文件
+    QFile file(dirCapture);
+    if(file.open(QIODevice::WriteOnly)) {
+        file.write(bytes);
+        file.close();
     }
 }

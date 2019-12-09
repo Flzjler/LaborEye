@@ -35,7 +35,12 @@ public:
 
 public slots:
     void setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
+
     void saveCapturePic(QNetworkReply*);
+
+    void saveAvatarPic(QNetworkReply*);
+
+    void saveFacePic(QNetworkReply*);
 
 private slots:
     void on_btnClear_clicked();
