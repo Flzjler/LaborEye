@@ -26,6 +26,7 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 {
     //    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
 
+    //下载图片至本地
     Hikvision::getHikvision()->downLoadCapturePic();
     Hikvision::getHikvision()->downLoadFacePic();
     Sleep(300);
@@ -99,6 +100,21 @@ void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
     pixmap.scaled(ui->lblIcon->size(), Qt::KeepAspectRatio);
     ui->lblIcon->setScaledContents(true);
     ui->lblIcon->setPixmap(pixmap);
+
+    QImage captureImage(Config::getCfg()->getCapturePath() +
+                        alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+                        "_" + alarmInfo.getSfzNo() + ".jpg");
+    QImage avatarImage(Config::getCfg()->getAvatarPath() +
+                       alarmInfo.getSfzNo() + ".jpg");
+    QImage faceImage(Config::getCfg()->getFacePath() +
+                     alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+                     "_" + alarmInfo.getSfzNo() + ".jpg");
+    ui->lblCapture->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapture->size(),
+                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->lblAvatar->setPixmap(QPixmap::fromImage(avatarImage).scaled(ui->lblAvatar->size(),
+                                                                     Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->lblFace->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFace->size(),
+                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)
