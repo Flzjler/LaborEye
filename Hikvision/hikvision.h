@@ -16,6 +16,7 @@
 #include "HCNetSDK.h"
 #include "Config/config.h"
 #include "Util/laboreyexml.h"
+#include "PreviewView/previewview.h"
 
 class Hikvision : public QObject
 {
@@ -25,10 +26,10 @@ public:
     {
         if(hikvision == nullptr)
             hikvision = new Hikvision();
-        if(eventLoop == nullptr)
-            eventLoop = new QEventLoop();
-        if(manager == nullptr)
-            manager = new QNetworkAccessManager();
+//        if(eventLoop == nullptr)
+//            eventLoop = new QEventLoop();
+//        if(manager == nullptr)
+//            manager = new QNetworkAccessManager();
         return hikvision;
     }
     //显示预览录像
@@ -36,17 +37,19 @@ public:
 
     //使用url的方式下载抓拍图
     static void downLoadCapturePic();
+    static void downLoadAvatarPic();
+    static void downLoadFacePic();
 
-    static QEventLoop* getEventLoop() {
-        if(eventLoop == nullptr)
-            eventLoop = new QEventLoop();
-        return eventLoop;
-    }
-    static QNetworkAccessManager* getManager() {
-        if(manager == nullptr)
-            manager = new QNetworkAccessManager();
-        return manager;
-    }
+//    static QEventLoop* getEventLoop() {
+//        if(eventLoop == nullptr)
+//            eventLoop = new QEventLoop();
+//        return eventLoop;
+//    }
+//    static QNetworkAccessManager* getManager() {
+//        if(manager == nullptr)
+//            manager = new QNetworkAccessManager();
+//        return manager;
+//    }
 
     //向人脸库中添加一条信息
     static bool upload2FaceLib(QString name, QString picFilePath);
@@ -59,9 +62,9 @@ private:
     explicit Hikvision();
     ~Hikvision();
 
-    static QEventLoop* eventLoop;
+//    static QEventLoop* eventLoop;
 
-    static QNetworkAccessManager* manager;
+//    static QNetworkAccessManager* manager;
 
     static Hikvision* hikvision;
 

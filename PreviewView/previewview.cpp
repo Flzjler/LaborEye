@@ -1,6 +1,7 @@
 ﻿#include "previewview.h"
 #include "ui_previewview.h"
 
+PreviewView* PreviewView::previewView;
 QList<AlarmInfo> PreviewView::alarmInfoList;
 
 PreviewView::PreviewView(QWidget *parent) :
