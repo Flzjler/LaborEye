@@ -124,10 +124,11 @@ void HistoryView::on_btnConfirm_clicked()
     isStranger = ui->cboxStranger->currentText();
     idCard = ui->ledtIdCard->text();
 
-    ui->ledtNowpage->setText(QString::number(nowPage));
-
     setTblItem();
+    if(tolPages == 0)
+        nowPage = 0;
 
+    ui->ledtNowpage->setText(QString::number(nowPage));
     ui->lblCapturePic->setText("图片暂无");
     ui->lblFacePic->setText("图片暂无");
 }

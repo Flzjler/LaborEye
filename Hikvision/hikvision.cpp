@@ -100,7 +100,7 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
     HWND hWnd = hwndList.at(0);          //获取窗口句柄
     NET_DVR_PREVIEWINFO struPlayInfo = {0};
     struPlayInfo.hPlayWnd = hWnd;        //需要SDK解码时句柄设为有效值，仅取流不解码时可设为空
-    struPlayInfo.lChannel     = 33;      //预览通道号
+    struPlayInfo.lChannel     = Config::getCfg()->getSuBrainChannel1();      //预览通道号
     struPlayInfo.dwStreamType = 0;       //0-主码流，1-子码流，2-码流3，3-码流4，以此类推
     struPlayInfo.dwLinkMode   = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
     struPlayInfo.bBlocked     = 1;       //0- 非阻塞取流，1- 阻塞取流
@@ -108,17 +108,17 @@ void Hikvision::showPreviewVideo(QList<HWND> hwndList)
     lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &struPlayInfo, nullptr, nullptr);
     //----------------1----------------------
 
-    //---------------2-----------------------
+    //---------------2---------------------
     //启动预览并设置回调数据流
-    //    HWND hWnd2 = hwndList.at(1);
-    //    NET_DVR_PREVIEWINFO struPlayInfo2 = {0};
-    //    struPlayInfo2.hPlayWnd     = hWnd2;   //需要SDK解码时句柄设为有效值，仅取流不解码时可设为空
-    //    struPlayInfo2.lChannel     = 34;      //预览通道号
-    //    struPlayInfo2.dwStreamType = 0;       //0-主码流，1-子码流，2-码流3，3-码流4，以此类推
-    //    struPlayInfo2.dwLinkMode   = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
-    //    struPlayInfo2.bBlocked     = 1;       //0- 非阻塞取流，1- 阻塞取流
+        HWND hWnd2 = hwndList.at(1);
+        NET_DVR_PREVIEWINFO struPlayInfo2 = {0};
+        struPlayInfo2.hPlayWnd     = hWnd2;   //需要SDK解码时句柄设为有效值，仅取流不解码时可设为空
+        struPlayInfo2.lChannel     = Config::getCfg()->getSuBrainChannel2();      //预览通道号
+        struPlayInfo2.dwStreamType = 0;       //0-主码流，1-子码流，2-码流3，3-码流4，以此类推
+        struPlayInfo2.dwLinkMode   = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
+        struPlayInfo2.bBlocked     = 1;       //0- 非阻塞取流，1- 阻塞取流
     //开始播放
-    //    lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &struPlayInfo2, nullptr, nullptr);
+        lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &struPlayInfo2, nullptr, nullptr);
     //---------------2-----------------------
 
 

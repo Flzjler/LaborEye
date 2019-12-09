@@ -13,8 +13,6 @@ PreviewView::PreviewView(QWidget *parent) :
     hwndList.append(HWND(ui->lblChannel1->winId()));
     hwndList.append(HWND(ui->lblChannel2->winId()));
     Hikvision::showPreviewVideo(hwndList);
-    //    PICTYPE pic = static_cast<PICTYPE>(4);
-    //    Hikvision::downLoadPicture(CAPTUREPICTURE);
 }
 
 PreviewView::~PreviewView()
