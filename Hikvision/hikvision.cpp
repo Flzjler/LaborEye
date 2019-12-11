@@ -271,10 +271,11 @@ void Hikvision::downLoadCapturePic()
     //下载抓拍图
     url = url.mid(0, url.indexOf("SEl"));
     qUrl.setUrl(url);
+    qDebug() << "Download Capture Pic! The url is: " << url;
     QEventLoop eventLoop;
     QNetworkAccessManager *manager = new QNetworkAccessManager();
     QNetworkReply* reply = manager->get(QNetworkRequest(qUrl));
-    qDebug() << "Download Capture Pic! The url is: " << url;
+    Sleep(200);
     connect(manager, SIGNAL(finished(QNetworkReply*)), PreviewView::getPreviewView(), SLOT(saveCapturePic(QNetworkReply*)));
     connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
     eventLoop.exec();

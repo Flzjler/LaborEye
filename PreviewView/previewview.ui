@@ -512,6 +512,9 @@ border-color: rgb(255, 255, 255);</string>
                 <bold>true</bold>
                </font>
               </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -535,6 +538,9 @@ border-color: rgb(255, 255, 255);</string>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -560,6 +566,9 @@ border-color: rgb(255, 255, 255);</string>
                 <bold>true</bold>
                </font>
               </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -583,6 +592,9 @@ border-color: rgb(255, 255, 255);</string>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

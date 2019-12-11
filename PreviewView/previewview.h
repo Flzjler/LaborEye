@@ -49,13 +49,13 @@ private slots:
 
 private:
     Ui::PreviewView *ui;
-    AlarmInfo alarmInfo;
+    static AlarmInfo alarmInfo;
     explicit PreviewView(QWidget *parent = nullptr);
     ~PreviewView();
     static PreviewView* previewView;
     static QList<AlarmInfo> alarmInfoList;
 
-    void setPersonInfo(AlarmInfo alarmInfo);
+    void setPersonInfo();
     void addPersonInfoList(AlarmInfo alarmInfo);
 };
 

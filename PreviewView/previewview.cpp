@@ -3,6 +3,7 @@
 
 PreviewView* PreviewView::previewView;
 QList<AlarmInfo> PreviewView::alarmInfoList;
+AlarmInfo PreviewView::alarmInfo;
 
 PreviewView::PreviewView(QWidget *parent) :
     QWidget(parent),
@@ -24,10 +25,7 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 {
     //    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
 
-    //下载图片至本地
-    Hikvision::getHikvision()->downLoadCapturePic();
-    Hikvision::getHikvision()->downLoadFacePic();
-    Sleep(300);
+
 
     QDateTime dateTime(QDate(GET_YEAR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MONTH(faceMatchAlarm.struSnapInfo.dwAbsTime),
@@ -37,7 +35,6 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
                              GET_SECOND(faceMatchAlarm.struSnapInfo.dwAbsTime)));
     QString sfzNo = "";
     int similar = static_cast<int>(faceMatchAlarm.fSimilarity*100);
-
     if(similar >= Config::getCfg()->getSimilar()) {
         sfzNo = QString::fromLocal8Bit(reinterpret_cast<char*>
                                        (faceMatchAlarm.struBlackListInfo.
@@ -54,15 +51,16 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
             alarmInfo.setAddress("");
             alarmInfo.setStranger(true);
         }
-        Hikvision::getHikvision()->downLoadAvatarPic();
+        //Hikvision::getHikvision()->downLoadAvatarPic();
         Sleep(300);
     } else { //新陌生人
         sfzNo = dateTime.toString("yyyyMMddhhmmss");
+//        qDebug() << "stranger's sfzNo: " << sfzNo;
         alarmInfo.setStranger(true);
         //陌生人人脸图需上传至超脑
-        Hikvision::getHikvision()->upload2FaceLib(sfzNo+"m", Config::getCfg()->getFacePath() +
-                                                                 alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
-                                                                 "_" + sfzNo + ".jpg");
+//        Hikvision::getHikvision()->upload2FaceLib(sfzNo+"m", Config::getCfg()->getFacePath() +
+//                                                                 alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+//                                                                 "_" + sfzNo + ".jpg");
     }
     if(alarmInfo.getApplicant() == "")
         alarmInfo.setApplicant(QString::fromLocal8Bit("陌生人"));
@@ -72,17 +70,19 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
     //    qDebug() << alarmInfo.getSfzNo() << " " << alarmInfo.getSimilar();
     alarmInfoList.append(alarmInfo);
 
-    setPersonInfo(alarmInfo);
+    //下载图片至本地
+    Hikvision::getHikvision()->downLoadCapturePic();
+    //Hikvision::getHikvision()->downLoadFacePic();
+    Sleep(300);
+
+    setPersonInfo();
 
     addPersonInfoList(alarmInfo);
 
     LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
-
-
-
 }
 
-void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
+void PreviewView::setPersonInfo()
 {
     ui->ledtName->setText(alarmInfo.getApplicant());
     ui->ledtIdCard->setText(alarmInfo.getSfzNo());
@@ -98,21 +98,21 @@ void PreviewView::setPersonInfo(AlarmInfo alarmInfo)
     pixmap.scaled(ui->lblIcon->size(), Qt::KeepAspectRatio);
     ui->lblIcon->setScaledContents(true);
     ui->lblIcon->setPixmap(pixmap);
-
-    QImage captureImage(Config::getCfg()->getCapturePath() +
-                        alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
-                        "_" + alarmInfo.getSfzNo() + ".jpg");
-    QImage avatarImage(Config::getCfg()->getAvatarPath() +
-                       alarmInfo.getSfzNo() + ".jpg");
-    QImage faceImage(Config::getCfg()->getFacePath() +
-                     alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
-                     "_" + alarmInfo.getSfzNo() + ".jpg");
+//    qDebug() << "pic alarmInfo: " << alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") << " " << alarmInfo.getSfzNo();
+    QString picName = alarmInfo.getDateTime().toString("yyyyMMddhhmmss").append("_" + alarmInfo.getSfzNo() + ".jpg");
+    QImage captureImage(Config::getCfg()->getCapturePath() + picName);
+    qDebug() << "show Capture Pic Path: " << Config::getCfg()->getCapturePath() + picName;
+//    QImage avatarImage(Config::getCfg()->getAvatarPath() +
+//                       alarmInfo.getSfzNo() + ".jpg");
+//    QImage faceImage(Config::getCfg()->getFacePath() +
+//                     alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
+//                     "_" + alarmInfo.getSfzNo() + ".jpg");
     ui->lblCapture->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapture->size(),
                                                                       Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->lblAvatar->setPixmap(QPixmap::fromImage(avatarImage).scaled(ui->lblAvatar->size(),
-                                                                     Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->lblFace->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFace->size(),
-                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//    ui->lblAvatar->setPixmap(QPixmap::fromImage(avatarImage).scaled(ui->lblAvatar->size(),
+//                                                                     Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//    ui->lblFace->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFace->size(),
+//                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)
@@ -166,9 +166,9 @@ void PreviewView::saveCapturePic(QNetworkReply* reply)
     QByteArray bytes = reply->readAll();
 
     //抓拍图片路径设置
-    QString dirCapture = Config::getCfg()->getCapturePath() +
-            alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
-            "_" + alarmInfo.getSfzNo() + ".jpg";
+    QString picName = alarmInfo.getDateTime().toString("yyyyMMddhhmmss").append("_" + alarmInfo.getSfzNo() + ".jpg");
+    QString dirCapture = Config::getCfg()->getCapturePath() + picName;
+    qDebug() << "dirCapturePic: " << dirCapture;
 
     //保存抓拍图片文件
     QFile file(dirCapture);
