@@ -37,8 +37,8 @@ public:
 
     //使用url的方式下载抓拍图
     static void downLoadCapturePic(QString url);
-    static void downLoadAvatarPic();
-    static void downLoadFacePic();
+    static void downLoadAvatarPic(QString url);
+    static void downLoadFacePic(QString url);
 
 //    static QEventLoop* getEventLoop() {
 //        if(eventLoop == nullptr)
@@ -54,8 +54,11 @@ public:
     //向人脸库中添加一条信息
     static bool upload2FaceLib(QString name, QString picFilePath);
 
-    static QString getPicURL();
-    static QString picURL;
+    static QString capturePicURL;
+
+    static QString avatarPicURL;
+
+    static QString facePicURL;
 
 signals:
     void returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
@@ -64,10 +67,6 @@ private:
 
     explicit Hikvision();
     ~Hikvision();
-
-//    static QEventLoop* eventLoop;
-
-//    static QNetworkAccessManager* manager;
 
     static Hikvision* hikvision;
 
@@ -85,7 +84,6 @@ private:
 
     //获取超脑能力集信息
     static void getNET_DVR_STDXMLConfig();
-
 
 };
 

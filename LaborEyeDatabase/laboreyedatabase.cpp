@@ -502,9 +502,9 @@ PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
     if(query.next()) {
         personInfo.applicant = query.value("applicant").toString();
         personInfo.address = query.value("community").toString() +
-                query.value("building").toString() +
-                query.value("unit").toString() +
-                query.value("house").toString();
+                query.value("building").toString() + QString::fromLocal8Bit("幢") +
+                query.value("unit").toString() + QString::fromLocal8Bit("单元") +
+                query.value("house").toString() + QString::fromLocal8Bit("室");
     }
     return personInfo;
 }
