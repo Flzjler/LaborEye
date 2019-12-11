@@ -1,6 +1,7 @@
 ﻿#include "hikvision.h"
 #include <QDebug>
 
+QString Hikvision::picURL;
 LONG Hikvision::lUserID;
 Hikvision* Hikvision::hikvision = nullptr;
 NET_VCA_FACESNAP_MATCH_ALARM Hikvision::faceMatchAlarm;
@@ -39,15 +40,24 @@ BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarme
         memcpy(&faceMatchAlarm, pAlarmInfo, sizeof(NET_VCA_FACESNAP_MATCH_ALARM));
         qDebug() << "MessageCallback: " << faceMatchAlarm.byPicTransType;
         qDebug() << "MessageCallback: " << faceMatchAlarm.dwSnapPicLen;
-        qDebug() << "MessageCallback: " << faceMatchAlarm.pSnapPicBuffer;
+        //qDebug() << "MessageCallback URL: " << QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
+        picURL = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
         if(hikvision == nullptr)
             hikvision = new Hikvision();
+
         emit hikvision->returnAlarmInfo(faceMatchAlarm);
+        Sleep(300);
+        //downLoadCapturePic();
 
     }
         break;
     }
     return true;
+}
+
+QString Hikvision::getPicURL()
+{
+    return picURL;
 }
 
 void Hikvision::showPreviewVideo(QList<HWND> hwndList)
@@ -260,24 +270,23 @@ bool Hikvision::upload2FaceLib(QString name, QString picFilePath)
     return iStatus == 1;
 }
 
-void Hikvision::downLoadCapturePic()
+void Hikvision::downLoadCapturePic(QString url)
 {
-    QUrl qUrl;
-    qUrl.setUserName(Config::getCfg()->getSuBrainUsername());
-    qUrl.setPassword(Config::getCfg()->getSuBrainPasword());
-
-    QString url = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
-
+//    QString url = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
+//    qDebug() << "url: " << url;
     //下载抓拍图
-    url = url.mid(0, url.indexOf("SEl"));
-    qUrl.setUrl(url);
-    qDebug() << "Download Capture Pic! The url is: " << url;
+//    url = url.mid(0, url.indexOf("SEl"));
+
     QEventLoop eventLoop;
     QNetworkAccessManager *manager = new QNetworkAccessManager();
-    QNetworkReply* reply = manager->get(QNetworkRequest(qUrl));
-    Sleep(200);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), PreviewView::getPreviewView(), SLOT(saveCapturePic(QNetworkReply*)));
     connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+    connect(manager, SIGNAL(finished(QNetworkReply*)), PreviewView::getPreviewView(),
+                    SLOT(saveCapturePic(QNetworkReply*)));
+    QUrl qUrl(url);
+    qUrl.setUserName(Config::getCfg()->getSuBrainUsername());
+    qUrl.setPassword(Config::getCfg()->getSuBrainPasword());
+    //eventLoop.exec();
+    QNetworkReply* reply = manager->get(QNetworkRequest(qUrl));
     eventLoop.exec();
 }
 
@@ -286,8 +295,9 @@ void Hikvision::downLoadAvatarPic()
     QUrl qUrl;
     qUrl.setUserName(Config::getCfg()->getSuBrainUsername());
     qUrl.setPassword(Config::getCfg()->getSuBrainPasword());
-
+    //char *urls = (char*)faceMatchAlarm.pSnapPicBuffer;
     QString url = QString(reinterpret_cast<char*>(faceMatchAlarm.pSnapPicBuffer));
+    //QString url = QString(urls);
 
     //下载抓拍图
     url = url.mid(0, url.indexOf("http://",1));
@@ -320,4 +330,3 @@ void Hikvision::downLoadFacePic()
     connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
     eventLoop.exec();
 }
-

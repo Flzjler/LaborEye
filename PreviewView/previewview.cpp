@@ -26,7 +26,6 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
     //    qDebug() << QString::fromLocal8Bit(reinterpret_cast<char*>(faceMatchAlarm.struBlackListInfo.struBlackListInfo.struAttribute.byName));
 
 
-
     QDateTime dateTime(QDate(GET_YEAR(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_MONTH(faceMatchAlarm.struSnapInfo.dwAbsTime),
                              GET_DAY(faceMatchAlarm.struSnapInfo.dwAbsTime)),
@@ -51,8 +50,8 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
             alarmInfo.setAddress("");
             alarmInfo.setStranger(true);
         }
-        //Hikvision::getHikvision()->downLoadAvatarPic();
-        Sleep(300);
+//        Hikvision::getHikvision()->downLoadAvatarPic();
+//        Sleep(300);
     } else { //新陌生人
         sfzNo = dateTime.toString("yyyyMMddhhmmss");
 //        qDebug() << "stranger's sfzNo: " << sfzNo;
@@ -62,24 +61,31 @@ void PreviewView::setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm)
 //                                                                 alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
 //                                                                 "_" + sfzNo + ".jpg");
     }
+
     if(alarmInfo.getApplicant() == "")
         alarmInfo.setApplicant(QString::fromLocal8Bit("陌生人"));
     alarmInfo.setSfzNo(sfzNo);
     alarmInfo.setSimilar(similar);
     alarmInfo.setDateTime(dateTime);
-    //    qDebug() << alarmInfo.getSfzNo() << " " << alarmInfo.getSimilar();
+
     alarmInfoList.append(alarmInfo);
 
-    //下载图片至本地
-    Hikvision::getHikvision()->downLoadCapturePic();
-    //Hikvision::getHikvision()->downLoadFacePic();
     Sleep(300);
 
-    setPersonInfo();
+    //下载图片至本地
+    QString url = Hikvision::picURL;
+    qDebug() << "url: " << url;
 
+
+    Hikvision::getHikvision()->downLoadCapturePic(url.mid(0, url.indexOf("SEl")));
+
+    //Hikvision::getHikvision()->downLoadFacePic();
+
+    setPersonInfo();
     addPersonInfoList(alarmInfo);
 
     LaborEyeDatabase::getLaboreyeDatabase()->insertRecord(alarmInfo);
+
 }
 
 void PreviewView::setPersonInfo()
@@ -108,11 +114,11 @@ void PreviewView::setPersonInfo()
 //                     alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
 //                     "_" + alarmInfo.getSfzNo() + ".jpg");
     ui->lblCapture->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapture->size(),
-                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                                                      Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 //    ui->lblAvatar->setPixmap(QPixmap::fromImage(avatarImage).scaled(ui->lblAvatar->size(),
-//                                                                     Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//                                                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 //    ui->lblFace->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFace->size(),
-//                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//                                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
 void PreviewView::addPersonInfoList(AlarmInfo alarmInfo)
@@ -184,15 +190,15 @@ void PreviewView::saveAvatarPic(QNetworkReply* reply)
 
     QByteArray bytes = reply->readAll();
 
-    //抓拍图片路径设置
+    //证件图片路径设置
 //    QString dirCapture = Config::getCfg()->getCapturePath() +
 //            alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
 //            "_" + alarmInfo.getSfzNo() + ".jpg";
-    QString dirCapture = Config::getCfg()->getAvatarPath() +
+    QString dirAvatar = Config::getCfg()->getAvatarPath() +
                         alarmInfo.getSfzNo() + ".jpg";
 
     //保存抓拍图片文件
-    QFile file(dirCapture);
+    QFile file(dirAvatar);
     if(file.open(QIODevice::WriteOnly)) {
         file.write(bytes);
         file.close();
@@ -205,13 +211,12 @@ void PreviewView::saveFacePic(QNetworkReply* reply)
 
     QByteArray bytes = reply->readAll();
 
-    //抓拍图片路径设置
-    QString dirCapture = Config::getCfg()->getFacePath() +
-                        alarmInfo.getDateTime().toString("yyyy-MM-dd hh:mm:ss") +
-                        "_" + alarmInfo.getSfzNo() + ".jpg";
+    //人脸图片路径设置
+    QString picName = alarmInfo.getDateTime().toString("yyyyMMddhhmmss").append("_" + alarmInfo.getSfzNo() + ".jpg");
+    QString dirFace = Config::getCfg()->getCapturePath() + picName;
 
     //保存抓拍图片文件
-    QFile file(dirCapture);
+    QFile file(dirFace);
     if(file.open(QIODevice::WriteOnly)) {
         file.write(bytes);
         file.close();

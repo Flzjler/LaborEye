@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QNetworkReply>
+#include <QString>
 
 #include "Hikvision/hikvision.h"
 #include "Entity/alarminfo.h"

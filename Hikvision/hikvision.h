@@ -36,7 +36,7 @@ public:
     static void showPreviewVideo(QList<HWND> hwndList);
 
     //使用url的方式下载抓拍图
-    static void downLoadCapturePic();
+    static void downLoadCapturePic(QString url);
     static void downLoadAvatarPic();
     static void downLoadFacePic();
 
@@ -53,6 +53,9 @@ public:
 
     //向人脸库中添加一条信息
     static bool upload2FaceLib(QString name, QString picFilePath);
+
+    static QString getPicURL();
+    static QString picURL;
 
 signals:
     void returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);

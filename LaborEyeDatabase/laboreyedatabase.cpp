@@ -75,7 +75,10 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
     query.bindValue(":endDateTime", endDateTime);
     query.bindValue(":startId", (nowPage-1)*pageSize);
     query.bindValue(":pageSize", pageSize);
-//    qDebug() << "sqlSentence: " << sqlSentence;
+    qDebug() << "startTime: " << startDateTime.toString("yyyy-MM-dd hh:mm:ss");
+    qDebug() << "endTime: " << endDateTime.toString("yyyy-MM-dd hh:mm:ss");
+    qDebug() << "startId: " << (nowPage-1)*pageSize << " pageSize: " << pageSize;
+    qDebug() << "sqlSentence: " << sqlSentence;
     query.exec();
     closeDatabase();
 

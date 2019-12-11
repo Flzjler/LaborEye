@@ -171,10 +171,13 @@ void HistoryView::on_btnJmppage_clicked()
 
 void HistoryView::on_tblRecord_cellDoubleClicked(int row)
 {
-    QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(recordInfoList[row].getCaptureId()));
-    QImage faceImage(Config::getCfg()->getFacePath()+QString::number(recordInfoList[row].getCaptureId()));
+    QString picName = recordInfoList[row].getTimeValue().toString("yyyyMMddhhmmss") +
+                                "_" + recordInfoList[row].getAvatarId();
+    //QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(recordInfoList[row].getCaptureId()));
+    QImage captureImage(Config::getCfg()->getCapturePath()+picName);
+    QImage faceImage(Config::getCfg()->getFacePath()+picName);
     ui->lblCapturePic->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapturePic->size(),
-                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                                                       Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     ui->lblFacePic->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFacePic->size(),
-                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
