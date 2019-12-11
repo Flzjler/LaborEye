@@ -1,7 +1,7 @@
 ﻿#include "mainview.h"
 #include "ui_mainview.h"
 
-PreviewView* MainView::previewView = nullptr;
+//PreviewView* MainView::previewView = nullptr;
 HistoryView* MainView::historyView = nullptr;
 HouseView* MainView::houseView = nullptr;
 StaffView* MainView::staffView = nullptr;
@@ -16,10 +16,10 @@ MainView::MainView(QWidget *parent) :
     ui->tbwMainView->removeTab(0);
     ui->tbwMainView->removeTab(0);
 
-    if(previewView == nullptr) {
-        previewView = new PreviewView();
-        ui->tbwMainView->addTab(previewView, QString::fromLocal8Bit("预览"));
-    }
+//    if(previewView == nullptr) {
+//        previewView = new PreviewView();
+        ui->tbwMainView->addTab(PreviewView::getPreviewView(), QString::fromLocal8Bit("预览"));
+//    }
 
     if(historyView == nullptr) {
         historyView = new HistoryView();
@@ -42,9 +42,9 @@ MainView::MainView(QWidget *parent) :
     }
 
     connect(Hikvision::getHikvision(), SIGNAL(returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)),
-            previewView, SLOT(setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)));
+            PreviewView::getPreviewView(), SLOT(setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM)));
 
-    connect(Hikvision::getManager(), SIGNAL(finished(QNetworkReply*)), previewView, SLOT(saveCapturePic(QNetworkReply*)));
+//    connect(Hikvision::getManager(), SIGNAL(finished(QNetworkReply*)), PreviewView::getPreviewView(), SLOT(saveCapturePic(QNetworkReply*)));
 }
 
 MainView::~MainView()
