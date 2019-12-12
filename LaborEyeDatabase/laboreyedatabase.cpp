@@ -75,10 +75,7 @@ QList<RecordInfo> LaborEyeDatabase::selectRecordInfo(QDateTime startDateTime, QD
     query.bindValue(":endDateTime", endDateTime);
     query.bindValue(":startId", (nowPage-1)*pageSize);
     query.bindValue(":pageSize", pageSize);
-    qDebug() << "startTime: " << startDateTime.toString("yyyy-MM-dd hh:mm:ss");
-    qDebug() << "endTime: " << endDateTime.toString("yyyy-MM-dd hh:mm:ss");
-    qDebug() << "startId: " << (nowPage-1)*pageSize << " pageSize: " << pageSize;
-    qDebug() << "sqlSentence: " << sqlSentence;
+//    qDebug() << "sqlSentence: " << sqlSentence;
     query.exec();
     closeDatabase();
 
@@ -502,9 +499,9 @@ PersonInfo LaborEyeDatabase::selectPersonInfo(QString sfzNo)
     if(query.next()) {
         personInfo.applicant = query.value("applicant").toString();
         personInfo.address = query.value("community").toString() +
-                query.value("building").toString() + QString::fromLocal8Bit("幢") +
-                query.value("unit").toString() + QString::fromLocal8Bit("单元") +
-                query.value("house").toString() + QString::fromLocal8Bit("室");
+                query.value("building").toString() +
+                query.value("unit").toString() +
+                query.value("house").toString();
     }
     return personInfo;
 }

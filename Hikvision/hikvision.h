@@ -16,7 +16,6 @@
 #include "HCNetSDK.h"
 #include "Config/config.h"
 #include "Util/laboreyexml.h"
-#include "PreviewView/previewview.h"
 
 class Hikvision : public QObject
 {
@@ -26,39 +25,31 @@ public:
     {
         if(hikvision == nullptr)
             hikvision = new Hikvision();
-//        if(eventLoop == nullptr)
-//            eventLoop = new QEventLoop();
-//        if(manager == nullptr)
-//            manager = new QNetworkAccessManager();
+        if(eventLoop == nullptr)
+            eventLoop = new QEventLoop();
+        if(manager == nullptr)
+            manager = new QNetworkAccessManager();
         return hikvision;
     }
     //显示预览录像
     static void showPreviewVideo(QList<HWND> hwndList);
 
     //使用url的方式下载抓拍图
-    static void downLoadCapturePic(QString url);
-    static void downLoadAvatarPic(QString url);
-    static void downLoadFacePic(QString url);
+    static void downLoadCapturePic();
 
-//    static QEventLoop* getEventLoop() {
-//        if(eventLoop == nullptr)
-//            eventLoop = new QEventLoop();
-//        return eventLoop;
-//    }
-//    static QNetworkAccessManager* getManager() {
-//        if(manager == nullptr)
-//            manager = new QNetworkAccessManager();
-//        return manager;
-//    }
+    static QEventLoop* getEventLoop() {
+        if(eventLoop == nullptr)
+            eventLoop = new QEventLoop();
+        return eventLoop;
+    }
+    static QNetworkAccessManager* getManager() {
+        if(manager == nullptr)
+            manager = new QNetworkAccessManager();
+        return manager;
+    }
 
     //向人脸库中添加一条信息
     static bool upload2FaceLib(QString name, QString picFilePath);
-
-    static QString capturePicURL;
-
-    static QString avatarPicURL;
-
-    static QString facePicURL;
 
 signals:
     void returnAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
@@ -67,6 +58,10 @@ private:
 
     explicit Hikvision();
     ~Hikvision();
+
+    static QEventLoop* eventLoop;
+
+    static QNetworkAccessManager* manager;
 
     static Hikvision* hikvision;
 
@@ -84,6 +79,7 @@ private:
 
     //获取超脑能力集信息
     static void getNET_DVR_STDXMLConfig();
+
 
 };
 

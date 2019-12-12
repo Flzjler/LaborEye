@@ -25,7 +25,7 @@ public:
 private:
     Ui::MainView *ui;
 
-//    static PreviewView* previewView;
+    static PreviewView* previewView;
     static HistoryView* historyView;
     static HouseView* houseView;
     static StaffView* staffView;

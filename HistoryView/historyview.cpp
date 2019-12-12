@@ -124,11 +124,10 @@ void HistoryView::on_btnConfirm_clicked()
     isStranger = ui->cboxStranger->currentText();
     idCard = ui->ledtIdCard->text();
 
-    setTblItem();
-    if(tolPages == 0)
-        nowPage = 0;
-
     ui->ledtNowpage->setText(QString::number(nowPage));
+
+    setTblItem();
+
     ui->lblCapturePic->setText("图片暂无");
     ui->lblFacePic->setText("图片暂无");
 }
@@ -171,13 +170,10 @@ void HistoryView::on_btnJmppage_clicked()
 
 void HistoryView::on_tblRecord_cellDoubleClicked(int row)
 {
-    QString picName = recordInfoList[row].getTimeValue().toString("yyyyMMddhhmmss") +
-                                "_" + recordInfoList[row].getAvatarId();
-    //QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(recordInfoList[row].getCaptureId()));
-    QImage captureImage(Config::getCfg()->getCapturePath()+picName);
-    QImage faceImage(Config::getCfg()->getFacePath()+picName);
+    QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(recordInfoList[row].getCaptureId()));
+    QImage faceImage(Config::getCfg()->getFacePath()+QString::number(recordInfoList[row].getCaptureId()));
     ui->lblCapturePic->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapturePic->size(),
-                                                                       Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->lblFacePic->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFacePic->size(),
-                                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

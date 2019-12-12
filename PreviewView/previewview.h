@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QNetworkReply>
-#include <QString>
 
 #include "Hikvision/hikvision.h"
 #include "Entity/alarminfo.h"
@@ -26,22 +25,12 @@ class PreviewView : public QWidget
     Q_OBJECT
 
 public:
-    static PreviewView* getPreviewView()
-    {
-        if(previewView == nullptr)
-            previewView = new PreviewView();
-        return previewView;
-    }
-
+    explicit PreviewView(QWidget *parent = nullptr);
+    ~PreviewView();
 
 public slots:
     void setAlarmInfo(NET_VCA_FACESNAP_MATCH_ALARM faceMatchAlarm);
-
     void saveCapturePic(QNetworkReply*);
-
-    void saveAvatarPic(QNetworkReply*);
-
-    void saveFacePic(QNetworkReply*);
 
 private slots:
     void on_btnClear_clicked();
@@ -50,13 +39,10 @@ private slots:
 
 private:
     Ui::PreviewView *ui;
-    static AlarmInfo alarmInfo;
-    explicit PreviewView(QWidget *parent = nullptr);
-    ~PreviewView();
-    static PreviewView* previewView;
+    AlarmInfo alarmInfo;
     static QList<AlarmInfo> alarmInfoList;
 
-    void setPersonInfo();
+    void setPersonInfo(AlarmInfo alarmInfo);
     void addPersonInfoList(AlarmInfo alarmInfo);
 };
 

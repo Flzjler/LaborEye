@@ -2,7 +2,7 @@
 
 AlarmInfo::AlarmInfo()
 {
-    applicant = "";
+
 }
 
 void AlarmInfo::setDateTime(QDateTime _dateTime)

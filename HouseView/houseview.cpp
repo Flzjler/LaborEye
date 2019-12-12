@@ -175,18 +175,15 @@ void HouseView::on_tblRecord_cellDoubleClicked(int row)
     ui->lblCapture->clear();
     ui->lblAvatar->clear();
     ui->lblFace->clear();
-
-    QString picName = applicantRecordList[row].getDateTime().toString("yyyyMMddhhmmss") +
-                                "_" + applicantRecordList[row].getAvatarId();
-    QImage captureImage(Config::getCfg()->getCapturePath() + picName);
-    QImage avatarImage(Config::getCfg()->getAvatarPath() + applicantRecordList[row].getAvatarId());
-    QImage faceImage(Config::getCfg()->getFacePath() + picName);
+    QImage captureImage(Config::getCfg()->getCapturePath()+QString::number(applicantRecordList[row].getCaptureId()));
+    QImage avatarImage(Config::getCfg()->getAvatarPath()+applicantRecordList[row].getAvatarId());
+    QImage faceImage(Config::getCfg()->getFacePath()+QString::number(applicantRecordList[row].getCaptureId()));
     ui->lblCapture->setPixmap(QPixmap::fromImage(captureImage).scaled(ui->lblCapture->size(),
-                                                                      Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                                                                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->lblAvatar->setPixmap(QPixmap::fromImage(avatarImage).scaled(ui->lblAvatar->size(),
-                                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                                                                    Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->lblFace->setPixmap(QPixmap::fromImage(faceImage).scaled(ui->lblFace->size(),
-                                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void HouseView::on_lblOutput_clicked()
