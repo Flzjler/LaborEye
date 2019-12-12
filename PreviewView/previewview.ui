@@ -52,6 +52,12 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>380</width>
+                <height>380</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Arial</family>
@@ -80,6 +86,12 @@ border-color: rgb(255, 255, 255);</string>
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>380</width>
+                <height>380</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -199,7 +211,14 @@ border-color: rgb(255, 255, 255);</string>
              </layout>
             </item>
             <item>
-             <widget class="QListWidget" name="lstRecord"/>
+             <widget class="QListWidget" name="lstRecord">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

@@ -6,8 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< Updated upstream
     <width>1100</width>
     <height>650</height>
+=======
+    <width>1300</width>
+    <height>800</height>
+>>>>>>> Stashed changes
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +23,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1100</width>
-    <height>650</height>
+    <width>1300</width>
+    <height>700</height>
    </size>
   </property>
   <property name="maximumSize">

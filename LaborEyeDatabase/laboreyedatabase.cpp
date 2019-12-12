@@ -288,7 +288,7 @@ QList<ApplicantRecordInfo> LaborEyeDatabase::selectApplicantRecords(QString buil
 
     QSqlQuery query;
     QString sqlSentence = sqlSetting->value("Select/selectApplicantRecord").toString();
-
+    qDebug() << "sqlSentence: " << sqlSentence;
     query.prepare(sqlSentence);
     query.bindValue(":buildingId", buildingId);
     query.bindValue(":unitId", unitId);
