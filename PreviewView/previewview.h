@@ -3,6 +3,11 @@
 
 #include <QWidget>
 #include <QNetworkReply>
+<<<<<<< Updated upstream
+=======
+#include <QString>
+#include <QListWidgetItem>>
+>>>>>>> Stashed changes
 
 #include "Hikvision/hikvision.h"
 #include "Entity/alarminfo.h"
@@ -36,6 +41,8 @@ private slots:
     void on_btnClear_clicked();
 
     void on_btnSearch_clicked();
+
+    void on_lstRecord_itemDoubleClicked(QListWidgetItem *item);
 
 private:
     Ui::PreviewView *ui;

@@ -387,10 +387,16 @@
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="QLabel" name="lblCapture">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>240</width>
-                <height>180</height>
+                <height>240</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -424,8 +430,8 @@ border-color: rgb(255, 255, 255);</string>
              <widget class="QLabel" name="lblFace">
               <property name="minimumSize">
                <size>
-                <width>180</width>
-                <height>180</height>
+                <width>200</width>
+                <height>240</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -463,8 +469,8 @@ border-color: rgb(255, 255, 255);</string>
              <widget class="QLabel" name="lblAvatar">
               <property name="minimumSize">
                <size>
-                <width>180</width>
-                <height>180</height>
+                <width>300</width>
+                <height>200</height>
                </size>
               </property>
               <property name="maximumSize">

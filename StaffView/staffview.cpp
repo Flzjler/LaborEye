@@ -81,9 +81,9 @@ void StaffView::setTblItem()
             case 2: item[j] = new QTableWidgetItem(applicantInfoList[i].getContact());
                 break;
             case 3:
-                QString address = "新兴茗苑" + applicantInfoList[i].getBuilding() + "幢" +
-                                    applicantInfoList[i].getUnit() + "单元" +
-                                    applicantInfoList[i].getHouse() + "室";
+                QString address = QString::fromLocal8Bit("新兴茗苑") + applicantInfoList[i].getBuilding() + QString::fromLocal8Bit("幢") +
+                                    applicantInfoList[i].getUnit() + QString::fromLocal8Bit("单元") +
+                                    applicantInfoList[i].getHouse() + QString::fromLocal8Bit("室");
                 item[j] = new QTableWidgetItem(address);
                 break;
             }
@@ -149,20 +149,20 @@ void StaffView::on_btnConfirm_clicked()
 void StaffView::on_btnDel_clicked()
 {
     if(ui->tblStaffInfo->currentRow() == -1) {
-        QMessageBox::information(this, "提示", "请先选择需要删除的住户信息!");
+        QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("请先选择需要删除的住户信息!"));
         return;
     }
-    int choose= QMessageBox::question(this, tr("警告"),
-                                  QString(tr("是否删除该住户信息?")),
+    int choose= QMessageBox::question(this,  QString::fromLocal8Bit("警告"),
+                                   QString::fromLocal8Bit("是否删除该住户信息?"),
                                   QMessageBox::Yes | QMessageBox::No);
 
     ApplicantInfo delApplicantInfo = applicantInfoList[ui->tblStaffInfo->currentRow()];
     if (choose== QMessageBox::Yes) {
         if(LaborEyeDatabase::getLaboreyeDatabase()->deleteApplicantInfo(delApplicantInfo)) {
-            QMessageBox::information(this, "提示", "删除成功");
+            QMessageBox::information(this,  QString::fromLocal8Bit("提示"),  QString::fromLocal8Bit("删除成功"));
             setTblItem();
         } else {
-            QMessageBox::information(this, "提示", "删除失败");
+            QMessageBox::information(this,  QString::fromLocal8Bit("提示"),  QString::fromLocal8Bit("删除失败"));
         }
     }
 }
@@ -170,7 +170,8 @@ void StaffView::on_btnDel_clicked()
 void StaffView::on_btnEdit_clicked()
 {
     if(ui->tblStaffInfo->currentRow() == -1) {
-        QMessageBox::information(this, "提示", "请先选择需要编辑的住户信息!");
+        QMessageBox::information(this,  QString::fromLocal8Bit("提示"),
+                                 QString::fromLocal8Bit("请先选择需要编辑的住户信息!"));
         return;
     }
     if(editStaffDialog == nullptr)

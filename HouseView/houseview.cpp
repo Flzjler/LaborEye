@@ -69,9 +69,9 @@ void HouseView::on_lblReflash_clicked()
     ui->ledtIdCard->clear();
     ui->ledtSimilar->clear();
 
-    ui->lblCapture->setText("抓拍图");
-    ui->lblAvatar->setText("证件照");
-    ui->lblFace->setText("人脸子图");
+    ui->lblCapture->setText(QString::fromLocal8Bit("抓拍图"));
+    ui->lblAvatar->setText(QString::fromLocal8Bit("证件照"));
+    ui->lblFace->setText(QString::fromLocal8Bit("人脸子图"));
 
     QString buildingId = ui->cmbBuilding->currentText();
     QString unitId = ui->cmbUnit->currentText();
@@ -119,9 +119,9 @@ void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
     ui->ledtIdCard->clear();
     ui->ledtSimilar->clear();
 
-    ui->lblCapture->setText("抓拍图");
-    ui->lblAvatar->setText("证件照");
-    ui->lblFace->setText("人脸子图");
+    ui->lblCapture->setText(QString::fromLocal8Bit("抓拍图"));
+    ui->lblAvatar->setText(QString::fromLocal8Bit("证件照"));
+    ui->lblFace->setText(QString::fromLocal8Bit("人脸子图"));
 
     QDateTime startDateTime = ui->dtStartTime->dateTime();
     QDateTime endDateTime = ui->dtEndTime->dateTime();
@@ -200,7 +200,6 @@ void HouseView::on_lblOutput_clicked()
 
     QThread *thread = new QThread();
     laborEyeExcel->moveToThread(thread);
-    qDebug() << "222222222";
     connect(thread, SIGNAL(started()), laborEyeExcel, SLOT(startTrans()), Qt::QueuedConnection);
     thread->start();
 }

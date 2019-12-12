@@ -128,8 +128,14 @@ void HistoryView::on_btnConfirm_clicked()
 
     setTblItem();
 
+<<<<<<< Updated upstream
     ui->lblCapturePic->setText("图片暂无");
     ui->lblFacePic->setText("图片暂无");
+=======
+    ui->ledtNowpage->setText(QString::number(nowPage));
+    ui->lblCapturePic->setText(QString::fromLocal8Bit("图片暂无"));
+    ui->lblFacePic->setText(QString::fromLocal8Bit("图片暂无"));
+>>>>>>> Stashed changes
 }
 
 void HistoryView::on_btnPrepage_clicked()
@@ -141,8 +147,8 @@ void HistoryView::on_btnPrepage_clicked()
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
 
-    ui->lblCapturePic->setText("图片暂无");
-    ui->lblFacePic->setText("图片暂无");
+    ui->lblCapturePic->setText(QString::fromLocal8Bit("图片暂无"));
+    ui->lblFacePic->setText(QString::fromLocal8Bit("图片暂无"));
 }
 
 void HistoryView::on_btnNxtpage_clicked()
@@ -154,8 +160,8 @@ void HistoryView::on_btnNxtpage_clicked()
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
 
-    ui->lblCapturePic->setText("图片暂无");
-    ui->lblFacePic->setText("图片暂无");
+    ui->lblCapturePic->setText(QString::fromLocal8Bit("图片暂无"));
+    ui->lblFacePic->setText(QString::fromLocal8Bit("图片暂无"));
 }
 
 void HistoryView::on_btnJmppage_clicked()
@@ -164,8 +170,8 @@ void HistoryView::on_btnJmppage_clicked()
     ui->ledtNowpage->setText(QString::number(nowPage));
     setTblItem();
 
-    ui->lblCapturePic->setText("图片暂无");
-    ui->lblFacePic->setText("图片暂无");
+    ui->lblCapturePic->setText(QString::fromLocal8Bit("图片暂无"));
+    ui->lblFacePic->setText(QString::fromLocal8Bit("图片暂无"));
 }
 
 void HistoryView::on_tblRecord_cellDoubleClicked(int row)

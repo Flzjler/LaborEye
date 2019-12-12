@@ -43,7 +43,11 @@ BOOL CALLBACK Hikvision::MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarme
         if(hikvision == nullptr)
             hikvision = new Hikvision();
         emit hikvision->returnAlarmInfo(faceMatchAlarm);
+<<<<<<< Updated upstream
 
+=======
+        //Sleep(300);
+>>>>>>> Stashed changes
     }
         break;
     }
