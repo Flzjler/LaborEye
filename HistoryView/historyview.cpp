@@ -52,11 +52,14 @@ void HistoryView::initUI()
     ui->tblRecord->setRowCount(pageSize);
     //设置表头伸缩格式
     ui->tblRecord->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     //取消多选
     ui->tblRecord->setSelectionMode(QAbstractItemView::SingleSelection);
     //取消默认行号
     ui->tblRecord->verticalHeader()->setHidden(true);
-
+    //设置列名
+    QStringList strs = {"时间", "姓名", "身份证号/陌生人编号"};
+    ui->tblRecord->setHorizontalHeaderLabels(strs);
 }
 
 void HistoryView::getRecordInfo()
@@ -113,6 +116,9 @@ void HistoryView::setTblItem()
         }
 
     }
+    //设置列名
+    QStringList strs = {"时间", "姓名", "身份证号/陌生人编号"};
+    ui->tblRecord->setHorizontalHeaderLabels(strs);
     ui->lblTolpage->setText("/ " + QString::number(tolPages));
 }
 

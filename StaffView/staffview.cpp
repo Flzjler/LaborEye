@@ -53,6 +53,10 @@ void StaffView::initUI()
     ui->tblStaffInfo->setSelectionMode(QAbstractItemView::SingleSelection);
     //取消默认行号
     ui->tblStaffInfo->verticalHeader()->setHidden(true);
+
+    //设置列名
+    QStringList strs = {"姓名", "身份证号", "联系电话", "住址"};
+    ui->tblStaffInfo->setHorizontalHeaderLabels(strs);
 }
 
 void StaffView::getStaffInfo()
@@ -108,6 +112,10 @@ void StaffView::setTblItem()
         }
     }
     ui->lblTolpage->setText("/ " + QString::number(tolPages));
+
+    //设置列名
+    QStringList strs = {"姓名", "身份证号", "联系电话", "住址"};
+    ui->tblStaffInfo->setHorizontalHeaderLabels(strs);
 }
 
 void StaffView::on_btnPrepage_clicked()

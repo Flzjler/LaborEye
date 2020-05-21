@@ -540,17 +540,17 @@
           </column>
           <column>
            <property name="text">
-            <string>联系方式</string>
+            <string>身份证</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>身份</string>
+            <string>联系电话</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>家庭住址</string>
+            <string>住址</string>
            </property>
           </column>
          </widget>

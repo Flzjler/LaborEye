@@ -49,6 +49,10 @@ void HouseView::initUI()
     ui->tblRecord->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);   //设置列宽
     ui->tblRecord->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);                //设置表头伸缩格式
     ui->tblRecord->setSelectionMode(QAbstractItemView::SingleSelection);                        //取消多选
+
+    //设置列名
+    QStringList strs = {"时间", "姓名", "身份证号"};
+    ui->tblRecord->setHorizontalHeaderLabels(strs);
 }
 
 void HouseView::on_cmbBuilding_currentIndexChanged(const QString &arg1)
@@ -109,6 +113,10 @@ void HouseView::on_lblReflash_clicked()
             }
         }
     }
+
+    //设置列名
+    QStringList strs = {"时间", "姓名", "身份证号"};
+    ui->tblRecord->setHorizontalHeaderLabels(strs);
 }
 
 void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
@@ -156,6 +164,10 @@ void HouseView::on_tblHouse_itemDoubleClicked(QTableWidgetItem *item)
             ui->tblRecord->setItem(i, j, itemVal[j]);
         }
     }
+
+    //设置列名
+    QStringList strs = {"姓名", "身份证号", "联系电话", "住址"};
+    ui->tblRecord->setHorizontalHeaderLabels(strs);
 }
 
 
